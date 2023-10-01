@@ -75,4 +75,44 @@ public class PassengerModel {
     public void setPassword(String password) {
         this.password = password;
     }
+    public int getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public String getNIC() {
+        return NIC;
+    }
+    public String getAddress() {
+        return address;
+    }
+    public String getContactNo() {
+        return contactNo;
+    }
+    public String getHomeLocation() {
+        return homeLocation;
+    }
+    public String getWorkLocation() {
+        return workLocation;
+    }
+    public String getType() {
+        return type;
+    }
+    public Time getOnTime() {
+        return onTime;
+    }
+    public Time getOffTime() {
+        return offTime;
+    }
+    public Boolean getUpAndDown() {
+        return upAndDown;
+    }
+    public String getPassword() {
+        return password;
+    }
+
 }
