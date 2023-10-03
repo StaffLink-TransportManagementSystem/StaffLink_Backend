@@ -121,4 +121,32 @@ public class PassengerDAO {
         }
         return passenger;
     }
+
+    public static Void deletePassenger(PassengerModel passenger){
+        Connection connection = (Connection) DBConnection.getInstance();
+        Connection con = null;
+        try{
+            con = connection;
+            String sql = "DELETE FROM passengers WHERE id = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1,passenger.getId());
+            preparedStatement.executeUpdate();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if(resultSet.next()){
+                passenger.setId(resultSet.getInt(1));
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (con != null) try {
+                con.close();
+            } catch (Exception ignore) {
+            }
+        }
+        return null;
+//        return passenger;
+    }
 }
