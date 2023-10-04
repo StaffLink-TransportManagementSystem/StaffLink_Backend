@@ -75,6 +75,9 @@ public class PassengerModel {
     public void setPassword(String password) {
         this.password = password;
     }
+//    public void setId(int id) {
+//        this.id = id;
+//    }
     public int getId() {
         return id;
     }
@@ -114,5 +117,6 @@ public class PassengerModel {
     public String getPassword() {
         return password;
     }
+
 
 }
