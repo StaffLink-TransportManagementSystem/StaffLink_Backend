@@ -45,9 +45,10 @@ public class PassengerDAO {
         return passenger;
     }
 
-    public static PassengerModel createPassenger(PassengerModel passenger){
+    public static Boolean createPassenger(PassengerModel passenger){
         Connection connection = (Connection) DBConnection.getInstance();
         Connection con = null;
+        Boolean success = false;
         try{
             con = connection;
             String sql = "INSERT INTO passengers (name,email,NIC,address,contactNo,homeLocation,workLocation,type,onTime,offTime,upAndDown,password) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -67,7 +68,7 @@ public class PassengerDAO {
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if(resultSet.next()){
-                passenger.setId(resultSet.getInt(1));
+                success = true;
             }
             resultSet.close();
             preparedStatement.close();
@@ -80,7 +81,9 @@ public class PassengerDAO {
             } catch (Exception ignore) {
             }
         }
-        return passenger;
+
+
+        return success;
     }
 
     public static PassengerModel updatePassenger(PassengerModel passenger){

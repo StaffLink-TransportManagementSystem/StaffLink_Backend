@@ -4,4 +4,16 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+
+  <servlet>
+    <servlet-name>Park</servlet-name>
+    <servlet-class>Controller.createPassengerServelet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>Park</servlet-name>
+    <url-pattern>/signin</url-pattern>
+  </servlet-mapping>
+
 </web-app>
+

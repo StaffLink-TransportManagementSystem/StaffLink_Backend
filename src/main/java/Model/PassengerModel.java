@@ -1,5 +1,7 @@
 package Model;
 
+import DAO.PassengerDAO;
+
 import java.sql.Time;
 import java.util.Date;
 
@@ -116,6 +118,12 @@ public class PassengerModel {
     }
     public String getPassword() {
         return password;
+    }
+
+    public boolean createPassenger(){
+        PassengerDAO passengerDAO = new PassengerDAO();
+        boolean status = PassengerDAO.createPassenger(this);
+        return  status;
     }
 
 
