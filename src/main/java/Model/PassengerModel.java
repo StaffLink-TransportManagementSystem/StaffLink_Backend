@@ -133,5 +133,4 @@ public class PassengerModel {
         return  status;
     }
 
-
 }

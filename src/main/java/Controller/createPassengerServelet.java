@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.google.gson.Gson;
 
-@WebServlet("/cp") //me api server eka wenas kramuda 9 ekata
+@WebServlet("/passengerRegister")
 public class createPassengerServelet extends HttpServlet{
 
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
@@ -28,8 +28,6 @@ public class createPassengerServelet extends HttpServlet{
             BufferedReader bufferedReader = req.getReader();
             PassengerModel passenger = gson.fromJson(bufferedReader, PassengerModel.class);
 
-
-
             // All validations are passed then register
             if(passenger.createPassenger()){
                 res.setStatus(HttpServletResponse.SC_OK);
@@ -40,9 +38,6 @@ public class createPassengerServelet extends HttpServlet{
                 out.write("{\"message\": \"Registration unsuccessfully\"}");
                 System.out.println("Registration incorrect");
             }
-
-
-
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -51,4 +46,5 @@ public class createPassengerServelet extends HttpServlet{
             out.close();
         }
     }
+
 }
