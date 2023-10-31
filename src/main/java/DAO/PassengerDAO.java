@@ -6,7 +6,7 @@ import Model.PassengerModel;
 import java.sql.*;
 public class PassengerDAO {
     public static PassengerModel getPassenger(String nic){
-        Connection connection = (Connection) DBConnection.getInstance();
+        Connection connection = (Connection) DBConnection.getInstance().getConnection();;
         Connection con = null;
         PassengerModel passenger = new PassengerModel();
 
@@ -45,49 +45,46 @@ public class PassengerDAO {
         return passenger;
     }
 
-    public static Boolean createPassenger(PassengerModel passenger){
-        Connection connection = (Connection) DBConnection.getInstance();
-        Connection con = null;
-        Boolean success = false;
+    public static boolean createPassenger(PassengerModel passenger){
+        Connection connection = DBConnection.getInstance().getConnection();
+        System.out.println("Inside CP");
+//        Connection connection = DBConnection.getInstance().getConnection();;
+        boolean success = false;
         try{
-            con = connection;
-            String sql = "INSERT INTO passengers (name,email,NIC,address,contactNo,homeLocation,workLocation,type,onTime,offTime,upAndDown,password) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-            PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            System.out.println("try");
+            String sql = "INSERT INTO passengers (name,email,NIC,password) VALUES (?,?,?,?)";
+//            System.out.println("try");
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,passenger.getName());
             preparedStatement.setString(2,passenger.getEmail());
             preparedStatement.setString(3,passenger.getNIC());
-            preparedStatement.setString(4,passenger.getAddress());
-            preparedStatement.setString(5,passenger.getContactNo());
-            preparedStatement.setString(6,passenger.getHomeLocation());
-            preparedStatement.setString(7,passenger.getWorkLocation());
-            preparedStatement.setString(8,passenger.getType());
-            preparedStatement.setTime(9,passenger.getOnTime());
-            preparedStatement.setTime(10,passenger.getOffTime());
-            preparedStatement.setBoolean(11,passenger.getUpAndDown());
-            preparedStatement.setString(12,passenger.getPassword());
+            preparedStatement.setString(4,passenger.getPassword());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
+
             if(resultSet.next()){
                 success = true;
             }
             resultSet.close();
             preparedStatement.close();
+
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            if (con != null) try {
-                con.close();
+            if (connection != null) try {
+//                con.close();
             } catch (Exception ignore) {
             }
         }
 
 
         return success;
+//        return true;
     }
 
     public static PassengerModel updatePassenger(PassengerModel passenger){
-        Connection connection = (Connection) DBConnection.getInstance();
+        Connection connection = DBConnection.getInstance().getConnection();
         Connection con = null;
         try{
             con = connection;
@@ -126,7 +123,7 @@ public class PassengerDAO {
     }
 
     public static Void deletePassenger(PassengerModel passenger){
-        Connection connection = (Connection) DBConnection.getInstance();
+        Connection connection = DBConnection.getInstance().getConnection();
         Connection con = null;
         try{
             con = connection;
@@ -145,7 +142,7 @@ public class PassengerDAO {
             throw new RuntimeException(e);
         } finally {
             if (con != null) try {
-                con.close();
+//                con.close();
             } catch (Exception ignore) {
             }
         }
