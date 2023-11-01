@@ -1,38 +1,27 @@
 package DAO;
 
-import Model.OwnerModel;
 import Database.DBConnection;
+import Model.OwnerModel;
 
 import java.sql.*;
-import java.sql.Connection;
-
 public class OwnerDAO {
-    public static int getVehicleCount(String NIC){
-        Connection connection = (Connection) DBConnection.getInstance().getConnection();
-        Connection con = null;
+    public static OwnerModel getOwner(String email){
+        Connection connection = DBConnection.getInstance().getConnection();
+        System.out.println("Inside CO");
+        OwnerModel owner = new OwnerModel();
 
-        return 0;
-    }
-    public static OwnerModel createOwner(OwnerModel owner){
-        Connection connection = (Connection) DBConnection.getInstance().getConnection();
-        Connection con = connection;
-//        OwnerModel owner = new OwnerModel();
         try{
-            con = connection;
-            String sql = "INSERT INTO owners (name,email,NIC,address,contactNo,income,balance,password) VALUES (?,?,?,?,?,?,?,?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1,owner.getName());
-            preparedStatement.setString(2,owner.getEmail());
-            preparedStatement.setString(3,owner.getNIC());
-            preparedStatement.setString(4,owner.getAddress());
-            preparedStatement.setString(5,owner.getContactNo());
-            preparedStatement.setFloat(6,owner.getIncome());
-            preparedStatement.setFloat(7,owner.getBalance());
-            preparedStatement.setString(8,owner.getPassword());
-            preparedStatement.executeUpdate();
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            if(resultSet.next()){
-                owner.setId(resultSet.getInt(1));
+            String sql = "SELECT * FROM owners WHERE email = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1,email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+//            preparedStatement.executeUpdate();
+//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            while(resultSet.next()){
+                owner.setId(resultSet.getInt("id"));
+                owner.setEmail(resultSet.getString("email"));
+                owner.setNIC(resultSet.getString("NIC"));
+                owner.setPassword(resultSet.getString("password"));
             }
             resultSet.close();
             preparedStatement.close();
@@ -40,13 +29,114 @@ public class OwnerDAO {
         catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            if (con != null) try {
-                con.close();
+            if (connection != null) try {
+//                connection.close();
+            } catch (Exception ignore) {
+            }
+        }
+        return owner;
+    }
+
+    public static boolean createOwner(OwnerModel owner){
+        Connection connection = DBConnection.getInstance().getConnection();
+        System.out.println("Inside CO");
+//        Connection connection = DBConnection.getInstance().getConnection();;
+        boolean success = false;
+        try{
+            System.out.println("try");
+            String sql = "INSERT INTO owners (name,email,NIC,contact,password) VALUES (?,?,?,?,?)";
+//            System.out.println("try");
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1,owner.getName());
+            preparedStatement.setString(2,owner.getEmail());
+            preparedStatement.setString(3,owner.getNIC());
+            preparedStatement.setString(4,owner.getContactNo());
+            preparedStatement.setString(5,owner.getPassword());
+            preparedStatement.executeUpdate();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+
+            if(resultSet.next()){
+                success = true;
+            }
+            resultSet.close();
+            preparedStatement.close();
+
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (connection != null) try {
+//                con.close();
             } catch (Exception ignore) {
             }
         }
 
-        return owner;
+
+        return success;
+//        return true;
     }
 
+    public static boolean updateOwner(OwnerModel owner){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+        System.out.println("hello update owner");
+        try{
+            con = connection;
+            String sql = "UPDATE owners SET name = ?,email = ?,NIC = ?, contact=? ,password = ? ,WHERE email = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1,owner.getName());
+            preparedStatement.setString(2,owner.getEmail());
+            preparedStatement.setString(3,owner.getNIC());
+            preparedStatement.setString(4,owner.getContactNo());
+            preparedStatement.setString(5,owner.getPassword());
+            preparedStatement.setString(6,owner.getEmail());
+            int temp = preparedStatement.executeUpdate();
+            System.out.println(temp);
+//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if(temp==1){
+//                passenger.setId(resultSet.getInt(1));
+                success = true;
+            }
+//            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (con != null) try {
+//                con.close();
+            } catch (Exception ignore) {
+            }
+        }
+        return success;
+    }
+
+    public static boolean deleteOwner(String email){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+        try{
+            con = connection;
+            String sql = "DELETE FROM owners WHERE email = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1,email);
+            int x = preparedStatement.executeUpdate();
+//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if(x != 0){
+                success = true;
+            }
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (con != null) try {
+//                con.close();
+            } catch (Exception ignore) {
+            }
+        }
+        return success;
+//        return passenger;
+    }
 }

@@ -1,43 +1,37 @@
 package Model;
 
-import DAO.OwnerDAO;
+import DAO.DriverDAO;
 
 import java.sql.Time;
 import java.util.Date;
 
-public class OwnerModel {
+public class DriverModel {
     private int id;
     private String name;
     private String email;
     private String NIC;
+    private int age;
     private String contactNo;
     private String password;
 
 
-    public OwnerModel(String name, String email, String NIC, String contactNo, String password) {
+    public DriverModel(String name, String email, String NIC,int age, String contactNo, String password) {
         this.name = name;
         this.email = email;
         this.NIC = NIC;
+        this.age = age;
         this.contactNo = contactNo;
         this.password = password;
     }
 
-    public OwnerModel(String email) {
+    public DriverModel(String email) {
         this.email = email;
     }
 
-    public OwnerModel() {
+    public DriverModel() {
 
     }
 
-//    public OwnerModel(int id, String name, String email, String NIC, String contactNo, String password) {
-//        this.id = id;
-//        this.name = name;
-//        this.email = email;
-//        this.NIC = NIC;
-//        this.contactNo = contactNo;
-//        this.password = password;
-//    }
 
     public void setId(int id) {
         this.id = id;
@@ -51,7 +45,7 @@ public class OwnerModel {
     public void setNIC(String NIC) {
         this.NIC = NIC;
     }
-
+    public void setAge(int age) {this.age = age;}
     public void setContactNo(String contactNo) {
         this.contactNo = contactNo;
     }
@@ -71,6 +65,7 @@ public class OwnerModel {
     public String getNIC() {
         return NIC;
     }
+    public int getAge() {return age;}
     public String getContactNo() {
         return contactNo;
     }
@@ -79,14 +74,14 @@ public class OwnerModel {
         return password;
     }
 
-    public boolean createOwner(){
-        OwnerDAO ownerDAO = new OwnerDAO();
-        boolean status = ownerDAO.createOwner(this);
+    public boolean createDriver(){
+        DriverDAO driverDAO = new DriverDAO();
+        boolean status = driverDAO.createDriver(this);
         return  status;
     }
-    public boolean updateOwner(){
-        OwnerDAO ownerDAO = new OwnerDAO();
-        boolean status = ownerDAO.updateOwner(this);
+    public boolean updateDriver(){
+        DriverDAO driverDAO = new DriverDAO();
+        boolean status = driverDAO.updateDriver(this);
         return  status;
     }
 

@@ -29,6 +29,10 @@ public class PassengerModel {
         this.password = password;
     }
 
+    public PassengerModel(String email) {
+        this.email = email;
+    }
+
     public PassengerModel(int id, String name, String email, String NIC, String address, String contactNo, String homeLocation, String workLocation, String type, Time onTime, Time offTime, Boolean upAndDown) {
         this.id = id;
         this.name = name;
