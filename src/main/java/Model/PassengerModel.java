@@ -1,5 +1,7 @@
 package Model;
 
+import DAO.PassengerDAO;
+
 import java.sql.Time;
 import java.util.Date;
 
@@ -20,7 +22,14 @@ public class PassengerModel {
     public PassengerModel() {
     }
 
-    public PassengerModel(int id,String name, String email, String NIC, String address, String contactNo, String homeLocation, String workLocation, String type, Time onTime, Time offTime, Boolean upAndDown) {
+    public PassengerModel(String name, String email, String NIC, String password) {
+        this.name = name;
+        this.email = email;
+        this.NIC = NIC;
+        this.password = password;
+    }
+
+    public PassengerModel(int id, String name, String email, String NIC, String address, String contactNo, String homeLocation, String workLocation, String type, Time onTime, Time offTime, Boolean upAndDown) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -75,6 +84,9 @@ public class PassengerModel {
     public void setPassword(String password) {
         this.password = password;
     }
+//    public void setId(int id) {
+//        this.id = id;
+//    }
     public int getId() {
         return id;
     }
@@ -113,6 +125,12 @@ public class PassengerModel {
     }
     public String getPassword() {
         return password;
+    }
+
+    public boolean createPassenger(){
+        PassengerDAO passengerDAO = new PassengerDAO();
+        boolean status = PassengerDAO.createPassenger(this);
+        return  status;
     }
 
 }
