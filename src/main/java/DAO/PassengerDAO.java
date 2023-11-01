@@ -75,43 +75,38 @@ public class PassengerDAO {
 //        return true;
     }
 
-    public static PassengerModel updatePassenger(PassengerModel passenger){
+    public static boolean updatePassenger(PassengerModel passenger){
         Connection connection = DBConnection.getInstance().getConnection();
         Connection con = null;
+        boolean success = false;
         try{
             con = connection;
-            String sql = "UPDATE passengers SET name = ?,email = ?,NIC = ?,address = ?,contactNo = ?,homeLocation = ?,workLocation = ?,type = ?,onTime = ?,offTime = ?,upAndDown = ?,password = ? WHERE id = ?";
+            String sql = "UPDATE passengers SET name = ?,email = ?,NIC = ?,password = ? WHERE email = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,passenger.getName());
             preparedStatement.setString(2,passenger.getEmail());
             preparedStatement.setString(3,passenger.getNIC());
-            preparedStatement.setString(4,passenger.getAddress());
-            preparedStatement.setString(5,passenger.getContactNo());
-            preparedStatement.setString(6,passenger.getHomeLocation());
-            preparedStatement.setString(7,passenger.getWorkLocation());
-            preparedStatement.setString(8,passenger.getType());
-            preparedStatement.setTime(9,passenger.getOnTime());
-            preparedStatement.setTime(10,passenger.getOffTime());
-            preparedStatement.setBoolean(11,passenger.getUpAndDown());
-            preparedStatement.setString(12,passenger.getPassword());
-            preparedStatement.setInt(13,passenger.getId());
-            preparedStatement.executeUpdate();
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            if(resultSet.next()){
-                passenger.setId(resultSet.getInt(1));
+            preparedStatement.setString(4,passenger.getPassword());
+            preparedStatement.setString(5,passenger.getEmail());
+            int temp = preparedStatement.executeUpdate();
+            System.out.println(temp);
+//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if(temp==1){
+//                passenger.setId(resultSet.getInt(1));
+                success = true;
             }
-            resultSet.close();
+//            resultSet.close();
             preparedStatement.close();
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
             if (con != null) try {
-                con.close();
+//                con.close();
             } catch (Exception ignore) {
             }
         }
-        return passenger;
+        return success;
     }
 
     public static Void deletePassenger(PassengerModel passenger){
