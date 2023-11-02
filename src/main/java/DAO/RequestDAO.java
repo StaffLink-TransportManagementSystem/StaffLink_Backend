@@ -1,27 +1,33 @@
 package DAO;
 
 import Database.DBConnection;
-import Model.DriverModel;
+import Model.RequestModel;
 
 import java.sql.*;
-public class DriverDAO {
-    public static DriverModel getDriver(String email){
+
+public class RequestDAO {
+    public static RequestModel getReuqest(String vehicleNo, String passengerEmail){
         Connection connection = DBConnection.getInstance().getConnection();
-        System.out.println("Inside CO");
-        DriverModel owner = new DriverModel();
+        System.out.println("Inside CRequest");
+        RequestModel request = new RequestModel();
 
         try{
-            String sql = "SELECT * FROM drivers WHERE email = ?";
+            String sql = "SELECT * FROM requests WHERE vehicleNo = ? AND passengerEmail = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1,email);
+            preparedStatement.setString(1,vehicleNo);
+            preparedStatement.setString(2,passengerEmail);
             ResultSet resultSet = preparedStatement.executeQuery();
 //            preparedStatement.executeUpdate();
 //            ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while(resultSet.next()){
-                owner.setId(resultSet.getInt("id"));
-                owner.setEmail(resultSet.getString("email"));
-                owner.setNIC(resultSet.getString("NIC"));
-                owner.setPassword(resultSet.getString("password"));
+                request.setId(resultSet.getInt("id"));
+                request.setVehicalNo(resultSet.getString("vehicleNo"));
+                request.setPassengerEmail(resultSet.getString("passengerEmail"));
+                request.setPrice(resultSet.getFloat("price"));
+                request.setStartingPoint(resultSet.getString("startingPoint"));
+                request.setEndingPoint(resultSet.getString("endingPoint"));
+                request.setType(resultSet.getString("type"));
+                request.setStatus(resultSet.getString("status"));
             }
             resultSet.close();
             preparedStatement.close();
@@ -34,26 +40,26 @@ public class DriverDAO {
             } catch (Exception ignore) {
             }
         }
-        return owner;
+        return request;
     }
 
-    public static boolean createDriver(DriverModel driver){
+    public static boolean createRequest(RequestModel request){
         Connection connection = DBConnection.getInstance().getConnection();
-        System.out.println("Inside CO");
+        System.out.println("Inside CP");
 //        Connection connection = DBConnection.getInstance().getConnection();;
         boolean success = false;
         try{
             System.out.println("try");
-            String sql = "INSERT INTO drivers (name,email,NIC, age, contact,password,ownerEmail) VALUES (?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO requests (vehicalNo,passengerEmail, price, startingPoint, endingPoint,type, status) VALUES (?,?,?,?,?,?,?)";
 //            System.out.println("try");
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1,driver.getName());
-            preparedStatement.setString(2,driver.getEmail());
-            preparedStatement.setString(3,driver.getNIC());
-            preparedStatement.setInt(4,driver.getAge());
-            preparedStatement.setString(5,driver.getContactNo());
-            preparedStatement.setString(6,driver.getPassword());
-            preparedStatement.setString(7,driver.getOwnerEmail());
+            preparedStatement.setString(1,request.getVehicalNo());
+            preparedStatement.setString(2,request.getPassengerEmail());
+            preparedStatement.setFloat(3,request.getPrice());
+            preparedStatement.setString(4,request.getStartingPoint());
+            preparedStatement.setString(5,request.getEndingPoint());
+            preparedStatement.setString(6,request.getType());
+            preparedStatement.setString(7,request.getStatus());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
 
@@ -78,24 +84,29 @@ public class DriverDAO {
 //        return true;
     }
 
-    public static boolean updateDriver(DriverModel driver){
+    public static boolean updateRequest(RequestModel request){
         Connection connection = DBConnection.getInstance().getConnection();
         Connection con = null;
         boolean success = false;
-        System.out.println("hello update driverr");
-        System.out.println(driver.getEmail());
+//        System.out.println(java.time.LocalTime.now());
         try{
             con = connection;
-            String sql = "UPDATE drivers SET name = ?,email = ?,NIC = ?, age=?, contact=? ,password = ? WHERE email = ?";
+            System.out.println("trydlxa");
+            String sql = "UPDATE requests SET vehicalNo = ?, passengerEmail = ?, price = ?, startingPoint = ?, endingPoint = ?, type = ?, status = ? WHERE vehicalNo = ? AND passengerEmail = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1,driver.getName());
-            preparedStatement.setString(2,driver.getEmail());
-            preparedStatement.setString(3,driver.getNIC());
-            preparedStatement.setInt(4,driver.getAge());
-            preparedStatement.setString(5,driver.getContactNo());
-            preparedStatement.setString(6,driver.getPassword());
-            preparedStatement.setString(7,driver.getEmail());
+            preparedStatement.setString(1, request.getVehicalNo());
+            preparedStatement.setString(2, request.getPassengerEmail());
+            preparedStatement.setFloat(3, request.getPrice());
+            preparedStatement.setString(4, request.getStartingPoint());
+            preparedStatement.setString(5, request.getEndingPoint());
+            preparedStatement.setString(6, request.getType());
+            preparedStatement.setString(7, request.getStatus());
+            preparedStatement.setString(8, request.getVehicalNo());
+            preparedStatement.setString(9, request.getPassengerEmail());
+
             int temp = preparedStatement.executeUpdate();
+
+            System.out.println("check");
             System.out.println(temp);
 //            ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if(temp==1){
@@ -104,6 +115,7 @@ public class DriverDAO {
             }
 //            resultSet.close();
             preparedStatement.close();
+//            System.out.println(java.time.LocalTime.now());
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
@@ -116,16 +128,16 @@ public class DriverDAO {
         return success;
     }
 
-    public static boolean deleteDriver(String email){
+    public static boolean deleteRequest(String VehicleNo,String passengerEmail){
         Connection connection = DBConnection.getInstance().getConnection();
         Connection con = null;
         boolean success = false;
         try{
-            System.out.println(email);
             con = connection;
-            String sql = "DELETE FROM drivers WHERE email = ?";
+            String sql = "DELETE FROM vehicles WHERE vehicleNo = ? AND passengerEmail = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setString(1,email);
+            preparedStatement.setString(1,VehicleNo);
+            preparedStatement.setString(2,passengerEmail);
             int x = preparedStatement.executeUpdate();
 //            ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if(x != 0){
@@ -142,5 +154,6 @@ public class DriverDAO {
             }
         }
         return success;
+//        return passenger;
     }
 }

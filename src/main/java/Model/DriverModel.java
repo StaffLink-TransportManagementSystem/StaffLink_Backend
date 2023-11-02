@@ -13,15 +13,17 @@ public class DriverModel {
     private int age;
     private String contactNo;
     private String password;
+    private String ownerEmail;
 
 
-    public DriverModel(String name, String email, String NIC,int age, String contactNo, String password) {
+    public DriverModel(String name, String email, String NIC,int age, String contactNo, String password,String ownerEmail) {
         this.name = name;
         this.email = email;
         this.NIC = NIC;
         this.age = age;
         this.contactNo = contactNo;
         this.password = password;
+        this.ownerEmail = ownerEmail;
     }
 
     public DriverModel(String email) {
@@ -52,6 +54,9 @@ public class DriverModel {
     public void setPassword(String password) {
         this.password = password;
     }
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
+    }
 
     public int getId() {
         return id;
@@ -72,6 +77,9 @@ public class DriverModel {
 
     public String getPassword() {
         return password;
+    }
+    public String getOwnerEmail() {
+        return ownerEmail;
     }
 
     public boolean createDriver(){
