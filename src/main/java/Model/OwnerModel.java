@@ -1,9 +1,11 @@
 package Model;
 
 import DAO.OwnerDAO;
+import DAO.VehicleDAO;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 public class OwnerModel {
     private int id;
@@ -90,4 +92,8 @@ public class OwnerModel {
         return  status;
     }
 
+    public List<OwnerModel> viewAllOwners(){
+        OwnerDAO ownerDAO = new OwnerDAO();
+        return ownerDAO.viewAllOwners();
+    }
 }

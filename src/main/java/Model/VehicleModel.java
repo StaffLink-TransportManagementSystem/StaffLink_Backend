@@ -4,6 +4,7 @@ import DAO.VehicleDAO;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 public class VehicleModel {
     private int id;
@@ -147,6 +148,10 @@ public class VehicleModel {
         VehicleDAO vehicleDAO = new VehicleDAO();
         boolean status = VehicleDAO.updateVehicle(this);
         return  status;
+    }
+    public List<VehicleModel> viewAllVehicles(){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.viewAllVehicles();
     }
 
 }

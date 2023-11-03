@@ -2,10 +2,14 @@ package DAO;
 
 import Database.DBConnection;
 import Model.PassengerModel;
+import Model.VehicleModel;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class PassengerDAO {
-    public static PassengerModel getPassenger(String nic){
+    public static PassengerModel getPassenger(String email){
         Connection connection = DBConnection.getInstance().getConnection();
         System.out.println("Inside CP");
         PassengerModel passenger = new PassengerModel();
@@ -13,14 +17,16 @@ public class PassengerDAO {
         try{
             String sql = "SELECT * FROM passengers WHERE email = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1,nic);
+            preparedStatement.setString(1,email);
             ResultSet resultSet = preparedStatement.executeQuery();
 //            preparedStatement.executeUpdate();
 //            ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while(resultSet.next()){
                 passenger.setId(resultSet.getInt("id"));
                 passenger.setEmail(resultSet.getString("email"));
+                passenger.setName(resultSet.getString("name"));
                 passenger.setNIC(resultSet.getString("NIC"));
+//                passenger.setContactNo(resultSet.getString("contactNo"));
                 passenger.setPassword(resultSet.getString("password"));
             }
             resultSet.close();
@@ -51,6 +57,7 @@ public class PassengerDAO {
             preparedStatement.setString(2,passenger.getEmail());
             preparedStatement.setString(3,passenger.getNIC());
             preparedStatement.setString(4,passenger.getPassword());
+//            preparedStatement.setString(5,passenger.getContactNo());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
 
@@ -87,6 +94,7 @@ public class PassengerDAO {
             preparedStatement.setString(2,passenger.getEmail());
             preparedStatement.setString(3,passenger.getNIC());
             preparedStatement.setString(4,passenger.getPassword());
+
             preparedStatement.setString(5,passenger.getEmail());
             int temp = preparedStatement.executeUpdate();
             System.out.println(temp);
@@ -135,5 +143,35 @@ public class PassengerDAO {
         }
         return success;
 //        return passenger;
+    }
+
+
+    public static List<PassengerModel> viewAllPassenger(){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        List<PassengerModel> passengers = new ArrayList<>();
+        try{
+            con = connection;
+            String sql = "SELECT * FROM passengers";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                PassengerModel passenger = new PassengerModel();
+                passenger.setId(resultSet.getInt("id"));
+                passenger.setName(resultSet.getString("name"));
+                passenger.setEmail(resultSet.getString("email"));
+                passenger.setNIC(resultSet.getString("NIC"));
+                passenger.setPassword(resultSet.getString("password"));
+                passengers.add(passenger);
+
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return passengers;
+        }
     }
 }

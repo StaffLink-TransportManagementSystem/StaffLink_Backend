@@ -24,12 +24,17 @@ public class deleteVehicle extends HttpServlet{
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
         System.out.println("Hello delete" );
-        String vehicleNo = req.getParameter("vehicleNo");
-        System.out.println(vehicleNo);
-        VehicleModel deleteVehicle = new VehicleModel(vehicleNo);
-        deleteVehicle.getVehicleNo();
+
+
+
 
         try {
+            Gson gson = new Gson();
+
+            // json data to user object
+            BufferedReader bufferedReader = req.getReader();
+            VehicleModel deleteVehicle = gson.fromJson(bufferedReader, VehicleModel.class);
+
             VehicleDAO vehicleDAO = new VehicleDAO();
             if(vehicleDAO.deleteVehicle(deleteVehicle.getVehicleNo())){
                 res.setStatus(HttpServletResponse.SC_OK);

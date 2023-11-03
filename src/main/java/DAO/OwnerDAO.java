@@ -2,8 +2,12 @@ package DAO;
 
 import Database.DBConnection;
 import Model.OwnerModel;
+import Model.VehicleModel;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class OwnerDAO {
     public static OwnerModel getOwner(String email){
         Connection connection = DBConnection.getInstance().getConnection();
@@ -21,6 +25,8 @@ public class OwnerDAO {
                 owner.setId(resultSet.getInt("id"));
                 owner.setEmail(resultSet.getString("email"));
                 owner.setNIC(resultSet.getString("NIC"));
+                owner.setContactNo(resultSet.getString("contact"));
+                owner.setName(resultSet.getString("name"));
                 owner.setPassword(resultSet.getString("password"));
             }
             resultSet.close();
@@ -83,14 +89,14 @@ public class OwnerDAO {
         System.out.println("hello update owner");
         try{
             con = connection;
-            String sql = "UPDATE owners SET name = ?,email = ?,NIC = ?, contact=? ,password = ? ,WHERE email = ?";
+            String sql = "UPDATE owners SET name = ?,email = ?,NIC = ? WHERE email = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,owner.getName());
             preparedStatement.setString(2,owner.getEmail());
             preparedStatement.setString(3,owner.getNIC());
-            preparedStatement.setString(4,owner.getContactNo());
-            preparedStatement.setString(5,owner.getPassword());
-            preparedStatement.setString(6,owner.getEmail());
+//            preparedStatement.setString(4,owner.getContactNo());
+//            preparedStatement.setString(5,owner.getPassword());
+            preparedStatement.setString(4,owner.getEmail());
             int temp = preparedStatement.executeUpdate();
             System.out.println(temp);
 //            ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -138,5 +144,35 @@ public class OwnerDAO {
         }
         return success;
 //        return passenger;
+    }
+
+    public static List<OwnerModel> viewAllOwners(){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        List<OwnerModel> owners = new ArrayList<>();
+        try{
+            con = connection;
+            String sql = "SELECT * FROM owners";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                OwnerModel owner = new OwnerModel();
+                owner.setId(resultSet.getInt("id"));
+                owner.setName(resultSet.getString("name"));
+                owner.setEmail(resultSet.getString("email"));
+                owner.setNIC(resultSet.getString("NIC"));
+                owner.setContactNo(resultSet.getString("contact"));
+                owner.setPassword(resultSet.getString("password"));
+                owners.add(owner);
+
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return owners;
+        }
     }
 }

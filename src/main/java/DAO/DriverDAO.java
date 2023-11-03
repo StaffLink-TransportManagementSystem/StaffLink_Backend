@@ -2,8 +2,12 @@ package DAO;
 
 import Database.DBConnection;
 import Model.DriverModel;
+import Model.VehicleModel;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class DriverDAO {
     public static DriverModel getDriver(String email){
         Connection connection = DBConnection.getInstance().getConnection();
@@ -21,6 +25,11 @@ public class DriverDAO {
                 owner.setId(resultSet.getInt("id"));
                 owner.setEmail(resultSet.getString("email"));
                 owner.setNIC(resultSet.getString("NIC"));
+                owner.setAge(resultSet.getInt("age"));
+                owner.setContactNo(resultSet.getString("contact"));
+                owner.setName(resultSet.getString("name"));
+                owner.setOwnerEmail(resultSet.getString("ownerEmail"));
+
                 owner.setPassword(resultSet.getString("password"));
             }
             resultSet.close();
@@ -51,7 +60,7 @@ public class DriverDAO {
             preparedStatement.setString(2,driver.getEmail());
             preparedStatement.setString(3,driver.getNIC());
             preparedStatement.setInt(4,driver.getAge());
-            preparedStatement.setString(5,driver.getContactNo());
+            preparedStatement.setString(5,driver.getContact());
             preparedStatement.setString(6,driver.getPassword());
             preparedStatement.setString(7,driver.getOwnerEmail());
             preparedStatement.executeUpdate();
@@ -92,7 +101,7 @@ public class DriverDAO {
             preparedStatement.setString(2,driver.getEmail());
             preparedStatement.setString(3,driver.getNIC());
             preparedStatement.setInt(4,driver.getAge());
-            preparedStatement.setString(5,driver.getContactNo());
+            preparedStatement.setString(5,driver.getContact());
             preparedStatement.setString(6,driver.getPassword());
             preparedStatement.setString(7,driver.getEmail());
             int temp = preparedStatement.executeUpdate();
@@ -142,5 +151,38 @@ public class DriverDAO {
             }
         }
         return success;
+    }
+
+
+    public static List<DriverModel> viewAllDrivers(){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        List<DriverModel> drivers = new ArrayList<>();
+        try{
+            con = connection;
+            String sql = "SELECT * FROM drivers";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                DriverModel driver = new DriverModel();
+                driver.setId(resultSet.getInt("id"));
+                driver.setName(resultSet.getString("name"));
+                driver.setEmail(resultSet.getString("email"));
+                driver.setNIC(resultSet.getString("NIC"));
+                driver.setAge(resultSet.getInt("age"));
+                driver.setContactNo(resultSet.getString("contact"));
+                driver.setPassword(resultSet.getString("password"));
+                driver.setOwnerEmail(resultSet.getString("ownerEmail"));
+                drivers.add(driver);
+
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return drivers;
+        }
     }
 }

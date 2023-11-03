@@ -1,9 +1,11 @@
 package Model;
 
 import DAO.DriverDAO;
+import DAO.VehicleDAO;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 public class DriverModel {
     private int id;
@@ -11,7 +13,7 @@ public class DriverModel {
     private String email;
     private String NIC;
     private int age;
-    private String contactNo;
+    private String contact;
     private String password;
     private String ownerEmail;
 
@@ -21,7 +23,7 @@ public class DriverModel {
         this.email = email;
         this.NIC = NIC;
         this.age = age;
-        this.contactNo = contactNo;
+        this.contact = contactNo;
         this.password = password;
         this.ownerEmail = ownerEmail;
     }
@@ -49,7 +51,7 @@ public class DriverModel {
     }
     public void setAge(int age) {this.age = age;}
     public void setContactNo(String contactNo) {
-        this.contactNo = contactNo;
+        this.contact = contactNo;
     }
     public void setPassword(String password) {
         this.password = password;
@@ -71,8 +73,8 @@ public class DriverModel {
         return NIC;
     }
     public int getAge() {return age;}
-    public String getContactNo() {
-        return contactNo;
+    public String getContact() {
+        return contact;
     }
 
     public String getPassword() {
@@ -91,6 +93,11 @@ public class DriverModel {
         DriverDAO driverDAO = new DriverDAO();
         boolean status = driverDAO.updateDriver(this);
         return  status;
+    }
+
+    public static List<DriverModel> viewAllDrivers(){
+        DriverDAO driverDAO = new DriverDAO();
+        return driverDAO.viewAllDrivers();
     }
 
 }

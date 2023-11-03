@@ -19,7 +19,7 @@ import com.google.gson.Gson;
 
 @WebServlet("/driverEdit")
 public class editDriver extends HttpServlet{
-    public void doPut(HttpServletRequest req, HttpServletResponse res) throws IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
         System.out.println("Hello Edit" );

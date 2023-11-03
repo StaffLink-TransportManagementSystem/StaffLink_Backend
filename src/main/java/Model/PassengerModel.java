@@ -4,6 +4,7 @@ import DAO.PassengerDAO;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 public class PassengerModel {
     private int id;
@@ -140,6 +141,12 @@ public class PassengerModel {
         PassengerDAO passengerDAO = new PassengerDAO();
         boolean status = PassengerDAO.updatePassenger(this);
         return  status;
+    }
+
+    public List<PassengerModel> viewAllPassengers(){
+        PassengerDAO passengerDAO = new PassengerDAO();
+        List<PassengerModel> passengers = PassengerDAO.viewAllPassenger();
+        return passengers;
     }
 
 }

@@ -2,6 +2,7 @@ package Controller;
 
 
 import DAO.PassengerDAO;
+import Model.OwnerModel;
 import Model.PassengerModel;
 
 import javax.servlet.ServletException;
@@ -24,10 +25,12 @@ public class deletePassenger extends HttpServlet{
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
         System.out.println("Hello delete" );
-        String email = req.getParameter("email");
-        System.out.println(email);
-        PassengerModel deletePassenger = new PassengerModel(email);
-        deletePassenger.getEmail();
+
+        Gson gson = new Gson();
+
+        // json data to user object
+        BufferedReader bufferedReader = req.getReader();
+        PassengerModel deletePassenger = gson.fromJson(bufferedReader, PassengerModel.class);
 
         try {
             PassengerDAO passengerDAO = new PassengerDAO();

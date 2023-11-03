@@ -1,7 +1,9 @@
 package Controller;
 
 
+import DAO.DriverDAO;
 import DAO.OwnerDAO;
+import Model.DriverModel;
 import Model.OwnerModel;
 
 import javax.servlet.ServletException;
@@ -23,14 +25,16 @@ public class deleteOwner extends HttpServlet{
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        System.out.println("Hello delete" );
-        String email = req.getParameter("email");
-        System.out.println(email);
-        OwnerModel deleteOwner = new OwnerModel(email);
-        deleteOwner.getEmail();
+
 
         try {
+            Gson gson = new Gson();
+
+            // json data to user object
+            BufferedReader bufferedReader = req.getReader();
+            OwnerModel deleteOwner = gson.fromJson(bufferedReader, OwnerModel.class);
             OwnerDAO ownerDAO = new OwnerDAO();
+//            OwnerDAO ownerDAO = new OwnerDAO();
             if(ownerDAO.deleteOwner(deleteOwner.getEmail())){
                 res.setStatus(HttpServletResponse.SC_OK);
                 out.write("{\"message\": \"Delete successfully\"}");

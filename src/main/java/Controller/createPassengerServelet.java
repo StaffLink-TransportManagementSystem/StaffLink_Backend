@@ -27,6 +27,8 @@ public class createPassengerServelet extends HttpServlet{
             // json data to user object
             BufferedReader bufferedReader = req.getReader();
             PassengerModel passenger = gson.fromJson(bufferedReader, PassengerModel.class);
+            System.out.println(passenger.getEmail());
+            System.out.println(passenger.getContactNo());
 
             // All validations are passed then register
             if(passenger.createPassenger()){

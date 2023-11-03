@@ -15,6 +15,7 @@ import java.io.PrintWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import Model.VehicleModel;
 import Model.loginModel;
 import com.google.gson.Gson;
 
@@ -23,13 +24,14 @@ public class deleteDriver extends HttpServlet{
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        System.out.println("Hello delete" );
-        String email = req.getParameter("email");
-        System.out.println(email);
-        DriverModel deletedriver = new DriverModel(email);
-        deletedriver.getEmail();
+
 
         try {
+            Gson gson = new Gson();
+
+            // json data to user object
+            BufferedReader bufferedReader = req.getReader();
+            DriverModel deletedriver = gson.fromJson(bufferedReader, DriverModel.class);
             DriverDAO driverDAO = new DriverDAO();
             if(driverDAO.deleteDriver(deletedriver.getEmail())){
                 res.setStatus(HttpServletResponse.SC_OK);
