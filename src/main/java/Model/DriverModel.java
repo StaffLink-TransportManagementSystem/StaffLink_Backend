@@ -1,45 +1,41 @@
 package Model;
 
-import DAO.OwnerDAO;
+import DAO.DriverDAO;
 import DAO.VehicleDAO;
 
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
-public class OwnerModel {
+public class DriverModel {
     private int id;
     private String name;
     private String email;
     private String NIC;
-    private String contactNo;
+    private int age;
+    private String contact;
     private String password;
+    private String ownerEmail;
 
 
-    public OwnerModel(String name, String email, String NIC, String contactNo, String password) {
+    public DriverModel(String name, String email, String NIC,int age, String contactNo, String password,String ownerEmail) {
         this.name = name;
         this.email = email;
         this.NIC = NIC;
-        this.contactNo = contactNo;
+        this.age = age;
+        this.contact = contactNo;
         this.password = password;
+        this.ownerEmail = ownerEmail;
     }
 
-    public OwnerModel(String email) {
+    public DriverModel(String email) {
         this.email = email;
     }
 
-    public OwnerModel() {
+    public DriverModel() {
 
     }
 
-//    public OwnerModel(int id, String name, String email, String NIC, String contactNo, String password) {
-//        this.id = id;
-//        this.name = name;
-//        this.email = email;
-//        this.NIC = NIC;
-//        this.contactNo = contactNo;
-//        this.password = password;
-//    }
 
     public void setId(int id) {
         this.id = id;
@@ -53,12 +49,15 @@ public class OwnerModel {
     public void setNIC(String NIC) {
         this.NIC = NIC;
     }
-
+    public void setAge(int age) {this.age = age;}
     public void setContactNo(String contactNo) {
-        this.contactNo = contactNo;
+        this.contact = contactNo;
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
     }
 
     public int getId() {
@@ -73,27 +72,32 @@ public class OwnerModel {
     public String getNIC() {
         return NIC;
     }
-    public String getContactNo() {
-        return contactNo;
+    public int getAge() {return age;}
+    public String getContact() {
+        return contact;
     }
 
     public String getPassword() {
         return password;
     }
-
-    public boolean createOwner(){
-        OwnerDAO ownerDAO = new OwnerDAO();
-        boolean status = ownerDAO.createOwner(this);
-        return  status;
-    }
-    public boolean updateOwner(){
-        OwnerDAO ownerDAO = new OwnerDAO();
-        boolean status = ownerDAO.updateOwner(this);
-        return  status;
+    public String getOwnerEmail() {
+        return ownerEmail;
     }
 
-    public List<OwnerModel> viewAllOwners(){
-        OwnerDAO ownerDAO = new OwnerDAO();
-        return ownerDAO.viewAllOwners();
+    public boolean createDriver(){
+        DriverDAO driverDAO = new DriverDAO();
+        boolean status = driverDAO.createDriver(this);
+        return  status;
     }
+    public boolean updateDriver(){
+        DriverDAO driverDAO = new DriverDAO();
+        boolean status = driverDAO.updateDriver(this);
+        return  status;
+    }
+
+    public static List<DriverModel> viewAllDrivers(){
+        DriverDAO driverDAO = new DriverDAO();
+        return driverDAO.viewAllDrivers();
+    }
+
 }

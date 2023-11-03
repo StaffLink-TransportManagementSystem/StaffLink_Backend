@@ -4,6 +4,7 @@ import DAO.PassengerDAO;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 public class PassengerModel {
     private int id;
@@ -27,6 +28,10 @@ public class PassengerModel {
         this.email = email;
         this.NIC = NIC;
         this.password = password;
+    }
+
+    public PassengerModel(String email) {
+        this.email = email;
     }
 
     public PassengerModel(int id, String name, String email, String NIC, String address, String contactNo, String homeLocation, String workLocation, String type, Time onTime, Time offTime, Boolean upAndDown) {
@@ -136,6 +141,12 @@ public class PassengerModel {
         PassengerDAO passengerDAO = new PassengerDAO();
         boolean status = PassengerDAO.updatePassenger(this);
         return  status;
+    }
+
+    public List<PassengerModel> viewAllPassengers(){
+        PassengerDAO passengerDAO = new PassengerDAO();
+        List<PassengerModel> passengers = PassengerDAO.viewAllPassenger();
+        return passengers;
     }
 
 }

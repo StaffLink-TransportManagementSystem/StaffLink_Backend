@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.PassengerModel;
+import Model.OwnerModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,8 +14,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.google.gson.Gson;
 
-@WebServlet("/passengerRegister")
-public class createPassengerServelet extends HttpServlet{
+@WebServlet("/ownerRegister")
+public class createOwnerServelet extends HttpServlet{
 
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
@@ -26,12 +26,10 @@ public class createPassengerServelet extends HttpServlet{
 
             // json data to user object
             BufferedReader bufferedReader = req.getReader();
-            PassengerModel passenger = gson.fromJson(bufferedReader, PassengerModel.class);
-            System.out.println(passenger.getEmail());
-            System.out.println(passenger.getContactNo());
+            OwnerModel owner = gson.fromJson(bufferedReader, OwnerModel.class);
 
             // All validations are passed then register
-            if(passenger.createPassenger()){
+            if(owner.createOwner()){
                 res.setStatus(HttpServletResponse.SC_OK);
                 out.write("{\"message\": \"Registration successfully\"}");
                 System.out.println("Registration successful");

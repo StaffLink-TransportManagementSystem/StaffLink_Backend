@@ -1,6 +1,8 @@
 package Controller;
 
-import Model.PassengerModel;
+
+import DAO.RequestDAO;
+import Model.RequestModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,32 +16,39 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.google.gson.Gson;
 
-@WebServlet("/passengerRegister")
-public class createPassengerServelet extends HttpServlet{
+import Model.loginModel;
+import com.google.gson.Gson;
 
+@WebServlet("/requestDelete")
+public class deleteRequest extends HttpServlet{
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        System.out.println("Hello");
+        System.out.println("Hello delete" );
+//        String vehicleNo = req.getParameter("vehicleNo");
+//        System.out.println(vehicleNo);
+//        VehicleModel deleteVehicle = new VehicleModel(vehicleNo);
+//        deleteVehicle.getVehicleNo();
+
         try {
             Gson gson = new Gson();
 
             // json data to user object
             BufferedReader bufferedReader = req.getReader();
-            PassengerModel passenger = gson.fromJson(bufferedReader, PassengerModel.class);
-            System.out.println(passenger.getEmail());
-            System.out.println(passenger.getContactNo());
+            RequestModel request = gson.fromJson(bufferedReader, RequestModel.class);
 
-            // All validations are passed then register
-            if(passenger.createPassenger()){
+            System.out.println(request.getVehicalNo());
+
+            if(request.deleteRequest()) {
                 res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"message\": \"Registration successfully\"}");
-                System.out.println("Registration successful");
+                out.write("{\"message\": \"Delete successfully\"}");
+                System.out.println("Delete successful");
             }else{
                 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.write("{\"message\": \"Registration unsuccessfully\"}");
-                System.out.println("Registration incorrect");
+                out.write("{\"message\": \"Delete unsuccessfully\"}");
+                System.out.println("Delete incorrect");
             }
+
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -48,5 +57,4 @@ public class createPassengerServelet extends HttpServlet{
             out.close();
         }
     }
-
 }
