@@ -1,6 +1,8 @@
 package Controller;
 
-import Model.RequestModel;
+import DAO.AbsentDAO;
+
+import Model.AbsentModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,8 +16,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.google.gson.Gson;
 
-@WebServlet("/createRequest")
-public class createRequestServelet extends HttpServlet{
+@WebServlet("/addAbsent")
+public class createAbsentServelet extends HttpServlet{
 
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
@@ -26,17 +28,17 @@ public class createRequestServelet extends HttpServlet{
 
             // json data to user object
             BufferedReader bufferedReader = req.getReader();
-            RequestModel request = gson.fromJson(bufferedReader, RequestModel.class);
+            AbsentModel absent = gson.fromJson(bufferedReader, AbsentModel.class);
 
             // All validations are passed then register
-            if(request.createRequest()){
+            if(absent.addAbsent()){
                 res.setStatus(HttpServletResponse.SC_OK);
                 out.write("{\"message\": \"Registration successfully\"}");
-                System.out.println("Request successful");
+                System.out.println("Registration successful");
             }else{
                 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 out.write("{\"message\": \"Registration unsuccessfully\"}");
-                System.out.println("Request incorrect");
+                System.out.println("Registration incorrect");
             }
         }
         catch (Exception e) {
