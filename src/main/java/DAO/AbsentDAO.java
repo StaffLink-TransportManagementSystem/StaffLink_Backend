@@ -108,7 +108,7 @@ public class AbsentDAO {
         boolean success = false;
         try{
             System.out.println("try");
-            String sql = "INSERT INTO absents (vehicalNo,passengerEmail, daysOfAbsent, startingDate, endingDate) VALUES (?,?,?,?,?)";
+            String sql = "INSERT INTO absents (vehicleNo,passengerEmail, daysOfAbsent, startingDate, endingDate) VALUES (?,?,?,?,?)";
 //            System.out.println("try");
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,absent.getVehicleNo());
@@ -148,7 +148,7 @@ public class AbsentDAO {
 //        System.out.println(java.time.LocalTime.now());
         try{
             con = connection;
-            String sql = "UPDATE absents SET vehicalNo = ?, passengerEmail = ?, daysOfAbsent = ?, startingDate = ?, endingDate = ? WHERE id = ? ";
+            String sql = "UPDATE absents SET vehicleNo = ?, passengerEmail = ?, daysOfAbsent = ?, startingDate = ?, endingDate = ? WHERE absentId = ? ";
 //            String sql = "UPDATE requests SET vehicalNo = ?, passengerEmail = ?, price = ?, startingPoint = ?, endingPoint = ?, type = ?, status = ? WHERE vehicalNo = ? AND passengerEmail = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,absent.getVehicleNo());
