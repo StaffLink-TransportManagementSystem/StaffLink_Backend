@@ -44,6 +44,16 @@ public class Waypoints {
         boolean success = waypointsDAO.addWaypoint(this);
         return success;
     }
+    public boolean deleteWaypoint(){
+        WaypointsDAO waypointsDAO = new WaypointsDAO();
+        boolean success = waypointsDAO.deleteWaypoint(this);
+        return success;
+    }
+    public boolean updateWaypoint(){
+        WaypointsDAO waypointsDAO = new WaypointsDAO();
+        boolean success = waypointsDAO.updateWaypoint(this);
+        return success;
+    }
 
 
 }

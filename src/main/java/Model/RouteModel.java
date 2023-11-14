@@ -1,9 +1,9 @@
 package Model;
 
-public class route {
+public class RouteModel {
     private String routeNo;
     private String vehicleNo;
-    private String style;
+    private String style;   //morning or evening
     private String staringLocation;
     private String endingLocation;
     private String startingTime;
