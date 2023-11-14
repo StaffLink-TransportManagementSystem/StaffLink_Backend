@@ -46,6 +46,7 @@ public class OwnerDAO {
     public static boolean createOwner(OwnerModel owner){
         Connection connection = DBConnection.getInstance().getConnection();
         System.out.println("Inside CO");
+        System.out.println(owner.getContactNo());
 //        Connection connection = DBConnection.getInstance().getConnection();;
         boolean success = false;
         try{
