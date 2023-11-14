@@ -1,4 +1,5 @@
 package Model;
+import DAO.WaypointsDAO;
 
 public class Waypoints {
     private String waypointId;
@@ -36,6 +37,12 @@ public class Waypoints {
 
     public void setOrderNo(int orderNo) {
         this.orderNo = orderNo;
+    }
+    
+    public boolean addWaypoint(){
+        WaypointsDAO waypointsDAO = new WaypointsDAO();
+        boolean success = waypointsDAO.addWaypoint(this);
+        return success;
     }
 
 
