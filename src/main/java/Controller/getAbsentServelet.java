@@ -17,17 +17,22 @@ import com.google.gson.Gson;
 
 @WebServlet("/getAbsent")
 public class getAbsentServelet  extends HttpServlet{
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        int id  = Integer.parseInt(request.getParameter("id"));
-
-
-//        int account_id = Integer.parseInt(request.getParameter("id"));
 
         try {
+
+            Gson gson1 = new Gson();
+
+            // json data to user object
+            BufferedReader bufferedReader = request.getReader();
+            AbsentModel absentModel = gson1.fromJson(bufferedReader, AbsentModel.class);
+            System.out.println(absentModel.getId());
+
             AbsentDAO absentDAO = new AbsentDAO();
-            AbsentModel absent = absentDAO.getAbsent(id);
+            AbsentModel absent = absentDAO.getAbsent(absentModel.getId());
+            System.out.println(absent.getId());
 
             Gson gson = new Gson();
             // Object array to json

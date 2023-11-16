@@ -40,11 +40,11 @@ public class findPassengerServelet extends HttpServlet {
 
             if (passengerFind.size() != 0) {
                 res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"available\": " + false + "}");
+                out.write("{\"available\": " + true + "}");
                 System.out.println("There is a Account");
             } else if (passengerFind.size() == 0) {
                 res.setStatus(HttpServletResponse.SC_ACCEPTED);
-                out.write("{\"available\": " + true + "}");
+                out.write("{\"available\": " + false + "}");
                 System.out.println("No Accounts");
             } else {
                 // TODO handle
