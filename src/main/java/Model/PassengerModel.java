@@ -149,4 +149,11 @@ public class PassengerModel {
         return passengers;
     }
 
+    public List<PassengerModel> findPassenger(String email){
+        System.out.println("Inside findPassenger");
+        PassengerDAO passengerDAO = new PassengerDAO();
+        List<PassengerModel> passengers = passengerDAO.findPassenger(email);
+        return passengers;
+    }
+
 }

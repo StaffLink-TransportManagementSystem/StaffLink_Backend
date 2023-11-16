@@ -89,9 +89,8 @@ public class VehicleDAO {
             }
         }
 
-
         return success;
-//        return true;
+
     }
 
     public static boolean updateVehicle(VehicleModel vehicle){
