@@ -2,12 +2,11 @@ package Controller;
 
 import DAO.WaypointsDAO;
 import Model.Waypoints;
-import com.google.protobuf.Duration;
 
 import java.sql.Connection;
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.List;
-import java.time.Instant;
 
 public class RouteSheduler {
     public static void setArrivalTimes(String routeNo) {
@@ -16,14 +15,13 @@ public class RouteSheduler {
         List<Waypoints> waypointsList = waypointsDAO.getwaypoints(routeNo);
 
         int i = waypointsList.size()-1;
-        Time prev = waypointsList.get(i).getDeadlineTime();
+        LocalTime prev = waypointsList.get(i).getDeadlineTime();
         while (i>=0) {
             Waypoints waypoints = waypointsList.get(i);
             if (i == waypointsList.size()-1) {
                 waypoints.setArrivalTime(prev);
             } else {
-
-                if(waypoints.getDeadlineTime()> Duration.between(prev,calculateTravelTime(waypoints.getLocation(),waypointsList.get(i+1).getLocation()))) {
+                if(waypoints.getDeadlineTime()>prev-calculateTravelTime(waypoints.getLocation(),waypointsList.get(i+1).getLocation())) {
                     waypoints.setArrivalTime(prev-calculateTravelTime(waypoints.getLocation(),waypointsList.get(i+1).getLocation()));
                 } else {
                     waypoints.setArrivalTime(waypoints.getDeadlineTime());

@@ -2,14 +2,15 @@ package Model;
 import DAO.WaypointsDAO;
 
 import java.sql.Time;
+import java.time.LocalTime;
 
 public class Waypoints {
     private String waypointId;
     private String routeNo;
     private String location;
     private int orderNo;
-    private Time arrivalTime;
-    private Time deadlineTime;
+    private LocalTime arrivalTime;
+    private LocalTime deadlineTime;
 
     public String getWaypointId() {
         return waypointId;
@@ -43,19 +44,19 @@ public class Waypoints {
         this.orderNo = orderNo;
     }
 
-    public Time getArrivalTime() {
+    public LocalTime getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(Time arrivalTime) {
+    public void setArrivalTime(LocalTime arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 
-    public Time getDeadlineTime() {
+    public LocalTime getDeadlineTime() {
         return deadlineTime;
     }
 
-    public void setDeadlineTime(Time deadlineTime) {
+    public void setDeadlineTime(LocalTime deadlineTime) {
         this.deadlineTime = deadlineTime;
     }
 

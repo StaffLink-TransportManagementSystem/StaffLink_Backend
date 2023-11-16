@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Time;
+import java.time.LocalTime;
 
 public class setStartingTime extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
@@ -27,7 +28,12 @@ public class setStartingTime extends HttpServlet {
             RouteSheduler routeSheduler = new RouteSheduler();
             routeSheduler.setArrivalTimes(routeModel.getRouteNo());
 
-            Time startingTime = routeModel.getStartingTime();
+            LocalTime startingTime = routeModel.getStartingTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } finally {
+            out.close();
 
 
 

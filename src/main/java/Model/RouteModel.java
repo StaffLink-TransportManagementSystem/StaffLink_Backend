@@ -1,13 +1,15 @@
 package Model;
 
+import java.time.LocalTime;
+
 public class RouteModel {
     private String routeNo;
     private String vehicleNo;
     private String style;   //morning or evening
     private String staringLocation;
     private String endingLocation;
-    private String startingTime;
-    private String endingTime;
+    private LocalTime startingTime;
+    private LocalTime endingTime;
 
     public String getRouteNo() {
         return routeNo;
@@ -49,19 +51,19 @@ public class RouteModel {
         this.endingLocation = endingLocation;
     }
 
-    public String getStartingTime() {
+    public LocalTime getStartingTime() {
         return startingTime;
     }
 
-    public void setStartingTime(String startingTime) {
+    public void setStartingTime(LocalTime startingTime) {
         this.startingTime = startingTime;
     }
 
-    public String getEndingTime() {
+    public LocalTime getEndingTime() {
         return endingTime;
     }
 
-    public void setEndingTime(String endingTime) {
+    public void setEndingTime(LocalTime endingTime) {
         this.endingTime = endingTime;
     }
 }
