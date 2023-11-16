@@ -5,6 +5,7 @@ import Model.Waypoints;
 
 import java.sql.Connection;
 import java.sql.Time;
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -21,11 +22,12 @@ public class RouteSheduler {
             if (i == waypointsList.size()-1) {
                 waypoints.setArrivalTime(prev);
             } else {
-                if(waypoints.getDeadlineTime()>prev-calculateTravelTime(waypoints.getLocation(),waypointsList.get(i+1).getLocation())) {
-                    waypoints.setArrivalTime(prev-calculateTravelTime(waypoints.getLocation(),waypointsList.get(i+1).getLocation()));
-                } else {
-                    waypoints.setArrivalTime(waypoints.getDeadlineTime());
-                }
+//                if(waypoints.getDeadlineTime()> Duration.between(prev,calculateTravelTime(waypoints.getLocation(),waypointsList.get(i+1).getLocation()))) {
+//                    waypoints.setArrivalTime(prev-calculateTravelTime(waypoints.getLocation(),waypointsList.get(i+1).getLocation()));
+//                } else {
+//                    waypoints.setArrivalTime(waypoints.getDeadlineTime());
+//                }
+//                ------------------- Have to resolve this -------------------
                 Waypoints nextWaypoint = waypointsList.get(i+1);
                 waypoints.setArrivalTime(nextWaypoint.getDeadlineTime());
             }
@@ -34,8 +36,8 @@ public class RouteSheduler {
         }
     }
 
-    private static Time calculateTravelTime(String location, String location1) {
-        Time time = new Time(0);
+    private static LocalTime calculateTravelTime(String location, String location1) {
+        LocalTime time = LocalTime.of(0,30);
         return time;
     }
 }
