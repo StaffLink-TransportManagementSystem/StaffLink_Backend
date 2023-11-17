@@ -161,16 +161,17 @@ public class RequestDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         Connection con = null;
         List<RequestModel> requests = null;
+        System.out.println("Inside viewAllRequests"+vehicleNo);
         try {
             con = connection;
-            String sql = "SELECT * FROM requests WHERE vehicleNo = ?";
+            String sql = "SELECT * FROM requests WHERE vehicalNo = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, vehicleNo);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 RequestModel request = new RequestModel();
                 request.setId(resultSet.getInt("id"));
-                request.setVehicalNo(resultSet.getString("vehicleNo"));
+                request.setVehicalNo(resultSet.getString("vehicalNo"));
                 request.setPassengerEmail(resultSet.getString("passengerEmail"));
                 request.setPrice(resultSet.getFloat("price"));
                 request.setStartingPoint(resultSet.getString("startingPoint"));
@@ -181,11 +182,11 @@ public class RequestDAO {
             }
             resultSet.close();
             preparedStatement.close();
+            System.out.println("Check");
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            return requests;
         }
+        return requests;
     }
 }

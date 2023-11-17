@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.PassengerModel;
 import Model.RequestModel;
 
 import javax.servlet.ServletException;
@@ -19,24 +20,27 @@ import com.google.gson.Gson;
 @WebServlet("/viewAllRequests")
 public class allRequest extends HttpServlet {
 
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
-        PrintWriter out = resp.getWriter();
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        res.setContentType("application/json");
+        PrintWriter out = res.getWriter();
 
+        Gson gson1 = new Gson();
 
-        RequestModel requestModel = new RequestModel();
-        List<RequestModel> requests = requestModel.viewAllRequests();
+        // json data to user object
+        BufferedReader bufferedReader = req.getReader();
+        RequestModel request = gson1.fromJson(bufferedReader, RequestModel.class);
+
+        List<RequestModel> requests = request.viewAllRequests();
 
         Gson gson = new Gson();
         String centerJson = gson.toJson(requests);
 
         if(requests.size() != 0){
-            resp.setStatus(HttpServletResponse.SC_OK);
+            res.setStatus(HttpServletResponse.SC_OK);
             out.write("{\"size\": "+ requests.size() +",\"list\":"+ centerJson+"}");
             System.out.println("View all Accounts");
         }else if(requests.size() == 0){
-            resp.setStatus(HttpServletResponse.SC_ACCEPTED);
+            res.setStatus(HttpServletResponse.SC_ACCEPTED);
             out.write("{\"size\": \"0\"}");
             System.out.println("No Accounts");
         }else{
