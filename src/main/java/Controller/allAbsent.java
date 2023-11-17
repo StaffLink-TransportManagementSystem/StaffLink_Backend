@@ -23,6 +23,7 @@ public class allAbsent extends HttpServlet {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         PrintWriter out = resp.getWriter();
+        System.out.println("Inside all absent");
 
 
         AbsentModel absentModel = new AbsentModel();
