@@ -4,6 +4,7 @@ import DAO.RequestDAO;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 public class RequestModel {
     private int id;
@@ -109,6 +110,12 @@ public class RequestModel {
         RequestDAO requestDAO = new RequestDAO();
         boolean status = requestDAO.deleteRequest(this.vehicalNo,this.passengerEmail);
         return  status;
+    }
+
+    public List<RequestModel> viewAllRequests(){
+        RequestDAO requestDAO = new RequestDAO();
+        List<RequestModel> requests = requestDAO.viewAllRequests(this.vehicalNo);
+        return requests;
     }
 
 }

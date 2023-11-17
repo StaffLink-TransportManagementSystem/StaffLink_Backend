@@ -4,6 +4,7 @@ import Database.DBConnection;
 import Model.RequestModel;
 
 import java.sql.*;
+import java.util.List;
 
 public class RequestDAO {
     public static RequestModel getReuqest(String vehicleNo, String passengerEmail){
@@ -155,5 +156,36 @@ public class RequestDAO {
         }
         return success;
 //        return passenger;
+    }
+    public static List<RequestModel> viewAllRequests(String vehicleNo){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        List<RequestModel> requests = null;
+        try {
+            con = connection;
+            String sql = "SELECT * FROM requests WHERE vehicleNo = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, vehicleNo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                RequestModel request = new RequestModel();
+                request.setId(resultSet.getInt("id"));
+                request.setVehicalNo(resultSet.getString("vehicleNo"));
+                request.setPassengerEmail(resultSet.getString("passengerEmail"));
+                request.setPrice(resultSet.getFloat("price"));
+                request.setStartingPoint(resultSet.getString("startingPoint"));
+                request.setEndingPoint(resultSet.getString("endingPoint"));
+                request.setType(resultSet.getString("type"));
+                request.setStatus(resultSet.getString("status"));
+                requests.add(request);
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return requests;
+        }
     }
 }
