@@ -3,7 +3,6 @@ package Controller;
 
 import Model.RequestModel;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,10 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import Model.loginModel;
 import com.google.gson.Gson;
 
 @WebServlet("/requestEdit")
@@ -30,7 +26,7 @@ public class editRequest extends HttpServlet{
             BufferedReader bufferedReader = req.getReader();
             RequestModel editRequest = gson.fromJson(bufferedReader, RequestModel.class);
 
-            System.out.println(editRequest.getVehicalNo());
+            System.out.println(editRequest.getVehicleNo());
             System.out.println(editRequest.getPassengerEmail());
 
             boolean requestUpdate = editRequest.updateRequest();

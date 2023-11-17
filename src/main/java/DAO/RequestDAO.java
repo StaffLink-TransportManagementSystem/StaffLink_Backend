@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.List;
 
 public class RequestDAO {
-    public static RequestModel getReuqest(String vehicleNo, String passengerEmail){
+    public static RequestModel getRequest(String vehicleNo, String passengerEmail){
         Connection connection = DBConnection.getInstance().getConnection();
         System.out.println("Inside CRequest");
         RequestModel request = new RequestModel();
@@ -22,7 +22,7 @@ public class RequestDAO {
 //            ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while(resultSet.next()){
                 request.setId(resultSet.getInt("id"));
-                request.setVehicalNo(resultSet.getString("vehicleNo"));
+                request.setVehicleNo(resultSet.getString("vehicleNo"));
                 request.setPassengerEmail(resultSet.getString("passengerEmail"));
                 request.setPrice(resultSet.getFloat("price"));
                 request.setStartingPoint(resultSet.getString("startingPoint"));
@@ -51,10 +51,10 @@ public class RequestDAO {
         boolean success = false;
         try{
             System.out.println("try");
-            String sql = "INSERT INTO requests (vehicalNo,passengerEmail, price, startingPoint, endingPoint,type, status) VALUES (?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO requests (vehicleNo,passengerEmail, price, startingPoint, endingPoint,type, status) VALUES (?,?,?,?,?,?,?)";
 //            System.out.println("try");
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1,request.getVehicalNo());
+            preparedStatement.setString(1,request.getVehicleNo());
             preparedStatement.setString(2,request.getPassengerEmail());
             preparedStatement.setFloat(3,request.getPrice());
             preparedStatement.setString(4,request.getStartingPoint());
@@ -93,16 +93,16 @@ public class RequestDAO {
         try{
             con = connection;
             System.out.println("trydlxa");
-            String sql = "UPDATE requests SET vehicalNo = ?, passengerEmail = ?, price = ?, startingPoint = ?, endingPoint = ?, type = ?, status = ? WHERE vehicalNo = ? AND passengerEmail = ?";
+            String sql = "UPDATE requests SET vehicleNo = ?, passengerEmail = ?, price = ?, startingPoint = ?, endingPoint = ?, type = ?, status = ? WHERE vehicleNo = ? AND passengerEmail = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, request.getVehicalNo());
+            preparedStatement.setString(1, request.getVehicleNo());
             preparedStatement.setString(2, request.getPassengerEmail());
             preparedStatement.setFloat(3, request.getPrice());
             preparedStatement.setString(4, request.getStartingPoint());
             preparedStatement.setString(5, request.getEndingPoint());
             preparedStatement.setString(6, request.getType());
             preparedStatement.setString(7, request.getStatus());
-            preparedStatement.setString(8, request.getVehicalNo());
+            preparedStatement.setString(8, request.getVehicleNo());
             preparedStatement.setString(9, request.getPassengerEmail());
 
             int temp = preparedStatement.executeUpdate();
@@ -135,7 +135,7 @@ public class RequestDAO {
         boolean success = false;
         try{
             con = connection;
-            String sql = "DELETE FROM vehicles WHERE vehicleNo = ? AND passengerEmail = ?";
+            String sql = "DELETE FROM requests WHERE vehicleNo = ? AND passengerEmail = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1,VehicleNo);
             preparedStatement.setString(2,passengerEmail);
@@ -161,17 +161,18 @@ public class RequestDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         Connection con = null;
         List<RequestModel> requests = null;
-        System.out.println("Inside viewAllRequests"+vehicleNo);
+        System.out.println("Inside viewAllRequests - "+vehicleNo);
+        //Error occors below this statement
         try {
             con = connection;
-            String sql = "SELECT * FROM requests WHERE vehicalNo = ?";
+            String sql = "SELECT * FROM requests WHERE vehicleNo = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, vehicleNo);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 RequestModel request = new RequestModel();
                 request.setId(resultSet.getInt("id"));
-                request.setVehicalNo(resultSet.getString("vehicalNo"));
+                request.setVehicleNo(resultSet.getString("vehicleNo"));
                 request.setPassengerEmail(resultSet.getString("passengerEmail"));
                 request.setPrice(resultSet.getFloat("price"));
                 request.setStartingPoint(resultSet.getString("startingPoint"));
@@ -182,7 +183,7 @@ public class RequestDAO {
             }
             resultSet.close();
             preparedStatement.close();
-            System.out.println("Check");
+            System.out.println("Check - "+requests.size()+" requests found");
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
