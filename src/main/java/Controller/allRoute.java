@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.DriverModel;
+import Model.RouteModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.google.gson.Gson;
 
-@WebServlet("/viewAllDriver")
+@WebServlet("/viewAllRoutes")
 public class allRoute extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -25,20 +25,20 @@ public class allRoute extends HttpServlet {
         PrintWriter out = resp.getWriter();
 
 
-        DriverModel driverModel = new DriverModel();
-        List<DriverModel> drivers = DriverModel.viewAllDrivers();
+        RouteModel routeModel = new RouteModel();
+        List<RouteModel> routes = RouteModel.viewAllRoutes();
 
         Gson gson = new Gson();
-        String centerJson = gson.toJson(drivers);
+        String centerJson = gson.toJson(routes);
 
-        if(drivers.size() != 0){
+        if(routes.size() != 0){
             resp.setStatus(HttpServletResponse.SC_OK);
-            out.write("{\"size\": "+ drivers.size() +",\"list\":"+ centerJson+"}");
-            System.out.println("View all Accounts");
-        }else if(drivers.size() == 0){
+            out.write("{\"size\": "+ routes.size() +",\"list\":"+ centerJson+"}");
+            System.out.println("View all Routes");
+        }else if(routes.size() == 0){
             resp.setStatus(HttpServletResponse.SC_ACCEPTED);
             out.write("{\"size\": \"0\"}");
-            System.out.println("No Accounts");
+            System.out.println("No Routes");
         }else{
             // TODO handle
         }

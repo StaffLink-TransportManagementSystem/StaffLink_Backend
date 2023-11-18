@@ -99,4 +99,29 @@ public class RouteDAO {
         }
         return route;
     }
+
+    public static ArrayList<RouteModel> getAllRoutes(){
+        System.out.println("Inside getRoutes");
+        Connection connection = DBConnection.getInstance().getConnection();
+        ArrayList<RouteModel> routes = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM route";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                RouteModel route = new RouteModel();
+                route.setRouteNo(resultSet.getInt("routeNo"));
+                route.setVehicleNo(resultSet.getString("vehicleNo"));
+                route.setStyle(resultSet.getString("style"));
+                route.setStaringLocation(resultSet.getString("startingLocation"));
+                route.setEndingLocation(resultSet.getString("endingLocation"));
+                route.setStartingTime(LocalTime.parse(resultSet.getString("startingTime")));
+                route.setEndingTime(LocalTime.parse(resultSet.getString("endingTime")));
+                routes.add(route);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return routes;
+    }
 }

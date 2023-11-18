@@ -1,8 +1,8 @@
 package Controller;
 
 
-import DAO.DriverDAO;
-import Model.DriverModel;
+import DAO.RouteDAO;
+import Model.RouteModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +19,7 @@ import Model.VehicleModel;
 import Model.loginModel;
 import com.google.gson.Gson;
 
-@WebServlet("/driverDelete")
+@WebServlet("/routeDelete")
 public class deleteRoute extends HttpServlet{
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
@@ -31,9 +31,9 @@ public class deleteRoute extends HttpServlet{
 
             // json data to user object
             BufferedReader bufferedReader = req.getReader();
-            DriverModel deletedriver = gson.fromJson(bufferedReader, DriverModel.class);
-            DriverDAO driverDAO = new DriverDAO();
-            if(driverDAO.deleteDriver(deletedriver.getEmail())){
+            RouteModel deleteRouter = gson.fromJson(bufferedReader, RouteModel.class);
+            RouteDAO routeDAO = new RouteDAO();
+            if(routeDAO.deleteRoute(deleteRouter)){
                 res.setStatus(HttpServletResponse.SC_OK);
                 out.write("{\"message\": \"Delete successfully\"}");
                 System.out.println("Delete successful");

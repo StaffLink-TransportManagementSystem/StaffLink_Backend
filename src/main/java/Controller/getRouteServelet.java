@@ -1,12 +1,8 @@
 package Controller;
 
-import DAO.DriverDAO;
-import DAO.VehicleDAO;
-import Model.DriverModel;
-import Model.PassengerModel;
-import Model.VehicleModel;
+import DAO.RouteDAO;
+import Model.RouteModel;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,35 +10,36 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import com.google.gson.Gson;
 
-@WebServlet("/getDriver")
+@WebServlet("/getRoute")
 public class getRouteServelet  extends HttpServlet{
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
 
-        String email = request.getParameter("email");
+        String routeNo = request.getParameter("routeNo");
 //        int account_id = Integer.parseInt(request.getParameter("id"));
 
         try {
-            DriverDAO driverDAO = new DriverDAO();
-            DriverModel driver = driverDAO.getDriver(email);
+            Gson gson1 = new Gson();
+            BufferedReader bufferedReader = request.getReader();
+            RouteModel getRoute = gson1.fromJson(bufferedReader, RouteModel.class);
+
+            RouteDAO routeDAO = new RouteDAO();
+            RouteModel route = routeDAO.getRoute(getRoute);
 
             Gson gson = new Gson();
-            // Object array to json
-            String object = gson.toJson(driver);
+            String object = gson.toJson(route);
 
-            if (driver.getId() != 0) {
+            if (route.getRouteNo() != 0) {
                 response.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"driver\": " + object + "}");
-                System.out.println("Send driver");
+                out.write("{\"route\": " + object + "}");
+                System.out.println("Send route");
             } else {
                 response.setStatus(HttpServletResponse.SC_ACCEPTED);
-                out.write("{\"driver\": \"No driver\"}");
-                System.out.println("No driver");
+                out.write("{\"Route\": \"No route\"}");
+                System.out.println("No route");
             }
             // TODO handle
 

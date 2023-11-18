@@ -3,6 +3,7 @@ package Model;
 import DAO.RouteDAO;
 
 import java.time.LocalTime;
+import java.util.List;
 
 public class RouteModel {
     private int routeNo;
@@ -73,5 +74,17 @@ public class RouteModel {
         RouteDAO routeDAO = new RouteDAO();
         Boolean status = routeDAO.addRoute(this);
         return status;
+    }
+
+    public static List<RouteModel> viewAllRoutes(){
+        RouteDAO routeDAO = new RouteDAO();
+        List<RouteModel> routeList = routeDAO.getAllRoutes();
+        return routeList;
+    }
+
+    public static boolean updateRoute(RouteModel route){
+        RouteDAO routeDAO = new RouteDAO();
+        boolean status = routeDAO.updateRoute(route);
+        return  status;
     }
 }

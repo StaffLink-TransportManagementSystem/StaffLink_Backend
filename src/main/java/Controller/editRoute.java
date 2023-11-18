@@ -1,7 +1,7 @@
 package Controller;
 
 
-import Model.DriverModel;
+import Model.RouteModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,26 +17,24 @@ import java.util.regex.Pattern;
 import Model.loginModel;
 import com.google.gson.Gson;
 
-@WebServlet("/driverEdit")
+@WebServlet("/routeEdit")
 public class editRoute extends HttpServlet{
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        System.out.println("Hello Edit" );
+        System.out.println("Route Edit" );
         try {
             Gson gson = new Gson();
 
             // json data to user object
             BufferedReader bufferedReader = req.getReader();
-            DriverModel editDriver = gson.fromJson(bufferedReader, DriverModel.class);
+            RouteModel editRoute = gson.fromJson(bufferedReader, RouteModel.class);
 
-            System.out.println(editDriver.getNIC());
+            System.out.println(editRoute.getRouteNo());
 
-            boolean driverUpdate = editDriver.updateDriver();
-            System.out.println(editDriver.getId());
-            System.out.println(editDriver.getEmail());
-            System.out.println(editDriver.getPassword());
-            if(driverUpdate) {
+            boolean routeUpdate = editRoute.updateRoute(editRoute);
+            System.out.println(routeUpdate);
+            if(routeUpdate) {
                 res.setStatus(HttpServletResponse.SC_OK);
                 out.write("{\"message\": \"Update successfully\"}");
                 System.out.println("Update successful");
