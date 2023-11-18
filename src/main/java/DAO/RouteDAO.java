@@ -19,7 +19,7 @@ public class RouteDAO {
         try {
             String sql = "INSERT INTO route (routeNo,vehicleNo,style,startingLocation, endingLocation, startingTime, endingTime ) VALUES (?,?,?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, route.getRouteNo());
+            preparedStatement.setInt(1, route.getRouteNo());
             preparedStatement.setString(2, route.getVehicleNo());
             preparedStatement.setString(3, route.getStyle());
             preparedStatement.setString(4, route.getStaringLocation());
@@ -87,7 +87,7 @@ public class RouteDAO {
             preparedStatement.setString(2, route.getStyle());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                route.setRouteNo(resultSet.getString("routeNo"));
+                route.setRouteNo(resultSet.getInt("routeNo"));
                 route.setStaringLocation(resultSet.getString("startingLocation"));
                 route.setEndingLocation(resultSet.getString("endingLocation"));
                 route.setStartingTime(LocalTime.parse(resultSet.getString("startingTime")));
