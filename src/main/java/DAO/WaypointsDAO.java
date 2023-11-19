@@ -65,14 +65,14 @@ public class WaypointsDAO {
         return success;
     }
 
-    public static List<Waypoints> getwaypoints(String routeNo) {
+    public static List<Waypoints> getwaypoints(int routeNo) {
         System.out.println("Inside getwaypointDAO");
         Connection connection = DBConnection.getInstance().getConnection();
         List<Waypoints> waypoints = new ArrayList<>();
         try {
             String sql = "SELECT * FROM waypoints WHERE routeNo = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, routeNo);
+            preparedStatement.setInt(1, routeNo);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Waypoints waypoint = new Waypoints();

@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.AbsentModel;
+import Model.RouteModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,30 +16,29 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.google.gson.Gson;
 
-@WebServlet("/viewAllAbsent")
-public class allAbsent extends HttpServlet {
+@WebServlet("/viewAllRoutes")
+public class allRoute extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         PrintWriter out = resp.getWriter();
-        System.out.println("Inside all absent");
 
 
-        AbsentModel absentModel = new AbsentModel();
-        List<AbsentModel> absents = absentModel.viewAllAbsents();
+        RouteModel routeModel = new RouteModel();
+        List<RouteModel> routes = RouteModel.viewAllRoutes();
 
         Gson gson = new Gson();
-        String centerJson = gson.toJson(absents);
+        String centerJson = gson.toJson(routes);
 
-        if(absents.size() != 0){
+        if(routes.size() != 0){
             resp.setStatus(HttpServletResponse.SC_OK);
-            out.write("{\"size\": "+ absents.size() +",\"list\":"+ centerJson+"}");
-            System.out.println("View all Accounts");
-        }else if(absents.size() == 0){
+            out.write("{\"size\": "+ routes.size() +",\"list\":"+ centerJson+"}");
+            System.out.println("View all Routes");
+        }else if(routes.size() == 0){
             resp.setStatus(HttpServletResponse.SC_ACCEPTED);
             out.write("{\"size\": \"0\"}");
-            System.out.println("No Accounts");
+            System.out.println("No Routes");
         }else{
             // TODO handle
         }

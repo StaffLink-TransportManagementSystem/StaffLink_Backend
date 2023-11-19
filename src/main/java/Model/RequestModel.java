@@ -2,12 +2,11 @@ package Model;
 
 import DAO.RequestDAO;
 
-import java.sql.Time;
-import java.util.Date;
+import java.util.List;
 
 public class RequestModel {
     private int id;
-    private String vehicalNo;
+    private String vehicleNo;
     private String passengerEmail;
     private float price;
     private String startingPoint;
@@ -17,8 +16,8 @@ public class RequestModel {
     public RequestModel() {
     }
 
-    public RequestModel(String vehicalNo, String passengerEmail, float price, String startingPoint, String endingPoint, String type, String status) {
-        this.vehicalNo = vehicalNo;
+    public RequestModel(String vehicleNo, String passengerEmail, float price, String startingPoint, String endingPoint, String type, String status) {
+        this.vehicleNo = vehicleNo;
         this.passengerEmail = passengerEmail;
         this.price = price;
         this.startingPoint = startingPoint;
@@ -27,15 +26,15 @@ public class RequestModel {
         this.status = status;
     }
 
-    public RequestModel(String vehicalNo, String passengerEmail) {
+    public RequestModel(String vehicleNo, String passengerEmail) {
 
-        this.vehicalNo = vehicalNo;
+        this.vehicleNo = vehicleNo;
         this.passengerEmail = passengerEmail;
     }
 
-    public RequestModel(int id, String vehicalNo, String passengerEmail, float price, String startingPoint, String endingPoint, String type, String status) {
+    public RequestModel(int id, String vehicleNo, String passengerEmail, float price, String startingPoint, String endingPoint, String type, String status) {
         this.id = id;
-        this.vehicalNo = vehicalNo;
+        this.vehicleNo = vehicleNo;
         this.passengerEmail = passengerEmail;
         this.price = price;
         this.startingPoint = startingPoint;
@@ -47,8 +46,8 @@ public class RequestModel {
     public void setId(int id) {
         this.id = id;
     }
-    public void setVehicalNo(String vehicalNo) {
-        this.vehicalNo = vehicalNo;
+    public void setVehicleNo(String vehicleNo) {
+        this.vehicleNo = vehicleNo;
     }
     public void setPassengerEmail(String passengerEmail) {
         this.passengerEmail = passengerEmail;
@@ -71,8 +70,8 @@ public class RequestModel {
     public int getId() {
         return id;
     }
-    public String getVehicalNo() {
-        return vehicalNo;
+    public String getVehicleNo() {
+        return vehicleNo;
     }
     public String getPassengerEmail() {
         return passengerEmail;
@@ -107,8 +106,14 @@ public class RequestModel {
 
     public boolean deleteRequest(){
         RequestDAO requestDAO = new RequestDAO();
-        boolean status = requestDAO.deleteRequest(this.vehicalNo,this.passengerEmail);
+        boolean status = requestDAO.deleteRequest(this.vehicleNo,this.passengerEmail);
         return  status;
+    }
+
+    public List<RequestModel> viewAllRequests(){
+        RequestDAO requestDAO = new RequestDAO();
+        List<RequestModel> requests = requestDAO.viewAllRequests(this.vehicleNo);
+        return requests;
     }
 
 }

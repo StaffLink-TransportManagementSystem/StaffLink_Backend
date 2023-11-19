@@ -30,39 +30,13 @@ public class AbsentDAO {
 
             resultSet.close();
             preparedStatement.close();
+            //data not correctly assign to the absent object
             System.out.println(absent.getPassengerEmail());
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            return absent;
         }
-//            String sql = "SELECT * FROM absents WHERE absentId = ?";
-//            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-//            preparedStatement.setInt(1,id);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-////            preparedStatement.executeUpdate();
-////            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-//            while(resultSet.next()){
-//                absent.setId(resultSet.getInt("id"));
-//                absent.setPassengerEmail(resultSet.getString("passengerEmail"));
-//                absent.setVehicleNo(resultSet.getString("vehicleNo"));
-//                absent.setDaysOfAbsent(resultSet.getString("daysOfAbsent"));
-//                absent.setStartingDate(resultSet.getString("startingDate"));
-//                absent.setEndingDate(resultSet.getString("endingDate"));
-//            }
-//            resultSet.close();
-//            preparedStatement.close();
-//        }
-//        catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        } finally {
-//            if (connection != null) try {
-////                connection.close();
-//            } catch (Exception ignore) {
-//            }
-//        }
-//        return absent;
+        return absent;
     }
     public static List<AbsentModel> getAbsentsPassengers(String vehicleNo){
         Connection connection = DBConnection.getInstance().getConnection();
@@ -96,14 +70,17 @@ public class AbsentDAO {
 
     public static List<AbsentModel> getAllAbsents(){
         Connection connection = DBConnection.getInstance().getConnection();
-        System.out.println("Inside CAbsent");
+        System.out.println("Inside get all absents");
         List<AbsentModel> absents = new ArrayList<>();
 
         try {
             String sql = "SELECT * FROM absents";
+            System.out.println("check1");
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ResultSet resultSet = preparedStatement.executeQuery();
+            System.out.println("check2");
 
+            //Error pop up from here
             while (resultSet.next()){
                 AbsentModel absent = new AbsentModel();
                 absent.setId(resultSet.getInt("id"));
@@ -114,6 +91,7 @@ public class AbsentDAO {
                 absent.setEndingDate(resultSet.getString("endingDate"));
                 absents.add(absent);
             }
+            System.out.println("check3");
 
         }
         catch (SQLException e) {
