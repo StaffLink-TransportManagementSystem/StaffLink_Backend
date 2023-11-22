@@ -1,10 +1,8 @@
 package Controller;
 
-import DAO.AbsentDAO;
-
 import Model.AbsentModel;
+import com.google.gson.Gson;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,13 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import com.google.gson.Gson;
+import java.util.List;
 
-@WebServlet("/addAbsent")
-public class createAbsentServelet extends HttpServlet{
-
+@WebServlet("/viewAbsent")
+public class viewAbsentList extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
@@ -30,15 +25,24 @@ public class createAbsentServelet extends HttpServlet{
             BufferedReader bufferedReader = req.getReader();
             AbsentModel absent = gson.fromJson(bufferedReader, AbsentModel.class);
             System.out.println(absent.getVehicleNo());
+            List<AbsentModel> absents = absent.viewAbsentList(absent.getVehicleNo());
             // All validations are passed then register
-            if(absent.addAbsent()){
+            Gson gson1 = new Gson();
+            // Object array to json
+            String object = gson1.toJson(absents);
+
+            if(absents.size() != 0) {
                 res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"message\": \"Registration successfully\"}");
-                System.out.println("Registration successful");
-            }else{
-                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.write("{\"message\": \"Registration unsuccessfully\"}");
-                System.out.println("Registration incorrect");
+                out.write("{\"size\": " + absents.size() + ",\"list\":" + object + "}");
+                System.out.println("View all Absents");
+            }
+            else if(absents.size() == 0){
+                res.setStatus(HttpServletResponse.SC_ACCEPTED);
+                out.write("{\"size\": \"0\"}");
+                System.out.println("No Absents");
+            }
+            else{
+                // TODO handle
             }
         }
         catch (Exception e) {
@@ -47,6 +51,6 @@ public class createAbsentServelet extends HttpServlet{
         } finally {
             out.close();
         }
-    }
 
+    }
 }
