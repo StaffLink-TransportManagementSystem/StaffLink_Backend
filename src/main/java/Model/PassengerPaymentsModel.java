@@ -71,4 +71,9 @@ public class PassengerPaymentsModel {
         PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
         return passengerPaymentsDAO.createPassengerPayment(this);
     }
+
+    public boolean updatePayment(){
+        PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
+        return passengerPaymentsDAO.updatePassengerPayment(this);
+    }
 }
