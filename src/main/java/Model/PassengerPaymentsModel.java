@@ -1,5 +1,7 @@
 package Model;
 
+import DAO.PassengerPaymentsDAO;
+
 public class PassengerPaymentsModel {
     int id;
     String passengerEmail;
@@ -63,5 +65,10 @@ public class PassengerPaymentsModel {
 
     public void setPaymentType(String paymentType) {
         this.paymentType = paymentType;
+    }
+
+    public boolean createPayment(){
+        PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
+        return passengerPaymentsDAO.createPassengerPayment(this);
     }
 }

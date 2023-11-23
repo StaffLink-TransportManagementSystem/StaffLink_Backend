@@ -17,7 +17,7 @@ public class viewAbsentList extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        System.out.println("Hello");
+        System.out.println("Inside view absent list");
         try {
             Gson gson = new Gson();
 

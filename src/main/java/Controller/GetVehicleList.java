@@ -18,7 +18,7 @@ public class GetVehicleList extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        System.out.println("Hello");
+        System.out.println("get vehicle List");
         try {
             Gson gson = new Gson();
 
