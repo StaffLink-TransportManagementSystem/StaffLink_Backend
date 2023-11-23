@@ -109,4 +109,22 @@ public class PassengerPaymentsDAO {
         return passengerPayments;
     }
 
+    public static boolean deletePassengerPayment(int id) {
+        Connection connection = DBConnection.getInstance().getConnection();
+        boolean success = false;
+        try {
+            String sql = "DELETE FROM passengerPayments WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            int temp = preparedStatement.executeUpdate();
+            if (temp == 1) {
+                success = true;
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return success;
+    }
+
 }
