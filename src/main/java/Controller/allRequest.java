@@ -25,12 +25,15 @@ public class allRequest extends HttpServlet {
         PrintWriter out = res.getWriter();
         System.out.println("hello requests");
 
+
         Gson gson1 = new Gson();
 
         // json data to user object
         BufferedReader bufferedReader = req.getReader();
         RequestModel request = gson1.fromJson(bufferedReader, RequestModel.class);
+
         System.out.println(request.getVehicleNo());
+
 
         List<RequestModel> requests = request.viewAllRequests();
 
