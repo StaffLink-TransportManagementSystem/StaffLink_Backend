@@ -1,8 +1,9 @@
 package Controller;
 
 
-import Model.RequestModel;
+import Model.RouteModel;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,37 +11,37 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import Model.loginModel;
 import com.google.gson.Gson;
 
-@WebServlet("/requestDelete")
-public class deleteRequest extends HttpServlet{
+@WebServlet("/routeEdit")
+public class editRoute extends HttpServlet{
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        System.out.println("Hello delete" );
-//        String vehicleNo = req.getParameter("vehicleNo");
-//        System.out.println(vehicleNo);
-//        VehicleModel deleteVehicle = new VehicleModel(vehicleNo);
-//        deleteVehicle.getVehicleNo();
-
+        System.out.println("Route Edit" );
         try {
             Gson gson = new Gson();
 
             // json data to user object
             BufferedReader bufferedReader = req.getReader();
-            RequestModel request = gson.fromJson(bufferedReader, RequestModel.class);
+            RouteModel editRoute = gson.fromJson(bufferedReader, RouteModel.class);
 
-            System.out.println(request.getVehicleNo());
+            System.out.println(editRoute.getRouteNo());
 
-            if(request.deleteRequest()) {
+            boolean routeUpdate = editRoute.updateRoute(editRoute);
+            System.out.println(routeUpdate);
+            if(routeUpdate) {
                 res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"message\": \"Delete successfully\"}");
-                System.out.println("Delete successful");
+                out.write("{\"message\": \"Update successfully\"}");
+                System.out.println("Update successful");
             }else{
                 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.write("{\"message\": \"Delete unsuccessfully\"}");
-                System.out.println("Delete incorrect");
+                out.write("{\"message\": \"Update unsuccessfully\"}");
+                System.out.println("Update incorrect");
             }
 
         }

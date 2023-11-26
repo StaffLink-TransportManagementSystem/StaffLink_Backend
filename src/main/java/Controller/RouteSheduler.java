@@ -10,7 +10,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 public class RouteSheduler {
-    public static void setArrivalTimes(String routeNo) {
+    public static void setArrivalTimes(int routeNo) {
         System.out.println("Hello setArrivalTimes");
         WaypointsDAO waypointsDAO = new WaypointsDAO();
         List<Waypoints> waypointsList = waypointsDAO.getwaypoints(routeNo);

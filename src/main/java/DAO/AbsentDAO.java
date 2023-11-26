@@ -16,17 +16,24 @@ public class AbsentDAO {
 
         try{
             String sql = "SELECT * FROM absents WHERE absentId = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-
-            absent.setId(resultSet.getInt("absentId"));
-            absent.setPassengerEmail(resultSet.getString("passengerEmail"));
-            absent.setVehicleNo(resultSet.getString("vehicleNo"));
-            absent.setDaysOfAbsent(resultSet.getString("daysOfAbsent"));
-            absent.setStartingDate(resultSet.getString("startingDate"));
-            absent.setEndingDate(resultSet.getString("endingDate"));
+            while(resultSet.next()){
+                absent.setId(resultSet.getInt("absentId"));
+                absent.setPassengerEmail(resultSet.getString("passengerEmail"));
+                absent.setVehicleNo(resultSet.getString("vehicleNo"));
+                absent.setDaysOfAbsent(resultSet.getString("daysOfAbsent"));
+                absent.setStartingDate(resultSet.getString("startingDate"));
+                absent.setEndingDate(resultSet.getString("endingDate"));
+            }
+//            absent.setId(resultSet.getInt("absentId"));
+//            absent.setPassengerEmail(resultSet.getString("passengerEmail"));
+//            absent.setVehicleNo(resultSet.getString("vehicleNo"));
+//            absent.setDaysOfAbsent(resultSet.getString("daysOfAbsent"));
+//            absent.setStartingDate(resultSet.getString("startingDate"));
+//            absent.setEndingDate(resultSet.getString("endingDate"));
 
             resultSet.close();
             preparedStatement.close();
@@ -83,7 +90,7 @@ public class AbsentDAO {
             //Error pop up from here
             while (resultSet.next()){
                 AbsentModel absent = new AbsentModel();
-                absent.setId(resultSet.getInt("id"));
+                absent.setId(resultSet.getInt("absentId"));
                 absent.setPassengerEmail(resultSet.getString("passengerEmail"));
                 absent.setVehicleNo(resultSet.getString("vehicleNo"));
                 absent.setDaysOfAbsent(resultSet.getString("daysOfAbsent"));
@@ -211,5 +218,32 @@ public class AbsentDAO {
             }
         }
         return success;
+    }
+    public static List<AbsentModel> getAbsentList(String vehicleNo){
+        Connection connection = DBConnection.getInstance().getConnection();
+        System.out.println("Inside getAbsentList");
+        List<AbsentModel> absents = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM absents WHERE vehicleNo = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1,vehicleNo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                AbsentModel absent = new AbsentModel();
+                absent.setId(resultSet.getInt("absentId"));
+                absent.setPassengerEmail(resultSet.getString("passengerEmail"));
+                absent.setVehicleNo(resultSet.getString("vehicleNo"));
+                absent.setDaysOfAbsent(resultSet.getString("daysOfAbsent"));
+                absent.setStartingDate(resultSet.getString("startingDate"));
+                absent.setEndingDate(resultSet.getString("endingDate"));
+                absents.add(absent);
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return absents;
     }
 }

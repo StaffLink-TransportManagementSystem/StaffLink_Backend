@@ -1,9 +1,12 @@
 package Model;
 
+import DAO.RouteDAO;
+
 import java.time.LocalTime;
+import java.util.List;
 
 public class RouteModel {
-    private String routeNo;
+    private int routeNo;
     private String vehicleNo;
     private String style;   //morning or evening
     private String staringLocation;
@@ -11,11 +14,11 @@ public class RouteModel {
     private LocalTime startingTime;
     private LocalTime endingTime;
 
-    public String getRouteNo() {
+    public int getRouteNo() {
         return routeNo;
     }
 
-    public void setRouteNo(String routeNo) {
+    public void setRouteNo(int routeNo) {
         this.routeNo = routeNo;
     }
 
@@ -65,5 +68,23 @@ public class RouteModel {
 
     public void setEndingTime(LocalTime endingTime) {
         this.endingTime = endingTime;
+    }
+
+    public boolean createRoute(){
+        RouteDAO routeDAO = new RouteDAO();
+        Boolean status = routeDAO.addRoute(this);
+        return status;
+    }
+
+    public static List<RouteModel> viewAllRoutes(){
+        RouteDAO routeDAO = new RouteDAO();
+        List<RouteModel> routeList = routeDAO.getAllRoutes();
+        return routeList;
+    }
+
+    public static boolean updateRoute(RouteModel route){
+        RouteDAO routeDAO = new RouteDAO();
+        boolean status = routeDAO.updateRoute(route);
+        return  status;
     }
 }
