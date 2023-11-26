@@ -153,5 +153,9 @@ public class VehicleModel {
         VehicleDAO vehicleDAO = new VehicleDAO();
         return vehicleDAO.viewAllVehicles();
     }
+    public List<VehicleModel> viewVehicleList(String email){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.viewVehicleList(email);
+    }
 
 }

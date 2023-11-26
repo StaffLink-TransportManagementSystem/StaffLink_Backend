@@ -1,8 +1,7 @@
 package Controller;
 
-import DAO.AbsentDAO;
 
-import Model.AbsentModel;
+import Model.PassengerPaymentsModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,32 +13,37 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import Model.loginModel;
 import com.google.gson.Gson;
 
-@WebServlet("/addAbsent")
-public class createAbsentServelet extends HttpServlet{
-
+@WebServlet("/passengerPaymentEdit")
+public class editPassengerPayment extends HttpServlet{
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        System.out.println("Hello");
+        System.out.println("Edit passenger payment");
         try {
             Gson gson = new Gson();
 
             // json data to user object
             BufferedReader bufferedReader = req.getReader();
-            AbsentModel absent = gson.fromJson(bufferedReader, AbsentModel.class);
-            System.out.println(absent.getVehicleNo());
-            // All validations are passed then register
-            if(absent.addAbsent()){
+            PassengerPaymentsModel passengerPaymentsModel = gson.fromJson(bufferedReader, PassengerPaymentsModel.class);
+
+            System.out.println(passengerPaymentsModel.updatePayment());
+
+            boolean payment = passengerPaymentsModel.updatePayment();
+
+            if(payment) {
                 res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"message\": \"Registration successfully\"}");
-                System.out.println("Registration successful");
+                out.write("{\"message\": \"Update successfully\"}");
+                System.out.println("Update successful");
             }else{
                 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.write("{\"message\": \"Registration unsuccessfully\"}");
-                System.out.println("Registration incorrect");
+                out.write("{\"message\": \"Update unsuccessfully\"}");
+                System.out.println("Update incorrect");
             }
+
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -48,5 +52,4 @@ public class createAbsentServelet extends HttpServlet{
             out.close();
         }
     }
-
 }

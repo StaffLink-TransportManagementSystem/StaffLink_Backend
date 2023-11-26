@@ -80,4 +80,10 @@ public class AbsentModel {
         boolean status = absentDAO.deleteAbsent(this.id);
         return  status;
     }
+
+    public List<AbsentModel> viewAbsentList(String vehicleNo){
+        AbsentDAO absentDAO = new AbsentDAO();
+        List<AbsentModel> absents = absentDAO.getAbsentList(vehicleNo);
+        return absents;
+    }
 }
