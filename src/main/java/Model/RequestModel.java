@@ -92,6 +92,31 @@ public class RequestModel {
         return status;
     }
 
+    public RequestModel(String vehicleNo, String passengerEmail, float price, String startingPoint, String endingPoint, String type) {
+        this.vehicleNo = vehicleNo;
+        this.passengerEmail = passengerEmail;
+        this.price = price;
+        this.startingPoint = startingPoint;
+        this.endingPoint = endingPoint;
+        this.type = type;
+    }
+    public RequestModel(String vehicleNo) {
+        this.vehicleNo = vehicleNo;
+    }
+    public RequestModel(String vehicleNo, String passengerEmail, float price, String startingPoint, String endingPoint, String type, String status, int id) {
+        this.vehicleNo = vehicleNo;
+        this.passengerEmail = passengerEmail;
+        this.price = price;
+        this.startingPoint = startingPoint;
+        this.endingPoint = endingPoint;
+        this.type = type;
+        this.status = status;
+        this.id = id;
+    }
+    public RequestModel(int id) {
+        this.id = id;
+    }
+
 
     public boolean createRequest(){
         RequestDAO requestDAO = new RequestDAO();
@@ -100,7 +125,7 @@ public class RequestModel {
     }
     public boolean updateRequest(){
         RequestDAO requestDAO = new RequestDAO();
-        boolean status = RequestDAO.updateRequest(this);
+        boolean status = requestDAO.updateRequest(this);
         return  status;
     }
 

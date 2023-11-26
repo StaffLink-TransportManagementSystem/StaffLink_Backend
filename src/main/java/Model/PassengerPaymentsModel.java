@@ -83,4 +83,9 @@ public class PassengerPaymentsModel {
         PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
         return passengerPaymentsDAO.viewPassengerPaymentList(email);
     }
+
+    public List<PassengerPaymentsModel> getPaymentsByOwner(String email){
+        PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
+        return passengerPaymentsDAO.viewPaymentListByOwner(email);
+    }
 }
