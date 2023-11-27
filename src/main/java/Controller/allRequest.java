@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.google.gson.Gson;
 
-@WebServlet("/viewAllRequests")
+  @WebServlet("/viewAllRequests")
 public class allRequest extends HttpServlet {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -50,7 +50,35 @@ public class allRequest extends HttpServlet {
             System.out.println("No Accounts");
         }else{
             // TODO handle
+
         }
+//        res.setContentType("application/json");
+//        PrintWriter out = res.getWriter();
+//        System.out.println("hello requests");
+//
+//        Gson gson1 = new Gson();
+//
+//        // json data to user object
+//        BufferedReader bufferedReader = req.getReader();
+//        RequestModel request = gson1.fromJson(bufferedReader, RequestModel.class);
+//        System.out.println(request.getVehicleNo());
+//
+//        List<RequestModel> requests = request.viewAllRequests();
+//
+//        Gson gson = new Gson();
+//        String centerJson = gson.toJson(requests);
+//
+//        if(requests.size() != 0){
+//            res.setStatus(HttpServletResponse.SC_OK);
+//            out.write("{\"size\": "+ requests.size() +",\"list\":"+ centerJson+"}");
+//            System.out.println("View all Accounts");
+//        }else if(requests.size() == 0){
+//            res.setStatus(HttpServletResponse.SC_ACCEPTED);
+//            out.write("{\"size\": \"0\"}");
+//            System.out.println("No Accounts");
+//        }else{
+//            // TODO handle
+//        }
     }
 
 

@@ -165,9 +165,9 @@ public class RequestDAO {
         //Error occors below this statement
         try {
             con = connection;
-            String sql = "SELECT * FROM requests WHERE vehicleNo = ?";
+            String sql = "SELECT * FROM requests";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setString(1, vehicleNo);
+//            preparedStatement.setString(1, vehicleNo);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 RequestModel request = new RequestModel();
@@ -183,7 +183,7 @@ public class RequestDAO {
             }
             resultSet.close();
             preparedStatement.close();
-            System.out.println("Check - "+requests.size()+" requests found");
+            System.out.println("Check - "+ requests +" requests found");
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
