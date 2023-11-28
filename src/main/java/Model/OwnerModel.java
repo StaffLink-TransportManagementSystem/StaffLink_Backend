@@ -92,7 +92,7 @@ public class OwnerModel {
         return  status;
     }
 
-    public List<OwnerModel> viewAllOwners(){
+    public List<OwnerModel> viewAllOwners() {
         OwnerDAO ownerDAO = new OwnerDAO();
         return ownerDAO.viewAllOwners();
     }

@@ -57,7 +57,7 @@ public class PassengerPaymentsDAO {
         }
         return success;
     }
-    public static PassengerPaymentsModel getPassengerPayment(int id) {
+    public static PassengerPaymentsModel getPayment(int id) {
         Connection connection = DBConnection.getInstance().getConnection();
         PassengerPaymentsModel passengerPayments = null;
         try {
@@ -109,4 +109,78 @@ public class PassengerPaymentsDAO {
         return passengerPayments;
     }
 
+    public static boolean deletePassengerPayment(int id) {
+        Connection connection = DBConnection.getInstance().getConnection();
+        boolean success = false;
+        try {
+            String sql = "DELETE FROM passengerPayments WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            int temp = preparedStatement.executeUpdate();
+            if (temp == 1) {
+                success = true;
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return success;
+    }
+    public static List<PassengerPaymentsModel> viewPassengerPaymentList(String email){
+        Connection connection = DBConnection.getInstance().getConnection();
+        List<PassengerPaymentsModel> passengerPayments = null;
+        try{
+            String sql = "SELECT * FROM passengerPayments WHERE passengerEmail = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, email);
+            preparedStatement.executeQuery();
+            if(preparedStatement.getResultSet().next()){
+                passengerPayments = new ArrayList<>();
+                do{
+                    PassengerPaymentsModel passengerPayment = new PassengerPaymentsModel();
+                    passengerPayment.setId(preparedStatement.getResultSet().getInt("id"));
+                    passengerPayment.setPassengerEmail(preparedStatement.getResultSet().getString("passengerEmail"));
+                    passengerPayment.setVehicleNo(preparedStatement.getResultSet().getString("vehicleNo"));
+                    passengerPayment.setDate(preparedStatement.getResultSet().getString("date"));
+                    passengerPayment.setPaymentType(preparedStatement.getResultSet().getString("paymentType"));
+                    passengerPayment.setAmount(preparedStatement.getResultSet().getFloat("amount"));
+                    passengerPayments.add(passengerPayment);
+                }while(preparedStatement.getResultSet().next());
+            }
+            preparedStatement.close();
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        return passengerPayments;
+    }
+
+    public static List<PassengerPaymentsModel> viewPaymentListByOwner(String email){
+        Connection connection = DBConnection.getInstance().getConnection();
+        List<PassengerPaymentsModel> passengerPayments = null;
+        try{
+            String sql = "SELECT * FROM passengerPayments WHERE vehicleNo IN (SELECT vehicleNo FROM vehicles WHERE ownerEmail = ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, email);
+            preparedStatement.executeQuery();
+            if(preparedStatement.getResultSet().next()){
+                passengerPayments = new ArrayList<>();
+                do{
+                    PassengerPaymentsModel passengerPayment = new PassengerPaymentsModel();
+                    passengerPayment.setId(preparedStatement.getResultSet().getInt("id"));
+                    passengerPayment.setPassengerEmail(preparedStatement.getResultSet().getString("passengerEmail"));
+                    passengerPayment.setVehicleNo(preparedStatement.getResultSet().getString("vehicleNo"));
+                    passengerPayment.setDate(preparedStatement.getResultSet().getString("date"));
+                    passengerPayment.setPaymentType(preparedStatement.getResultSet().getString("paymentType"));
+                    passengerPayment.setAmount(preparedStatement.getResultSet().getFloat("amount"));
+                    passengerPayments.add(passengerPayment);
+                }while(preparedStatement.getResultSet().next());
+            }
+            preparedStatement.close();
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        return passengerPayments;
+    }
 }

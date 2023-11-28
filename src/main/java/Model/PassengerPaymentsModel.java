@@ -2,6 +2,8 @@ package Model;
 
 import DAO.PassengerPaymentsDAO;
 
+import java.util.List;
+
 public class PassengerPaymentsModel {
     int id;
     String passengerEmail;
@@ -75,5 +77,15 @@ public class PassengerPaymentsModel {
     public boolean updatePayment(){
         PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
         return passengerPaymentsDAO.updatePassengerPayment(this);
+    }
+
+    public List<PassengerPaymentsModel> viewPassengerPaymentList(String email){
+        PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
+        return passengerPaymentsDAO.viewPassengerPaymentList(email);
+    }
+
+    public List<PassengerPaymentsModel> getPaymentsByOwner(String email){
+        PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
+        return passengerPaymentsDAO.viewPaymentListByOwner(email);
     }
 }

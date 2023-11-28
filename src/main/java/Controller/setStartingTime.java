@@ -28,7 +28,7 @@ public class setStartingTime extends HttpServlet {
             RouteSheduler routeSheduler = new RouteSheduler();
             routeSheduler.setArrivalTimes(routeModel.getRouteNo());
 
-            LocalTime startingTime = routeModel.getStartingTime();
+            String startingTime = routeModel.getStartingTime();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);

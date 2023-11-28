@@ -24,8 +24,8 @@ public class RouteDAO {
             preparedStatement.setString(3, route.getStyle());
             preparedStatement.setString(4, route.getStaringLocation());
             preparedStatement.setString(5, route.getEndingLocation());
-            preparedStatement.setString(6, String.valueOf(Time.valueOf(route.getStartingTime())));
-            preparedStatement.setString(7, String.valueOf(Time.valueOf(route.getEndingTime())));
+            preparedStatement.setString(6, route.getStartingTime());
+            preparedStatement.setString(7, route.getEndingTime());
 
             preparedStatement.executeUpdate();
             success = true;
@@ -65,8 +65,8 @@ public class RouteDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, route.getStaringLocation());
             preparedStatement.setString(2, route.getEndingLocation());
-            preparedStatement.setString(3, String.valueOf(Time.valueOf(route.getStartingTime())));
-            preparedStatement.setString(4, String.valueOf(Time.valueOf(route.getEndingTime())));
+            preparedStatement.setString(3, route.getStartingTime());
+            preparedStatement.setString(4, route.getEndingTime());
             preparedStatement.setString(5, route.getVehicleNo());
             preparedStatement.setString(6, route.getStyle());
             preparedStatement.executeUpdate();
@@ -90,8 +90,8 @@ public class RouteDAO {
                 route.setRouteNo(resultSet.getInt("routeNo"));
                 route.setStaringLocation(resultSet.getString("startingLocation"));
                 route.setEndingLocation(resultSet.getString("endingLocation"));
-                route.setStartingTime(LocalTime.parse(resultSet.getString("startingTime")));
-                route.setEndingTime(LocalTime.parse(resultSet.getString("endingTime")));
+                route.setStartingTime(resultSet.getString("startingTime"));
+                route.setEndingTime(resultSet.getString("endingTime"));
 
             }
         } catch (Exception e) {
@@ -115,8 +115,8 @@ public class RouteDAO {
                 route.setStyle(resultSet.getString("style"));
                 route.setStaringLocation(resultSet.getString("startingLocation"));
                 route.setEndingLocation(resultSet.getString("endingLocation"));
-                route.setStartingTime(LocalTime.parse(resultSet.getString("startingTime")));
-                route.setEndingTime(LocalTime.parse(resultSet.getString("endingTime")));
+                route.setStartingTime(resultSet.getString("startingTime"));
+                route.setEndingTime(resultSet.getString("endingTime"));
                 routes.add(route);
             }
         } catch (Exception e) {
