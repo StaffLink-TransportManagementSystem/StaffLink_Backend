@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.OwnerModel;
 import Model.PassengerModel;
 import Model.RequestModel;
 
@@ -17,7 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.google.gson.Gson;
 
-  @WebServlet("/viewAllRequests")
+@WebServlet("/viewAllRequests")
 public class allRequest extends HttpServlet {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -30,12 +31,14 @@ public class allRequest extends HttpServlet {
 
         // json data to user object
         BufferedReader bufferedReader = req.getReader();
-        RequestModel request = gson1.fromJson(bufferedReader, RequestModel.class);
+//        RequestModel request = gson1.fromJson(bufferedReader, RequestModel.class);
+//
+//        System.out.println(request.getVehicleNo());
 
-        System.out.println(request.getVehicleNo());
-
-
-        List<RequestModel> requests = request.viewAllRequests();
+        OwnerModel owner = gson1.fromJson(bufferedReader, OwnerModel.class);
+        RequestModel request = new RequestModel();
+        List<RequestModel> requests = request.viewAllRequests(owner.getEmail());
+//        List<RequestModel> requests = owner.viewAllRequests();
 
         Gson gson = new Gson();
         String centerJson = gson.toJson(requests);
