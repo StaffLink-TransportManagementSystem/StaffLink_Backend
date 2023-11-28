@@ -4,6 +4,7 @@ import Database.DBConnection;
 import Model.RequestModel;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RequestDAO {
@@ -157,16 +158,17 @@ public class RequestDAO {
         return success;
 //        return passenger;
     }
-    public static List<RequestModel> viewAllRequests(String vehicleNo){
+    public static List<RequestModel> viewAllRequests(String email){
         Connection connection = DBConnection.getInstance().getConnection();
         Connection con = null;
-        List<RequestModel> requests = null;
-        System.out.println("Inside viewAllRequests - "+vehicleNo);
+        List<RequestModel> requests = new ArrayList<>();
+        System.out.println("Inside viewAllRequests - "+email);
         //Error occors below this statement
         try {
             con = connection;
-            String sql = "SELECT * FROM requests";
+            String sql = "SELECT * FROM requests WHERE vehicleNo IN (SELECT vehicleNo FROM vehicles WHERE ownerEmail = ?)";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, email);
 //            preparedStatement.setString(1, vehicleNo);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -179,6 +181,7 @@ public class RequestDAO {
                 request.setEndingPoint(resultSet.getString("endingPoint"));
                 request.setType(resultSet.getString("type"));
                 request.setStatus(resultSet.getString("status"));
+
                 requests.add(request);
             }
             resultSet.close();

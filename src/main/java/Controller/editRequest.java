@@ -28,6 +28,7 @@ public class editRequest extends HttpServlet{
 
             System.out.println(editRequest.getVehicleNo());
             System.out.println(editRequest.getPassengerEmail());
+            System.out.println(editRequest.getStatus());
 
             boolean requestUpdate = editRequest.updateRequest();
 

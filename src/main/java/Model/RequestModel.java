@@ -135,9 +135,9 @@ public class RequestModel {
         return  status;
     }
 
-    public List<RequestModel> viewAllRequests(){
+    public List<RequestModel> viewAllRequests(String email){
         RequestDAO requestDAO = new RequestDAO();
-        List<RequestModel> requests = requestDAO.viewAllRequests(this.vehicleNo);
+        List<RequestModel> requests = requestDAO.viewAllRequests(email);
         return requests;
     }
 
