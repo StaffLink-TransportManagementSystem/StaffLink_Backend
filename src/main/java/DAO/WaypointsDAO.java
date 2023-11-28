@@ -12,16 +12,16 @@ public class WaypointsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
         try {
-            String sql = "INSERT INTO waypoints (waypointId,routeNo,location,orderNo,arrivalTime, deadlineTime, reservationId) VALUES (?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO waypoints (routeNo,location,orderNo,arrivalTime, deadlineTime, reservationId) VALUES (?,?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, waypoints.getWaypointId());
-            preparedStatement.setInt(2, waypoints.getRouteNo());
-            preparedStatement.setString(3, waypoints.getLocation());
-            preparedStatement.setInt(4, waypoints.getOrderNo());
-            preparedStatement.setString(5, waypoints.getArrivalTime());
-            preparedStatement.setString(6, waypoints.getDeadlineTime());
-            preparedStatement.setString(7, waypoints.getReservationId());
+            preparedStatement.setInt(1, waypoints.getRouteNo());
+            preparedStatement.setString(2, waypoints.getLocation());
+            preparedStatement.setInt(3, waypoints.getOrderNo());
+            preparedStatement.setString(4, waypoints.getArrivalTime());
+            preparedStatement.setString(5, waypoints.getDeadlineTime());
+            preparedStatement.setString(6, waypoints.getReservationId());
             preparedStatement.executeUpdate();
+//            System.out.println("Waypoint added");
             success = true;
         } catch (Exception e) {
             System.out.println(e);
