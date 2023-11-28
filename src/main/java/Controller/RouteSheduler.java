@@ -22,6 +22,7 @@ public class RouteSheduler {
             if (i == waypointsList.size()-1) {
                 waypoints.setArrivalTime(prev);
             } else {
+//
 //                if(waypoints.getDeadlineTime()> Duration.between(prev,calculateTravelTime(waypoints.getLocation(),waypointsList.get(i+1).getLocation()))) {
 //                    waypoints.setArrivalTime(prev-calculateTravelTime(waypoints.getLocation(),waypointsList.get(i+1).getLocation()));
 //                } else {
