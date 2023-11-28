@@ -3,28 +3,36 @@ import DAO.WaypointsDAO;
 
 import java.sql.Time;
 import java.time.LocalTime;
+import java.util.List;
 
 public class Waypoints {
-    private String waypointId;
-    private String routeNo;
+    private int waypointId;
+    private String reservationId;
+    private int routeNo;
     private String location;
     private int orderNo;
-    private LocalTime arrivalTime;
-    private LocalTime deadlineTime;
+    private String arrivalTime;
+    private String deadlineTime;
+    public Waypoints() {
+    }
 
-    public String getWaypointId() {
+    public Waypoints(int routeNo) {
+        this.routeNo = routeNo;
+    }
+
+    public int getWaypointId() {
         return waypointId;
     }
 
-    public void setWaypointId(String waypointId) {
+    public void setWaypointId(int waypointId) {
         this.waypointId = waypointId;
     }
 
-    public String getRouteNo() {
+    public int getRouteNo() {
         return routeNo;
     }
 
-    public void setRouteNo(String routeNo) {
+    public void setRouteNo(int routeNo) {
         this.routeNo = routeNo;
     }
 
@@ -44,19 +52,47 @@ public class Waypoints {
         this.orderNo = orderNo;
     }
 
-    public LocalTime getArrivalTime() {
+    public String getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(LocalTime arrivalTime) {
+    public void setArrivalTime(String arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 
-    public LocalTime getDeadlineTime() {
+    public String getDeadlineTime() {
         return deadlineTime;
     }
 
-    public void setDeadlineTime(LocalTime deadlineTime) {
+    public void setDeadlineTime(String deadlineTime) {
+        this.deadlineTime = deadlineTime;
+    }
+    public String getReservationId() {
+        return reservationId;
+    }
+
+    public void setReservationId(String reservationId) {
+        this.reservationId = reservationId;
+    }
+
+    public void Waypoints(int waypointId, String reservationId, int routeNo, String location, int orderNo, String arrivalTime, String deadlineTime){
+        this.waypointId = waypointId;
+        this.reservationId = reservationId;
+        this.routeNo = routeNo;
+        this.location = location;
+        this.orderNo = orderNo;
+        this.arrivalTime = arrivalTime;
+        this.deadlineTime = deadlineTime;
+    }
+    public void Waypoints(int routeNo){
+        this.routeNo = routeNo;
+    }
+    public void Waypoints(String reservationId, int routeNo, String location, int orderNo, String arrivalTime, String deadlineTime){
+        this.reservationId = reservationId;
+        this.routeNo = routeNo;
+        this.location = location;
+        this.orderNo = orderNo;
+        this.arrivalTime = arrivalTime;
         this.deadlineTime = deadlineTime;
     }
 
@@ -74,6 +110,12 @@ public class Waypoints {
         WaypointsDAO waypointsDAO = new WaypointsDAO();
         boolean success = waypointsDAO.updateWaypoint(this);
         return success;
+    }
+
+    public List<Waypoints> getWaypoints(){
+        WaypointsDAO waypointsDAO = new WaypointsDAO();
+        List<Waypoints> waypoints = waypointsDAO.getwaypoints(this.routeNo);
+        return waypoints;
     }
 
 

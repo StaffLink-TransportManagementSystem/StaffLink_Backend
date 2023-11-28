@@ -11,8 +11,8 @@ public class RouteModel {
     private String style;   //morning or evening
     private String staringLocation;
     private String endingLocation;
-    private LocalTime startingTime;
-    private LocalTime endingTime;
+    private String startingTime;
+    private String endingTime;
 
     public int getRouteNo() {
         return routeNo;
@@ -54,19 +54,19 @@ public class RouteModel {
         this.endingLocation = endingLocation;
     }
 
-    public LocalTime getStartingTime() {
+    public String getStartingTime() {
         return startingTime;
     }
 
-    public void setStartingTime(LocalTime startingTime) {
+    public void setStartingTime(String startingTime) {
         this.startingTime = startingTime;
     }
 
-    public LocalTime getEndingTime() {
+    public String getEndingTime() {
         return endingTime;
     }
 
-    public void setEndingTime(LocalTime endingTime) {
+    public void setEndingTime(String endingTime) {
         this.endingTime = endingTime;
     }
 
