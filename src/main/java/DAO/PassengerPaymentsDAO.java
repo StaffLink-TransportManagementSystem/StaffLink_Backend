@@ -16,13 +16,14 @@ public class PassengerPaymentsDAO {
         boolean success = false;
 
         try {
-            String sql = "INSERT INTO passengerPayments (passengerEmail, vehicleNo, date, paymentType, amount) VALUES (?,?,?,?,?)";
+            String sql = "INSERT INTO passengerPayments (passengerEmail, vehicleNo, date, paymentType, amount, status) VALUES (?,?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, passengerPayments.getPassengerEmail());
             preparedStatement.setString(2, passengerPayments.getVehicleNo());
             preparedStatement.setString(3, passengerPayments.getDate());
             preparedStatement.setString(4, passengerPayments.getPaymentType());
             preparedStatement.setFloat(5, passengerPayments.getAmount());
+            preparedStatement.setString(6, passengerPayments.getStatus());
             int temp = preparedStatement.executeUpdate();
             System.out.println(temp);
             if (temp == 1) {
@@ -39,7 +40,7 @@ public class PassengerPaymentsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
         try {
-            String sql = "UPDATE passengerPayments SET passengerEmail = ?, vehicleNo = ?, date = ?, paymentType = ?, amount = ? WHERE id = ?";
+            String sql = "UPDATE passengerPayments SET passengerEmail = ?, vehicleNo = ?, date = ?, paymentType = ?, amount = ?, status = ? WHERE id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, passengerPayments.getPassengerEmail());
             preparedStatement.setString(2, passengerPayments.getVehicleNo());
@@ -47,6 +48,7 @@ public class PassengerPaymentsDAO {
             preparedStatement.setString(4, passengerPayments.getPaymentType());
             preparedStatement.setFloat(5, passengerPayments.getAmount());
             preparedStatement.setInt(6, passengerPayments.getId());
+            preparedStatement.setString(7, passengerPayments.getStatus());
             int temp = preparedStatement.executeUpdate();
             if (temp == 1) {
                 success = true;
@@ -73,6 +75,7 @@ public class PassengerPaymentsDAO {
                 passengerPayments.setDate(preparedStatement.getResultSet().getString("date"));
                 passengerPayments.setPaymentType(preparedStatement.getResultSet().getString("paymentType"));
                 passengerPayments.setAmount(preparedStatement.getResultSet().getFloat("amount"));
+                passengerPayments.setStatus(preparedStatement.getResultSet().getString("status"));
             }
             preparedStatement.close();
         } catch (SQLException e) {
@@ -80,13 +83,13 @@ public class PassengerPaymentsDAO {
         }
         return passengerPayments;
     }
-    public static List<PassengerPaymentsModel> getPassengerPayments(PassengerPaymentsModel passengerPaymentsModel){
+    public static List<PassengerPaymentsModel> getPassengerPayments(String passengerEmail){
         Connection connection = DBConnection.getInstance().getConnection();
         List<PassengerPaymentsModel> passengerPayments = null;
         try{
             String sql = "SELECT * FROM passengerPayments WHERE passengerEmail = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, passengerPaymentsModel.getPassengerEmail());
+            preparedStatement.setString(1, passengerEmail);
             preparedStatement.executeQuery();
             if(preparedStatement.getResultSet().next()){
                 passengerPayments = new ArrayList<>();
@@ -98,6 +101,7 @@ public class PassengerPaymentsDAO {
                     passengerPayment.setDate(preparedStatement.getResultSet().getString("date"));
                     passengerPayment.setPaymentType(preparedStatement.getResultSet().getString("paymentType"));
                     passengerPayment.setAmount(preparedStatement.getResultSet().getFloat("amount"));
+                    passengerPayment.setStatus(preparedStatement.getResultSet().getString("status"));
                     passengerPayments.add(passengerPayment);
                 }while(preparedStatement.getResultSet().next());
             }
