@@ -17,6 +17,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Date;
 
+import static Controller.RouteSheduler.setArrivalTimes;
+
 @WebServlet("/test")
 public class test extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
@@ -54,6 +56,8 @@ public class test extends HttpServlet {
 
             res.setStatus(HttpServletResponse.SC_OK);
             out.write("{\"size\": " + time + "}");
+
+            setArrivalTimes(2);
 
 
         } catch (
