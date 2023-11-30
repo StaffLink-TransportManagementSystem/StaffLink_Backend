@@ -96,6 +96,11 @@ public class Waypoints {
         this.deadlineTime = deadlineTime;
     }
 
+    public void Waypoints(String location, String deadlineTime){
+        this.location = location;
+        this.deadlineTime = deadlineTime;
+    }
+
     public boolean addWaypoint(){
         WaypointsDAO waypointsDAO = new WaypointsDAO();
         boolean success = waypointsDAO.addWaypoint(this);
