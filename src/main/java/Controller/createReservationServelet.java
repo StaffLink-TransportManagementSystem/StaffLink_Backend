@@ -1,9 +1,11 @@
 package Controller;
 
 import DAO.ReservationDAO;
+import Model.RequestModel;
 import Model.ReservationModel;
 import com.google.gson.Gson;
 
+import java.io.BufferedReader;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,11 +22,15 @@ public class createReservationServelet extends HttpServlet {
         PrintWriter out = response.getWriter();
         System.out.println("createReservation");
 
-        Gson gson = new Gson();
-        ReservationModel reservation = gson.fromJson(request.getReader(), ReservationModel.class);
-        boolean success = false;
+
 
         try {
+            Gson gson = new Gson();
+            BufferedReader bufferedReader = request.getReader();
+            ReservationModel reservation = gson.fromJson(bufferedReader, ReservationModel.class);
+            boolean success = false;
+            System.out.println(reservation.getPassengerEmail());
+
             success = reservation.createReservation();
             if (success) {
                 response.setStatus(HttpServletResponse.SC_OK);

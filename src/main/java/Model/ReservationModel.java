@@ -10,7 +10,8 @@ public class ReservationModel {
     private String vehicleNo;
     private String startingDate;
     private String endingDate;
-    private int wayPointId;
+    private int startingWaypoint;
+    private int endingWaypoint;
 
     public ReservationModel() {
     }
@@ -20,12 +21,13 @@ public class ReservationModel {
         this.startingDate = startingDate;
         this.endingDate = endingDate;
     }
-    public ReservationModel(String passengerEmail, String vehicleNo, String startingDate, String endingDate, int wayPointId) {
+    public ReservationModel(String passengerEmail, String vehicleNo, String startingDate, String endingDate, int startingWaypoint, int endingWaypoint) {
         this.passengerEmail = passengerEmail;
         this.vehicleNo = vehicleNo;
         this.startingDate = startingDate;
         this.endingDate = endingDate;
-        this.wayPointId = wayPointId;
+        this.startingWaypoint = startingWaypoint;
+        this.endingWaypoint = endingWaypoint;
     }
     public ReservationModel(int reservationId, String passengerEmail, String vehicleNo, String startingDate, String endingDate) {
         this.reservationId = reservationId;
@@ -34,13 +36,14 @@ public class ReservationModel {
         this.startingDate = startingDate;
         this.endingDate = endingDate;
     }
-    public ReservationModel(int reservationId, String passengerEmail, String vehicleNo, String startingDate, String endingDate, int wayPointId) {
+    public ReservationModel(int reservationId, String passengerEmail, String vehicleNo, String startingDate, String endingDate, int startingWaypoint, int endingWaypoint) {
         this.reservationId = reservationId;
         this.passengerEmail = passengerEmail;
         this.vehicleNo = vehicleNo;
         this.startingDate = startingDate;
         this.endingDate = endingDate;
-        this.wayPointId = wayPointId;
+        this.startingWaypoint = startingWaypoint;
+        this.endingWaypoint = endingWaypoint;
     }
     public ReservationModel(int reservationId){
         this.reservationId = reservationId;
@@ -86,12 +89,20 @@ public class ReservationModel {
         this.endingDate = endingDate;
     }
 
-    public int getWayPointId() {
-        return wayPointId;
+    public int getStartingWaypoint() {
+        return startingWaypoint;
     }
 
-    public void setWayPointId(int wayPointId) {
-        this.wayPointId = wayPointId;
+    public void setStartingWaypoint(int startingWaypoint) {
+        this.startingWaypoint = startingWaypoint;
+    }
+
+    public int getEndingWaypoint() {
+        return endingWaypoint;
+    }
+
+    public void setEndingWaypoint(int endingWaypoint) {
+        this.endingWaypoint = endingWaypoint;
     }
 
     public boolean createReservation(){
@@ -116,5 +127,9 @@ public class ReservationModel {
     }
     public List<ReservationModel> getReservationsByVehicle(String vehicleNo){
         return ReservationDAO.getReservationsByVehicle(vehicleNo);
+    }
+
+    public static ReservationModel getReservation(int reservationId){
+        return ReservationDAO.getReservation(reservationId);
     }
 }
