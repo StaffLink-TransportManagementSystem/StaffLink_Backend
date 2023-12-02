@@ -74,6 +74,8 @@ public class findTransportServelet extends HttpServlet {
                 waypoints.add(work);
 
 
+                homeDistance = calculateDistanceToRoute(convertCoordinatesString(homeLocation)[0], convertCoordinatesString(homeLocation)[1], waypoints);
+                workDistance = calculateDistanceToRoute(convertCoordinatesString(workLocation)[0], convertCoordinatesString(workLocation)[1], waypoints);
 
 
                 if(homeDistance < 5.0 && workDistance < 5.0){
@@ -111,15 +113,16 @@ public class findTransportServelet extends HttpServlet {
         }
     }
 
-    public static double calculateDistanceToRoute(double locationLat, double locationLon, Waypoint[] waypoints) {
+    public static double calculateDistanceToRoute(double locationLat, double locationLon, List<Waypoints> waypoints) {
         double minDistance = Double.MAX_VALUE;
+        double[] waypointCoordinates1 = new double[0];
+        double[] waypointCoordinates2 = new double[0];
+        double distance = Double.MAX_VALUE;
 
-        for (int i = 0; i < waypoints.length - 1; i++) {
-            double distance = pointToLineDistance(
-                    locationLat, locationLon,
-                    waypoints[i].latitude, waypoints[i].longitude,
-                    waypoints[i + 1].latitude, waypoints[i + 1].longitude);
-
+        for (int i = 0; i < waypoints.size() - 1; i++) {
+            waypointCoordinates1 = convertCoordinatesString(waypoints.get(i).getLocation());
+            waypointCoordinates2 = convertCoordinatesString(waypoints.get(i + 1).getLocation());
+            distance = pointToLineDistance(locationLat, locationLon, waypointCoordinates1[0], waypointCoordinates1[1], waypointCoordinates2[0], waypointCoordinates2[1]);
             minDistance = Math.min(minDistance, distance);
         }
 
@@ -152,6 +155,29 @@ public class findTransportServelet extends HttpServlet {
                         Math.sin(dLon / 2) * Math.sin(dLon / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
+    }
+
+    public static double[] convertCoordinatesString(String coordinatesString) {
+        // Remove parentheses and split the string by comma
+        String[] parts = coordinatesString.replaceAll("[()]", "").split(", ");
+
+        // Check if the string has two parts
+        if (parts.length == 2) {
+            try {
+                // Parse the parts into double values
+                double latitude = Double.parseDouble(parts[0]);
+                double longitude = Double.parseDouble(parts[1]);
+
+                // Return the double values in an array
+                return new double[]{latitude, longitude};
+            } catch (NumberFormatException e) {
+                // Handle the case where parsing fails
+                System.err.println("Error parsing coordinates: " + e.getMessage());
+            }
+        }
+
+        // Return null if parsing fails or the format is incorrect
+        return null;
     }
 
 
