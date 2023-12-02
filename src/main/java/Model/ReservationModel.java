@@ -111,4 +111,10 @@ public class ReservationModel {
     public List<ReservationModel> getReservationsByPassenger(String passengerEmail){
         return ReservationDAO.getReservationsByPassenger(passengerEmail);
     }
+    public List<ReservationModel> getReservationsByOwner(String OwnerEmail){
+        return ReservationDAO.getReservationsByOwner(OwnerEmail);
+    }
+    public List<ReservationModel> getReservationsByVehicle(String vehicleNo){
+        return ReservationDAO.getReservationsByVehicle(vehicleNo);
+    }
 }
