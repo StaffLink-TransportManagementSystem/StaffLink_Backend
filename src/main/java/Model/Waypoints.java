@@ -20,6 +20,9 @@ public class Waypoints {
         this.routeNo = routeNo;
     }
 
+    public Waypoints(String staringLocation, String startingTime) {
+    }
+
     public int getWaypointId() {
         return waypointId;
     }
@@ -93,6 +96,11 @@ public class Waypoints {
         this.location = location;
         this.orderNo = orderNo;
         this.arrivalTime = arrivalTime;
+        this.deadlineTime = deadlineTime;
+    }
+
+    public void Waypoints(String location, String deadlineTime){
+        this.location = location;
         this.deadlineTime = deadlineTime;
     }
 

@@ -11,6 +11,17 @@ public class PassengerPaymentsModel {
     String date;
     String paymentType; //card or cash
     float amount;
+    String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+
 
     public PassengerPaymentsModel() {
     }
@@ -87,5 +98,9 @@ public class PassengerPaymentsModel {
     public List<PassengerPaymentsModel> getPaymentsByOwner(String email){
         PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
         return passengerPaymentsDAO.viewPaymentListByOwner(email);
+    }
+    public List<PassengerPaymentsModel> getPaymentsByPassenger(String email){
+        PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
+        return passengerPaymentsDAO.getPassengerPayments(email);
     }
 }
