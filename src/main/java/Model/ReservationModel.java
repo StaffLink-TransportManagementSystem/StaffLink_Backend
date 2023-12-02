@@ -107,4 +107,8 @@ public class ReservationModel {
     public static List<ReservationModel> viewAllReservations(){
         return ReservationDAO.viewAllReservations();
     }
+
+    public List<ReservationModel> getReservationsByPassenger(String passengerEmail){
+        return ReservationDAO.getReservationsByPassenger(passengerEmail);
+    }
 }
