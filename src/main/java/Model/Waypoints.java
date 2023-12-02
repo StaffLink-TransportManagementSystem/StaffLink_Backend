@@ -20,6 +20,9 @@ public class Waypoints {
         this.routeNo = routeNo;
     }
 
+    public Waypoints(String staringLocation, String startingTime) {
+    }
+
     public int getWaypointId() {
         return waypointId;
     }

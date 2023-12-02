@@ -57,19 +57,22 @@ public class findTransportServelet extends HttpServlet {
             double homeDistance = 0;
             double workDistance = 0;
             List<RouteModel> result = new ArrayList<RouteModel>();
+            Waypoints home = new Waypoints();
+            Waypoints work = new Waypoints();
+            List<Waypoints> waypointsList = new ArrayList<Waypoints>();
 
             for (RouteModel route : routes) {
 
-//                <-------------HAVE TO FIX---------------->
+                home = new Waypoints(route.getStaringLocation(),route.getStartingTime());
+                work = new Waypoints(route.getEndingLocation(),route.getEndingTime());
+                waypointsList = WaypointsDAO.getwaypoints(route.getRouteNo());
 
-//                waypoints.add(Waypoints(route.getStaringLocation(),route.getStartingTime()));
-//                waypoints.add(waypointsDAO.getwaypoints(route.getRouteNo()));
-//                waypoints.add(Waypoints(route.getEndingLocation(),route.getEndingTime()));
+                waypoints.add(home);
+                for(Waypoints waypoint : waypointsList){
+                    waypoints.add(waypoint);
+                }
+                waypoints.add(work);
 
-//                homeDistance = calculateDistanceToRoute(homeLocation(0), homeLocation(1), waypoints);
-//                workDistance = calculateDistanceToRoute(workLocation(0), workLocation(1), waypoints);
-
-//                <----------------------------->
 
 
 
