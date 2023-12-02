@@ -89,4 +89,14 @@ public class ReservationModel {
     public void setWayPointId(int wayPointId) {
         this.wayPointId = wayPointId;
     }
+
+    public boolean createReservation(){
+        return DAO.ReservationDAO.createReservation(this);
+    }
+    public boolean deleteReservation(){
+        return DAO.ReservationDAO.deleteReservation(this);
+    }
+    public boolean updateReservation(){
+        return DAO.ReservationDAO.updateReservation(this);
+    }
 }
