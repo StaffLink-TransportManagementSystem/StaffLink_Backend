@@ -1,5 +1,9 @@
 package Model;
 
+import DAO.ReservationDAO;
+
+import java.util.List;
+
 public class ReservationModel {
     private int reservationId;
     private String passengerEmail;
@@ -91,12 +95,16 @@ public class ReservationModel {
     }
 
     public boolean createReservation(){
-        return DAO.ReservationDAO.createReservation(this);
+        return ReservationDAO.createReservation(this);
     }
     public boolean deleteReservation(){
-        return DAO.ReservationDAO.deleteReservation(this);
+        return ReservationDAO.deleteReservation(this);
     }
     public boolean updateReservation(){
-        return DAO.ReservationDAO.updateReservation(this);
+        return ReservationDAO.updateReservation(this);
+    }
+
+    public static List<ReservationModel> viewAllReservations(){
+        return ReservationDAO.viewAllReservations();
     }
 }

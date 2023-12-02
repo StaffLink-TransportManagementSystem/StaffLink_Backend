@@ -6,6 +6,7 @@ import Model.ReservationModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.List;
 
 public class ReservationDAO {
     public static ReservationModel getReservation(int reservationId) {
@@ -88,5 +89,30 @@ public class ReservationDAO {
             System.out.println(e);
         }
         return success;
+    }
+
+    public static List<ReservationModel> viewAllReservations(){
+        System.out.println("Inside viewAllReservationsDAO");
+        Connection connection = DBConnection.getInstance().getConnection();
+        List<ReservationModel> reservations = null;
+        try {
+            String sql = "SELECT * FROM reservation";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                ReservationModel reservationModel = new ReservationModel(
+                        resultSet.getInt("reservationId"),
+                        resultSet.getString("passengerEmail"),
+                        resultSet.getString("vehicleNo"),
+                        resultSet.getString("startingDate"),
+                        resultSet.getString("endingDate"),
+                        resultSet.getInt("wayPointId")
+                );
+                reservations.add(reservationModel);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return reservations;
     }
 }
