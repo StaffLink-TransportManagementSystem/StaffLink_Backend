@@ -6,6 +6,8 @@ import Model.ReservationModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReservationDAO {
     public static ReservationModel getReservation(int reservationId) {
@@ -13,7 +15,7 @@ public class ReservationDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         ReservationModel reservationModel = null;
         try {
-            String sql = "SELECT * FROM reservation WHERE reservationId = ?";
+            String sql = "SELECT * FROM reservations WHERE reservationId = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, reservationId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -24,7 +26,8 @@ public class ReservationDAO {
                         resultSet.getString("vehicleNo"),
                         resultSet.getString("startingDate"),
                         resultSet.getString("endingDate"),
-                        resultSet.getInt("wayPointId")
+                        resultSet.getInt("startingWaypoint"),
+                        resultSet.getInt("endingWaypoint")
                 );
             }
         } catch (Exception e) {
@@ -38,13 +41,14 @@ public class ReservationDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
         try {
-            String sql = "INSERT INTO reservation (passengerEmail, vehicleNo, startingDate, endingDate, wayPointId) VALUES (?,?,?,?,?)";
+            String sql = "INSERT INTO reservations (passengerEmail, vehicleNo, startingDate, endingDate, startingWaypoint, endingWaypoint) VALUES (?,?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, reservationModel.getPassengerEmail());
             preparedStatement.setString(2, reservationModel.getVehicleNo());
             preparedStatement.setString(3, reservationModel.getStartingDate());
             preparedStatement.setString(4, reservationModel.getEndingDate());
-            preparedStatement.setInt(5, reservationModel.getWayPointId());
+            preparedStatement.setInt(5, reservationModel.getStartingWaypoint());
+            preparedStatement.setInt(6, reservationModel.getEndingWaypoint());
             preparedStatement.executeUpdate();
             success = true;
         } catch (Exception e) {
@@ -58,7 +62,7 @@ public class ReservationDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
         try {
-            String sql = "DELETE FROM reservation WHERE reservationId = ?";
+            String sql = "DELETE FROM reservations WHERE reservationId = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, reservationModel.getReservationId());
             preparedStatement.executeUpdate();
@@ -72,21 +76,130 @@ public class ReservationDAO {
     public static boolean updateReservation(ReservationModel reservationModel) {
         System.out.println("Inside updateReservationDAO");
         Connection connection = DBConnection.getInstance().getConnection();
+        System.out.println(reservationModel.getReservationId());
         boolean success = false;
         try {
-            String sql = "UPDATE reservation SET passengerEmail = ?, vehicleNo = ?, startingDate = ?, endingDate = ?, wayPointId = ? WHERE reservationId = ?";
+            String sql = "UPDATE reservations SET passengerEmail = ?, vehicleNo = ?, startingDate = ?, endingDate = ?, startingWaypoint = ?, endingWaypoint = ? WHERE reservationId = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, reservationModel.getPassengerEmail());
             preparedStatement.setString(2, reservationModel.getVehicleNo());
             preparedStatement.setString(3, reservationModel.getStartingDate());
             preparedStatement.setString(4, reservationModel.getEndingDate());
-            preparedStatement.setInt(5, reservationModel.getWayPointId());
-            preparedStatement.setInt(6, reservationModel.getReservationId());
+            preparedStatement.setInt(5, reservationModel.getStartingWaypoint());
+            preparedStatement.setInt(6, reservationModel.getEndingWaypoint());
+            preparedStatement.setInt(7, reservationModel.getReservationId());
             preparedStatement.executeUpdate();
             success = true;
         } catch (Exception e) {
             System.out.println(e);
         }
         return success;
+    }
+
+    public static List<ReservationModel> viewAllReservations(){
+        System.out.println("Inside viewAllReservationsDAO");
+        Connection connection = DBConnection.getInstance().getConnection();
+        List<ReservationModel> reservations = null;
+        try {
+            String sql = "SELECT * FROM reservations";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                ReservationModel reservationModel = new ReservationModel(
+                        resultSet.getInt("reservationId"),
+                        resultSet.getString("passengerEmail"),
+                        resultSet.getString("vehicleNo"),
+                        resultSet.getString("startingDate"),
+                        resultSet.getString("endingDate"),
+                        resultSet.getInt("startingWaypoint"),
+                        resultSet.getInt("endingWaypoint")
+                );
+                reservations.add(reservationModel);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return reservations;
+    }
+
+    public static List<ReservationModel> getReservationsByPassenger(String passengerEmail){
+        System.out.println("Inside getReservationsByPassengerDAO");
+        Connection connection = DBConnection.getInstance().getConnection();
+        List<ReservationModel> reservations = new ArrayList<ReservationModel>();
+        try {
+            String sql = "SELECT * FROM reservations WHERE passengerEmail = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, passengerEmail);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                ReservationModel reservationModel = new ReservationModel(
+                        resultSet.getInt("reservationId"),
+                        resultSet.getString("passengerEmail"),
+                        resultSet.getString("vehicleNo"),
+                        resultSet.getString("startingDate"),
+                        resultSet.getString("endingDate"),
+                        resultSet.getInt("startingWaypoint"),
+                        resultSet.getInt("endingWaypoint")
+                );
+                reservations.add(reservationModel);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return reservations;
+    }
+
+    public static List<ReservationModel> getReservationsByOwner(String ownerEmail){
+        System.out.println("Inside getReservationsByOwnerDAO");
+        Connection connection = DBConnection.getInstance().getConnection();
+        List<ReservationModel> reservations = new ArrayList<ReservationModel>();
+        try {
+            String sql = "SELECT * FROM reservations WHERE vehicleNo IN (SELECT vehicleNo FROM vehicles WHERE ownerEmail = ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, ownerEmail);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                ReservationModel reservationModel = new ReservationModel(
+                        resultSet.getInt("reservationId"),
+                        resultSet.getString("passengerEmail"),
+                        resultSet.getString("vehicleNo"),
+                        resultSet.getString("startingDate"),
+                        resultSet.getString("endingDate"),
+                        resultSet.getInt("startingWaypoint"),
+                        resultSet.getInt("endingWaypoint")
+                );
+                reservations.add(reservationModel);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return reservations;
+    }
+
+    public static List<ReservationModel> getReservationsByVehicle(String vehicleNo){
+        System.out.println("Inside getReservationsByVehicleDAO");
+        Connection connection = DBConnection.getInstance().getConnection();
+        List<ReservationModel> reservations = new ArrayList<ReservationModel>();
+        try {
+            String sql = "SELECT * FROM reservations WHERE vehicleNo = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, vehicleNo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                ReservationModel reservationModel = new ReservationModel(
+                        resultSet.getInt("reservationId"),
+                        resultSet.getString("passengerEmail"),
+                        resultSet.getString("vehicleNo"),
+                        resultSet.getString("startingDate"),
+                        resultSet.getString("endingDate"),
+                        resultSet.getInt("startingWaypoint"),
+                        resultSet.getInt("endingWaypoint")
+                );
+                reservations.add(reservationModel);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return reservations;
     }
 }
