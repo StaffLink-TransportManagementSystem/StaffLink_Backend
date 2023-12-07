@@ -193,4 +193,39 @@ public class RequestDAO {
         }
         return requests;
     }
+
+    public static List<RequestModel> viewRequestsByPassenger(String email){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        List<RequestModel> requests = new ArrayList<>();
+        System.out.println("Inside viewAllRequests - "+email);
+        //Error occors below this statement
+        try {
+            con = connection;
+            String sql = "SELECT * FROM requests WHERE passengerEmail = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                RequestModel request = new RequestModel();
+                request.setId(resultSet.getInt("id"));
+                request.setVehicleNo(resultSet.getString("vehicleNo"));
+                request.setPassengerEmail(resultSet.getString("passengerEmail"));
+                request.setPrice(resultSet.getFloat("price"));
+                request.setStartingPoint(resultSet.getString("startingPoint"));
+                request.setEndingPoint(resultSet.getString("endingPoint"));
+                request.setType(resultSet.getString("type"));
+                request.setStatus(resultSet.getString("status"));
+
+                requests.add(request);
+            }
+            resultSet.close();
+            preparedStatement.close();
+            System.out.println("Check - "+ requests +" requests found");
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return requests;
+    }
 }

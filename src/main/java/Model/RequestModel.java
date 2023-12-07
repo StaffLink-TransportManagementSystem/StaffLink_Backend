@@ -141,4 +141,10 @@ public class RequestModel {
         return requests;
     }
 
+    public List<RequestModel> viewRequestsByPassenger(String email){
+        RequestDAO requestDAO = new RequestDAO();
+        List<RequestModel> requests = requestDAO.viewRequestsByPassenger(email);
+        return requests;
+    }
+
 }
