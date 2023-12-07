@@ -70,13 +70,7 @@ public class PassengerDAO {
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            if (connection != null) try {
-//                con.close();
-            } catch (Exception ignore) {
-            }
         }
-
 
         return success;
 //        return true;

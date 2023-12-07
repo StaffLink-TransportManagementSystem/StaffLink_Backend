@@ -33,7 +33,7 @@ public class createVehicleServelet extends HttpServlet{
             // All validations are passed then register
             if(vehicle.createVehicle()){
                 res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"message\": \"Registration successfully\"}");
+                    out.write("{\"message\": \"Registration successfully\"}");
                 System.out.println("Registration successful");
             }else{
                 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
