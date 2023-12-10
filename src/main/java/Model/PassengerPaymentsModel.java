@@ -6,6 +6,8 @@ import java.util.List;
 
 public class PassengerPaymentsModel {
     int id;
+    int requestID;
+    int reservationID;
     String passengerEmail;
     String vehicleNo;
     String date;
@@ -30,6 +32,41 @@ public class PassengerPaymentsModel {
         this.vehicleNo = vehicleNo;
         this.date = date;
         this.amount = amount;
+    }
+    public PassengerPaymentsModel(int id, String passengerEmail, String vehicleNo, String date, float amount) {
+        this.id = id;
+        this.passengerEmail = passengerEmail;
+        this.vehicleNo = vehicleNo;
+        this.date = date;
+        this.amount = amount;
+    }
+    public PassengerPaymentsModel(int id, String passengerEmail, String vehicleNo, String date, float amount, String paymentType) {
+        this.id = id;
+        this.passengerEmail = passengerEmail;
+        this.vehicleNo = vehicleNo;
+        this.date = date;
+        this.amount = amount;
+        this.paymentType = paymentType;
+    }
+    public PassengerPaymentsModel(int id, String passengerEmail, String vehicleNo, String date, float amount, String paymentType, String status) {
+        this.id = id;
+        this.passengerEmail = passengerEmail;
+        this.vehicleNo = vehicleNo;
+        this.date = date;
+        this.amount = amount;
+        this.paymentType = paymentType;
+        this.status = status;
+    }
+    public PassengerPaymentsModel(int id, int requestID, int reservationID, String passengerEmail, String vehicleNo, String date, String paymentType, float amount, String status) {
+        this.id = id;
+        this.requestID = requestID;
+        this.reservationID = reservationID;
+        this.passengerEmail = passengerEmail;
+        this.vehicleNo = vehicleNo;
+        this.date = date;
+        this.paymentType = paymentType;
+        this.amount = amount;
+        this.status = status;
     }
 
     public int getId() {
@@ -78,6 +115,22 @@ public class PassengerPaymentsModel {
 
     public void setPaymentType(String paymentType) {
         this.paymentType = paymentType;
+    }
+
+    public int getRequestID() {
+        return requestID;
+    }
+
+    public void setRequestID(int requestID) {
+        this.requestID = requestID;
+    }
+
+    public int getReservationID() {
+        return reservationID;
+    }
+
+    public void setReservationID(int reservationID) {
+        this.reservationID = reservationID;
     }
 
     public boolean createPayment(){

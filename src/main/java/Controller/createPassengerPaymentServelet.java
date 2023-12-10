@@ -43,7 +43,7 @@ public class createPassengerPaymentServelet extends HttpServlet{
         }
         catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new RuntimeException(e);  
         } finally {
             out.close();
         }
