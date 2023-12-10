@@ -28,6 +28,10 @@ public class RequestDAO {
                 request.setPrice(resultSet.getFloat("price"));
                 request.setStartingPoint(resultSet.getString("startingPoint"));
                 request.setEndingPoint(resultSet.getString("endingPoint"));
+                request.setStartingDate(resultSet.getString("startingDate"));
+                request.setEndingDate(resultSet.getString("endingDate"));
+                request.setOnTime(resultSet.getString("onTime"));
+                request.setOffTime(resultSet.getString("offTime"));
                 request.setType(resultSet.getString("type"));
                 request.setStatus(resultSet.getString("status"));
             }
@@ -52,16 +56,20 @@ public class RequestDAO {
         boolean success = false;
         try{
             System.out.println("try");
-            String sql = "INSERT INTO requests (vehicleNo,passengerEmail, price, startingPoint, endingPoint,type, status) VALUES (?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO requests (vehicleNo,passengerEmail, price, startingPoint, endingPoint, startingDate, endingDate, onTime, offTime, type, status) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 //            System.out.println("try");
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1,request.getVehicleNo());
-            preparedStatement.setString(2,request.getPassengerEmail());
-            preparedStatement.setFloat(3,request.getPrice());
-            preparedStatement.setString(4,request.getStartingPoint());
-            preparedStatement.setString(5,request.getEndingPoint());
-            preparedStatement.setString(6,request.getType());
-            preparedStatement.setString(7,request.getStatus());
+            preparedStatement.setString(1, request.getVehicleNo());
+            preparedStatement.setString(2, request.getPassengerEmail());
+            preparedStatement.setFloat(3, request.getPrice());
+            preparedStatement.setString(4, request.getStartingPoint());
+            preparedStatement.setString(5, request.getEndingPoint());
+            preparedStatement.setString(6, request.getStartingDate());
+            preparedStatement.setString(7, request.getEndingDate());
+            preparedStatement.setString(8, request.getOnTime());
+            preparedStatement.setString(9, request.getOffTime());
+            preparedStatement.setString(10, request.getType());
+            preparedStatement.setString(11, request.getStatus());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
 
@@ -94,17 +102,21 @@ public class RequestDAO {
         try{
             con = connection;
             System.out.println("trydlxa");
-            String sql = "UPDATE requests SET vehicleNo = ?, passengerEmail = ?, price = ?, startingPoint = ?, endingPoint = ?, type = ?, status = ? WHERE vehicleNo = ? AND passengerEmail = ?";
+            String sql = "UPDATE requests SET vehicleNo = ?, passengerEmail = ?, price = ?, startingPoint = ?, endingPoint = ?, startingDate = ?, endingDate = ?, onTime = ?, offTime = ?, type = ?, status = ? WHERE vehicleNo = ? AND passengerEmail = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, request.getVehicleNo());
             preparedStatement.setString(2, request.getPassengerEmail());
             preparedStatement.setFloat(3, request.getPrice());
             preparedStatement.setString(4, request.getStartingPoint());
             preparedStatement.setString(5, request.getEndingPoint());
-            preparedStatement.setString(6, request.getType());
-            preparedStatement.setString(7, request.getStatus());
-            preparedStatement.setString(8, request.getVehicleNo());
-            preparedStatement.setString(9, request.getPassengerEmail());
+            preparedStatement.setString(6, request.getStartingDate());
+            preparedStatement.setString(7, request.getEndingDate());
+            preparedStatement.setString(8, request.getOnTime());
+            preparedStatement.setString(9, request.getOffTime());
+            preparedStatement.setString(10, request.getType());
+            preparedStatement.setString(11, request.getStatus());
+            preparedStatement.setString(12, request.getVehicleNo());
+            preparedStatement.setString(13, request.getPassengerEmail());
 
             int temp = preparedStatement.executeUpdate();
 
@@ -179,6 +191,10 @@ public class RequestDAO {
                 request.setPrice(resultSet.getFloat("price"));
                 request.setStartingPoint(resultSet.getString("startingPoint"));
                 request.setEndingPoint(resultSet.getString("endingPoint"));
+                request.setStartingDate(resultSet.getString("startingDate"));
+                request.setEndingDate(resultSet.getString("endingDate"));
+                request.setOnTime(resultSet.getString("onTime"));
+                request.setOffTime(resultSet.getString("offTime"));
                 request.setType(resultSet.getString("type"));
                 request.setStatus(resultSet.getString("status"));
 
@@ -214,6 +230,10 @@ public class RequestDAO {
                 request.setPrice(resultSet.getFloat("price"));
                 request.setStartingPoint(resultSet.getString("startingPoint"));
                 request.setEndingPoint(resultSet.getString("endingPoint"));
+                request.setStartingDate(resultSet.getString("startingDate"));
+                request.setEndingDate(resultSet.getString("endingDate"));
+                request.setOnTime(resultSet.getString("onTime"));
+                request.setOffTime(resultSet.getString("offTime"));
                 request.setType(resultSet.getString("type"));
                 request.setStatus(resultSet.getString("status"));
 
