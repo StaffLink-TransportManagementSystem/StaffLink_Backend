@@ -16,14 +16,16 @@ public class PassengerPaymentsDAO {
         boolean success = false;
 
         try {
-            String sql = "INSERT INTO passengerPayments (passengerEmail, vehicleNo, date, paymentType, amount, status) VALUES (?,?,?,?,?,?)";
+            String sql = "INSERT INTO passengerPayments (requestID, reservationID, passengerEmail, vehicleNo, date, paymentType, amount, status) VALUES (?,?,?,?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, passengerPayments.getPassengerEmail());
-            preparedStatement.setString(2, passengerPayments.getVehicleNo());
-            preparedStatement.setString(3, passengerPayments.getDate());
-            preparedStatement.setString(4, passengerPayments.getPaymentType());
-            preparedStatement.setFloat(5, passengerPayments.getAmount());
-            preparedStatement.setString(6, passengerPayments.getStatus());
+            preparedStatement.setInt(1, passengerPayments.getRequestID());
+            preparedStatement.setInt(2, passengerPayments.getReservationID());
+            preparedStatement.setString(3, passengerPayments.getPassengerEmail());
+            preparedStatement.setString(4, passengerPayments.getVehicleNo());
+            preparedStatement.setString(5, passengerPayments.getDate());
+            preparedStatement.setString(6, passengerPayments.getPaymentType());
+            preparedStatement.setFloat(7, passengerPayments.getAmount());
+            preparedStatement.setString(8, passengerPayments.getStatus());
             int temp = preparedStatement.executeUpdate();
             System.out.println(temp);
             if (temp == 1) {
@@ -40,15 +42,17 @@ public class PassengerPaymentsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
         try {
-            String sql = "UPDATE passengerPayments SET passengerEmail = ?, vehicleNo = ?, date = ?, paymentType = ?, amount = ?, status = ? WHERE id = ?";
+            String sql = "UPDATE passengerPayments SET requestID = ?, reservationID = ?. passengerEmail = ?, vehicleNo = ?, date = ?, paymentType = ?, amount = ?, status = ? WHERE id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, passengerPayments.getPassengerEmail());
-            preparedStatement.setString(2, passengerPayments.getVehicleNo());
-            preparedStatement.setString(3, passengerPayments.getDate());
-            preparedStatement.setString(4, passengerPayments.getPaymentType());
-            preparedStatement.setFloat(5, passengerPayments.getAmount());
-            preparedStatement.setInt(6, passengerPayments.getId());
-            preparedStatement.setString(7, passengerPayments.getStatus());
+            preparedStatement.setInt(1, passengerPayments.getRequestID());
+            preparedStatement.setInt(2, passengerPayments.getReservationID());
+            preparedStatement.setString(3, passengerPayments.getPassengerEmail());
+            preparedStatement.setString(4, passengerPayments.getVehicleNo());
+            preparedStatement.setString(5, passengerPayments.getDate());
+            preparedStatement.setString(6, passengerPayments.getPaymentType());
+            preparedStatement.setFloat(7, passengerPayments.getAmount());
+            preparedStatement.setString(8, passengerPayments.getStatus());
+            preparedStatement.setInt(9, passengerPayments.getId());
             int temp = preparedStatement.executeUpdate();
             if (temp == 1) {
                 success = true;
@@ -70,6 +74,8 @@ public class PassengerPaymentsDAO {
             if (preparedStatement.getResultSet().next()) {
                 passengerPayments = new PassengerPaymentsModel();
                 passengerPayments.setId(preparedStatement.getResultSet().getInt("id"));
+                passengerPayments.setRequestID(preparedStatement.getResultSet().getInt("requestID"));
+                passengerPayments.setReservationID(preparedStatement.getResultSet().getInt("reservationID"));
                 passengerPayments.setPassengerEmail(preparedStatement.getResultSet().getString("passengerEmail"));
                 passengerPayments.setVehicleNo(preparedStatement.getResultSet().getString("vehicleNo"));
                 passengerPayments.setDate(preparedStatement.getResultSet().getString("date"));
@@ -96,6 +102,8 @@ public class PassengerPaymentsDAO {
                 do{
                     PassengerPaymentsModel passengerPayment = new PassengerPaymentsModel();
                     passengerPayment.setId(preparedStatement.getResultSet().getInt("id"));
+                    passengerPayment.setRequestID(preparedStatement.getResultSet().getInt("requestID"));
+                    passengerPayment.setReservationID(preparedStatement.getResultSet().getInt("reservationID"));
                     passengerPayment.setPassengerEmail(preparedStatement.getResultSet().getString("passengerEmail"));
                     passengerPayment.setVehicleNo(preparedStatement.getResultSet().getString("vehicleNo"));
                     passengerPayment.setDate(preparedStatement.getResultSet().getString("date"));
@@ -143,6 +151,8 @@ public class PassengerPaymentsDAO {
                 do{
                     PassengerPaymentsModel passengerPayment = new PassengerPaymentsModel();
                     passengerPayment.setId(preparedStatement.getResultSet().getInt("id"));
+                    passengerPayment.setRequestID(preparedStatement.getResultSet().getInt("requestID"));
+                    passengerPayment.setReservationID(preparedStatement.getResultSet().getInt("reservationID"));
                     passengerPayment.setPassengerEmail(preparedStatement.getResultSet().getString("passengerEmail"));
                     passengerPayment.setVehicleNo(preparedStatement.getResultSet().getString("vehicleNo"));
                     passengerPayment.setDate(preparedStatement.getResultSet().getString("date"));
@@ -172,6 +182,8 @@ public class PassengerPaymentsDAO {
                 do{
                     PassengerPaymentsModel passengerPayment = new PassengerPaymentsModel();
                     passengerPayment.setId(preparedStatement.getResultSet().getInt("id"));
+                    passengerPayment.setRequestID(preparedStatement.getResultSet().getInt("requestID"));
+                    passengerPayment.setReservationID(preparedStatement.getResultSet().getInt("reservationID"));
                     passengerPayment.setPassengerEmail(preparedStatement.getResultSet().getString("passengerEmail"));
                     passengerPayment.setVehicleNo(preparedStatement.getResultSet().getString("vehicleNo"));
                     passengerPayment.setDate(preparedStatement.getResultSet().getString("date"));
