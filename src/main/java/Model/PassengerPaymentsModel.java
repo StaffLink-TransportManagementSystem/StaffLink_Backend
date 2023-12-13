@@ -48,8 +48,17 @@ public class PassengerPaymentsModel {
         this.amount = amount;
         this.paymentType = paymentType;
     }
-    public PassengerPaymentsModel(int id, String passengerEmail, String vehicleNo, String date, float amount, String paymentType, String status) {
-        this.id = id;
+//    public PassengerPaymentsModel(int id, String passengerEmail, String vehicleNo, String date, float amount, String paymentType, String status) {
+//        this.id = id;
+//        this.passengerEmail = passengerEmail;
+//        this.vehicleNo = vehicleNo;
+//        this.date = date;
+//        this.amount = amount;
+//        this.paymentType = paymentType;
+//        this.status = status;
+//    }
+    public PassengerPaymentsModel(int requestID, String passengerEmail, String vehicleNo, String date, float amount, String paymentType, String status) {
+        this.requestID = requestID;
         this.passengerEmail = passengerEmail;
         this.vehicleNo = vehicleNo;
         this.date = date;
@@ -67,6 +76,10 @@ public class PassengerPaymentsModel {
         this.paymentType = paymentType;
         this.amount = amount;
         this.status = status;
+    }
+    public PassengerPaymentsModel(String passengerEmail, String vehicleNo) {
+        this.passengerEmail = passengerEmail;
+        this.vehicleNo = vehicleNo;
     }
 
     public int getId() {

@@ -196,5 +196,10 @@ public class RequestModel {
         List<RequestModel> requests = requestDAO.viewRequestsByPassenger(email);
         return requests;
     }
+    public RequestModel getRequest(String vehicleNo, String passengerEmail){
+        RequestDAO requestDAO = new RequestDAO();
+        RequestModel request = requestDAO.getRequest(vehicleNo,passengerEmail);
+        return request;
+    }
 
 }

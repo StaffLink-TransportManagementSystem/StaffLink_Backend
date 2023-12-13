@@ -19,7 +19,9 @@ public class PassengerPaymentsDAO {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         System.out.println(dtf.format(now));
-        if(passengerPayments.getPaymentType().toLowerCase() == "card"){
+        String paymentType = passengerPayments.getPaymentType().toLowerCase();
+        System.out.println(paymentType);
+        if(paymentType.equals("card")){
             passengerPayments.setStatus("Paid");
         }
 
