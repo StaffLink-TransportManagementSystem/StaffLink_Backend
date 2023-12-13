@@ -248,4 +248,28 @@ public class RequestDAO {
         }
         return requests;
     }
+    public static boolean updatePayment(int id, String status) {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+//        System.out.println(java.time.LocalTime.now());
+        try {
+            con = connection;
+            String sql = "UPDATE requests SET status = ? WHERE id = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, status);
+            preparedStatement.setInt(2, id);
+
+            int temp = preparedStatement.executeUpdate();
+
+            if (temp == 1) {
+                success = true;
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return success;
+        }
+    }
 }
