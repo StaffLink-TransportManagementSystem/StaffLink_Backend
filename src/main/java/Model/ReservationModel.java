@@ -13,6 +13,7 @@ public class ReservationModel {
     private int startingWaypoint;
     private int endingWaypoint;
     private String status;
+    private int deleteState;
 
     public String getStatus() {
         return status;
@@ -74,6 +75,17 @@ public class ReservationModel {
         this.startingWaypoint = startingWaypoint;
         this.endingWaypoint = endingWaypoint;
         this.status = status;
+    }
+    public ReservationModel(int reservationId, String passengerEmail, String vehicleNo, String startingDate, String endingDate, int startingWaypoint, int endingWaypoint, String status, int deleteState) {
+        this.reservationId = reservationId;
+        this.passengerEmail = passengerEmail;
+        this.vehicleNo = vehicleNo;
+        this.startingDate = startingDate;
+        this.endingDate = endingDate;
+        this.startingWaypoint = startingWaypoint;
+        this.endingWaypoint = endingWaypoint;
+        this.status = status;
+        this.deleteState = deleteState;
     }
     public ReservationModel(int reservationId){
         this.reservationId = reservationId;
@@ -143,6 +155,14 @@ public class ReservationModel {
     }
     public boolean updateReservation(){
         return ReservationDAO.updateReservation(this);
+    }
+
+    public int getDeleteState() {
+        return deleteState;
+    }
+
+    public void setDeleteState(int deleteState) {
+        this.deleteState = deleteState;
     }
 
     public static List<ReservationModel> viewAllReservations(){

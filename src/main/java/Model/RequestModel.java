@@ -17,6 +17,7 @@ public class RequestModel {
     private String offTime;
     private String type;
     private String status;
+    private int deleteState;
     public RequestModel() {
     }
 
@@ -142,6 +143,14 @@ public class RequestModel {
         this.offTime = offTime;
     }
 
+    public int getDeleteState() {
+        return deleteState;
+    }
+
+    public void setDeleteState(int deleteState) {
+        this.deleteState = deleteState;
+    }
+
     public RequestModel(String vehicleNo, String passengerEmail, float price, String startingPoint, String endingPoint, String type) {
         this.vehicleNo = vehicleNo;
         this.passengerEmail = passengerEmail;
@@ -165,6 +174,17 @@ public class RequestModel {
     }
     public RequestModel(int id) {
         this.id = id;
+    }
+    public RequestModel(String vehicleNo, String passengerEmail, float price, String startingPoint, String endingPoint, String type, String status, int id, int deleteState) {
+        this.vehicleNo = vehicleNo;
+        this.passengerEmail = passengerEmail;
+        this.price = price;
+        this.startingPoint = startingPoint;
+        this.endingPoint = endingPoint;
+        this.type = type;
+        this.status = status;
+        this.id = id;
+        this.deleteState = deleteState;
     }
 
 

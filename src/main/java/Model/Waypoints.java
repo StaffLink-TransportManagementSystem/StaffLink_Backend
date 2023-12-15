@@ -13,6 +13,7 @@ public class Waypoints {
     private int orderNo;
     private String arrivalTime;
     private String deadlineTime;
+    private int deleteState;
     public Waypoints() {
     }
 
@@ -78,6 +79,14 @@ public class Waypoints {
         this.reservationId = reservationId;
     }
 
+    public int getDeleteState() {
+        return deleteState;
+    }
+
+    public void setDeleteState(int deleteState) {
+        this.deleteState = deleteState;
+    }
+
     public void Waypoints(int waypointId, String reservationId, int routeNo, String location, int orderNo, String arrivalTime, String deadlineTime){
         this.waypointId = waypointId;
         this.reservationId = reservationId;
@@ -97,6 +106,16 @@ public class Waypoints {
         this.orderNo = orderNo;
         this.arrivalTime = arrivalTime;
         this.deadlineTime = deadlineTime;
+    }
+    public void Waypoints(int waypointId, String reservationId, int routeNo, String location, int orderNo, String arrivalTime, String deadlineTime, int deleteState){
+        this.waypointId = waypointId;
+        this.reservationId = reservationId;
+        this.routeNo = routeNo;
+        this.location = location;
+        this.orderNo = orderNo;
+        this.arrivalTime = arrivalTime;
+        this.deadlineTime = deadlineTime;
+        this.deleteState = deleteState;
     }
 
     public void Waypoints(String location, String deadlineTime){

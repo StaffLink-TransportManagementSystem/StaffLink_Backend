@@ -14,6 +14,7 @@ public class PassengerPaymentsModel {
     String paymentType; //card or cash
     float amount;
     String status;
+    int deleteState;
 
     public String getStatus() {
         return status;
@@ -48,15 +49,20 @@ public class PassengerPaymentsModel {
         this.amount = amount;
         this.paymentType = paymentType;
     }
-//    public PassengerPaymentsModel(int id, String passengerEmail, String vehicleNo, String date, float amount, String paymentType, String status) {
-//        this.id = id;
-//        this.passengerEmail = passengerEmail;
-//        this.vehicleNo = vehicleNo;
-//        this.date = date;
-//        this.amount = amount;
-//        this.paymentType = paymentType;
-//        this.status = status;
-//    }
+
+    public PassengerPaymentsModel(int id, int requestID, int reservationID, String passengerEmail, String vehicleNo, String date, String paymentType, float amount, String status, int deleteState) {
+        this.id = id;
+        this.requestID = requestID;
+        this.reservationID = reservationID;
+        this.passengerEmail = passengerEmail;
+        this.vehicleNo = vehicleNo;
+        this.date = date;
+        this.paymentType = paymentType;
+        this.amount = amount;
+        this.status = status;
+        this.deleteState = deleteState;
+    }
+
     public PassengerPaymentsModel(int requestID, String passengerEmail, String vehicleNo, String date, float amount, String paymentType, String status) {
         this.requestID = requestID;
         this.passengerEmail = passengerEmail;
@@ -112,6 +118,14 @@ public class PassengerPaymentsModel {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public int getDeleteState() {
+        return deleteState;
+    }
+
+    public void setDeleteState(int deleteState) {
+        this.deleteState = deleteState;
     }
 
     public float getAmount() {
