@@ -10,6 +10,7 @@ public class AbsentModel {
     String daysOfAbsent;
     String startingDate;
     String endingDate;
+    int deleteState;
 
     public int getId() {
         return id;
@@ -57,6 +58,49 @@ public class AbsentModel {
 
     public void setEndingDate(String endingDate) {
         this.endingDate = endingDate;
+    }
+    public int getDeleteState() {
+        return deleteState;
+    }
+
+    public void setDeleteState(int deleteState) {
+        this.deleteState = deleteState;
+    }
+    public AbsentModel() {
+    }
+    public AbsentModel(String passengerEmail, String vehicleNo, String daysOfAbsent, String startingDate, String endingDate) {
+        this.passengerEmail = passengerEmail;
+        this.vehicleNo = vehicleNo;
+        this.daysOfAbsent = daysOfAbsent;
+        this.startingDate = startingDate;
+        this.endingDate = endingDate;
+    }
+    public AbsentModel(int id, String passengerEmail, String vehicleNo, String daysOfAbsent, String startingDate, String endingDate) {
+        this.id = id;
+        this.passengerEmail = passengerEmail;
+        this.vehicleNo = vehicleNo;
+        this.daysOfAbsent = daysOfAbsent;
+        this.startingDate = startingDate;
+        this.endingDate = endingDate;
+    }
+    public AbsentModel(int id){
+        this.id = id;
+    }
+    public AbsentModel(String vehicleNo){
+        this.vehicleNo = vehicleNo;
+    }
+    public AbsentModel(String passengerEmail, String vehicleNo){
+        this.passengerEmail = passengerEmail;
+        this.vehicleNo = vehicleNo;
+    }
+    public AbsentModel(int id, String passengerEmail, String vehicleNo, String daysOfAbsent, String startingDate, String endingDate, int deleteState) {
+        this.id = id;
+        this.passengerEmail = passengerEmail;
+        this.vehicleNo = vehicleNo;
+        this.daysOfAbsent = daysOfAbsent;
+        this.startingDate = startingDate;
+        this.endingDate = endingDate;
+        this.deleteState = deleteState;
     }
 
     public boolean addAbsent(){

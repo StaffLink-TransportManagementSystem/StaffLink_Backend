@@ -27,9 +27,11 @@ public class passengerCardPayment extends HttpServlet {
             RequestModel request = gson.fromJson(bufferedReader, RequestModel.class);
             request = request.getRequest(request.getVehicleNo(), request.getPassengerEmail());
             RequestDAO requestDAO = new RequestDAO();
-            boolean requestStatus = requestDAO.updatePayment(request.getId(), "Paid");
+//            boolean requestStatus = true;
+            boolean requestStatus = requestDAO.updatePayment(request.getId(), "Reserved");
 
             PassengerPaymentsModel passengerPayment = new PassengerPaymentsModel(request.getId(), request.getPassengerEmail(), request.getVehicleNo(), request.getStartingDate(), request.getPrice(), "Card", "Paid");
+//            boolean passengerPaymentStatus = true;
             boolean passengerPaymentStatus = passengerPayment.createPayment();
 
             // All validations are passed then register
@@ -39,7 +41,7 @@ public class passengerCardPayment extends HttpServlet {
                 System.out.println("Payment successful");
             }else{
                 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.write("{\"message\": \"Payment unsuccessfully\"}");
+                    out.write("{\"message\": \"Payment unsuccessfully\"}");
                 System.out.println("Payment incorrect");
             }
         }

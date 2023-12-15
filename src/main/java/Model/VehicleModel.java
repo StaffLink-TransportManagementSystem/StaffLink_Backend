@@ -20,6 +20,7 @@ public class VehicleModel {
     private String startingPoint;
     private String endingPoint;
     private String trips;
+    private int deleteState;
 
     public VehicleModel() {
     }
@@ -36,6 +37,35 @@ public class VehicleModel {
         this.startingPoint = startingPoint;
         this.endingPoint = endingPoint;
         this.trips = trips;
+    }
+    public VehicleModel(int id, String ownerEmail, String vehicleNo, String vehicleBrand, String regNo, String driverEmail, String model, String type, int seatsCount, String startingPoint, String endingPoint, String trips) {
+        this.id = id;
+        this.ownerEmail = ownerEmail;
+        this.vehicleNo = vehicleNo;
+        this.vehicleBrand = vehicleBrand;
+        this.regNo = regNo;
+        this.driverEmail = driverEmail;
+        this.model = model;
+        this.type = type;
+        this.seatsCount = seatsCount;
+        this.startingPoint = startingPoint;
+        this.endingPoint = endingPoint;
+        this.trips = trips;
+    }
+    public VehicleModel(int id, String ownerEmail, String vehicleNo, String vehicleBrand, String regNo, String driverEmail, String model, String type, int seatsCount, String startingPoint, String endingPoint, String trips,int deleteState) {
+        this.id = id;
+        this.ownerEmail = ownerEmail;
+        this.vehicleNo = vehicleNo;
+        this.vehicleBrand = vehicleBrand;
+        this.regNo = regNo;
+        this.driverEmail = driverEmail;
+        this.model = model;
+        this.type = type;
+        this.seatsCount = seatsCount;
+        this.startingPoint = startingPoint;
+        this.endingPoint = endingPoint;
+        this.trips = trips;
+        this.deleteState = deleteState;
     }
 
     public VehicleModel(String vehicleNo) {
@@ -136,6 +166,14 @@ public class VehicleModel {
 
     public void setTrips(String trips) {
         this.trips = trips;
+    }
+
+    public int getDeleteState() {
+        return deleteState;
+    }
+
+    public void setDeleteState(int deleteState) {
+        this.deleteState = deleteState;
     }
 
     public boolean createVehicle(){

@@ -13,7 +13,38 @@ public class RouteModel {
     private String endingLocation;
     private String startingTime;
     private String endingTime;
+    private int deleteState;
 
+    public RouteModel() {
+    }
+    public RouteModel(String vehicleNo, String style, String staringLocation, String endingLocation, String startingTime, String endingTime) {
+        this.vehicleNo = vehicleNo;
+        this.style = style;
+        this.staringLocation = staringLocation;
+        this.endingLocation = endingLocation;
+        this.startingTime = startingTime;
+        this.endingTime = endingTime;
+    }
+    public RouteModel(int routeNo, String vehicleNo, String style, String staringLocation, String endingLocation, String startingTime, String endingTime) {
+        this.routeNo = routeNo;
+        this.vehicleNo = vehicleNo;
+        this.style = style;
+        this.staringLocation = staringLocation;
+        this.endingLocation = endingLocation;
+        this.startingTime = startingTime;
+        this.endingTime = endingTime;
+    }
+
+    public RouteModel(int routeNo, String vehicleNo, String style, String staringLocation, String endingLocation, String startingTime, String endingTime, int deleteState) {
+        this.routeNo = routeNo;
+        this.vehicleNo = vehicleNo;
+        this.style = style;
+        this.staringLocation = staringLocation;
+        this.endingLocation = endingLocation;
+        this.startingTime = startingTime;
+        this.endingTime = endingTime;
+        this.deleteState = deleteState;
+    }
     public int getRouteNo() {
         return routeNo;
     }
@@ -68,6 +99,14 @@ public class RouteModel {
 
     public void setEndingTime(String endingTime) {
         this.endingTime = endingTime;
+    }
+
+    public int getDeleteState() {
+        return deleteState;
+    }
+
+    public void setDeleteState(int deleteState) {
+        this.deleteState = deleteState;
     }
 
     public boolean createRoute(){

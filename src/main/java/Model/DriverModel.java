@@ -16,6 +16,7 @@ public class DriverModel {
     private String contact;
     private String password;
     private String ownerEmail;
+    private int deleteState;
 
 
     public DriverModel(String name, String email, String NIC,int age, String contactNo, String password,String ownerEmail) {
@@ -34,6 +35,59 @@ public class DriverModel {
 
     public DriverModel() {
 
+    }
+    public DriverModel(int id, String name, String email, String NIC,int age, String contactNo, String password,String ownerEmail) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.NIC = NIC;
+        this.age = age;
+        this.contact = contactNo;
+        this.password = password;
+        this.ownerEmail = ownerEmail;
+    }
+    public DriverModel(int id, String name, String email, String NIC,int age, String contactNo,String ownerEmail) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.NIC = NIC;
+        this.age = age;
+        this.contact = contactNo;
+        this.ownerEmail = ownerEmail;
+    }
+    public DriverModel(String name, String email, String NIC,int age, String contactNo,String ownerEmail) {
+        this.name = name;
+        this.email = email;
+        this.NIC = NIC;
+        this.age = age;
+        this.contact = contactNo;
+        this.ownerEmail = ownerEmail;
+    }
+    public DriverModel(String name, String email, String NIC,int age, String contactNo) {
+        this.name = name;
+        this.email = email;
+        this.NIC = NIC;
+        this.age = age;
+        this.contact = contactNo;
+    }
+    public DriverModel(int id, String name, String email, String NIC,int age, String contactNo) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.NIC = NIC;
+        this.age = age;
+        this.contact = contactNo;
+    }
+    public DriverModel(int id, String name, String email, String NIC,int age, String contactNo, String password,String ownerEmail,int deleteState) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.NIC = NIC;
+        this.age = age;
+        this.contact = contactNo;
+        this.password = password;
+        this.ownerEmail = ownerEmail;
+        this.deleteState = deleteState;
     }
 
 
@@ -58,6 +112,18 @@ public class DriverModel {
     }
     public void setOwnerEmail(String ownerEmail) {
         this.ownerEmail = ownerEmail;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public int getDeleteState() {
+        return deleteState;
+    }
+
+    public void setDeleteState(int deleteState) {
+        this.deleteState = deleteState;
     }
 
     public int getId() {

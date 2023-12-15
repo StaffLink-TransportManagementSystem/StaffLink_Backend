@@ -20,6 +20,7 @@ public class PassengerModel {
     private Time offTime;
     private Boolean upAndDown; //up and down passenger or not
     private String password;
+    private int deleteState;
     public PassengerModel() {
     }
 
@@ -48,6 +49,37 @@ public class PassengerModel {
         this.offTime = offTime;
         this.upAndDown = upAndDown;
         this.password = password;
+    }
+    public PassengerModel(int id, String name, String email, String NIC, String address, String contactNo, String homeLocation, String workLocation, String type, Time onTime, Time offTime, Boolean upAndDown, String password) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.NIC = NIC;
+        this.address = address;
+        this.contactNo = contactNo;
+        this.homeLocation = homeLocation;
+        this.workLocation = workLocation;
+        this.type = type;
+        this.onTime = onTime;
+        this.offTime = offTime;
+        this.upAndDown = upAndDown;
+        this.password = password;
+    }
+    public PassengerModel(int id, String name, String email, String NIC, String address, String contactNo, String homeLocation, String workLocation, String type, Time onTime, Time offTime, Boolean upAndDown, String password, int deleteState) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.NIC = NIC;
+        this.address = address;
+        this.contactNo = contactNo;
+        this.homeLocation = homeLocation;
+        this.workLocation = workLocation;
+        this.type = type;
+        this.onTime = onTime;
+        this.offTime = offTime;
+        this.upAndDown = upAndDown;
+        this.password = password;
+        this.deleteState = deleteState;
     }
 
     public void setId(int id) {
@@ -89,9 +121,15 @@ public class PassengerModel {
     public void setPassword(String password) {
         this.password = password;
     }
-//    public void setId(int id) {
-//        this.id = id;
-//    }
+
+    public int getDeleteState() {
+        return deleteState;
+    }
+
+    public void setDeleteState(int deleteState) {
+        this.deleteState = deleteState;
+    }
+
     public int getId() {
         return id;
     }

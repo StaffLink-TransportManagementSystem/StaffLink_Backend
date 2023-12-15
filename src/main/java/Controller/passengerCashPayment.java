@@ -27,7 +27,7 @@ public class passengerCashPayment extends HttpServlet {
             RequestModel request = gson.fromJson(bufferedReader, RequestModel.class);
             request = request.getRequest(request.getVehicleNo(), request.getPassengerEmail());
             RequestDAO requestDAO = new RequestDAO();
-            boolean requestStatus = requestDAO.updatePayment(request.getId(), "Pending");
+            boolean requestStatus = requestDAO.updatePayment(request.getId(), "Reserved");
 
             PassengerPaymentsModel passengerPayment = new PassengerPaymentsModel(request.getId(), request.getPassengerEmail(), request.getVehicleNo(), request.getStartingDate(), request.getPrice(), "Cash", "Pending");
             boolean passengerPaymentStatus = passengerPayment.createPayment();
