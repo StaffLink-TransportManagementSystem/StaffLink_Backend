@@ -15,7 +15,7 @@ public class OwnerDAO {
         OwnerModel owner = new OwnerModel();
 
         try{
-            String sql = "SELECT * FROM owners WHERE email = ?";
+            String sql = "SELECT * FROM owners WHERE email = ? AND deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,email);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -90,7 +90,7 @@ public class OwnerDAO {
         System.out.println("hello update owner");
         try{
             con = connection;
-            String sql = "UPDATE owners SET name = ?,email = ?,NIC = ? WHERE email = ?";
+            String sql = "UPDATE owners SET name = ?,email = ?,NIC = ? WHERE email = ? AND deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,owner.getName());
             preparedStatement.setString(2,owner.getEmail());
@@ -125,6 +125,34 @@ public class OwnerDAO {
         boolean success = false;
         try{
             con = connection;
+            String sql = "UPDATE owners SET deleteState = 1 WHERE email = ? AND deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1,email);
+            int x = preparedStatement.executeUpdate();
+//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if(x != 0){
+                success = true;
+            }
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (con != null) try {
+//                con.close();
+            } catch (Exception ignore) {
+            }
+        }
+        return success;
+//        return passenger;
+    }
+
+    public static boolean deleteOwnerPermernent(String email){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+        try{
+            con = connection;
             String sql = "DELETE FROM owners WHERE email = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1,email);
@@ -153,7 +181,7 @@ public class OwnerDAO {
         List<OwnerModel> owners = new ArrayList<>();
         try{
             con = connection;
-            String sql = "SELECT * FROM owners";
+            String sql = "SELECT * FROM owners WHERE deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){

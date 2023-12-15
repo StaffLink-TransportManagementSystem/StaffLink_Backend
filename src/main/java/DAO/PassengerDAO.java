@@ -15,7 +15,7 @@ public class PassengerDAO {
         PassengerModel passenger = new PassengerModel();
 
         try{
-            String sql = "SELECT * FROM passengers WHERE email = ?";
+            String sql = "SELECT * FROM passengers WHERE email = ? AND deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,email);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -82,7 +82,7 @@ public class PassengerDAO {
         boolean success = false;
         try{
             con = connection;
-            String sql = "UPDATE passengers SET name = ?,email = ?,NIC = ?,password = ? WHERE email = ?";
+            String sql = "UPDATE passengers SET name = ?,email = ?,NIC = ?,password = ? WHERE email = ? AND deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,passenger.getName());
             preparedStatement.setString(2,passenger.getEmail());
@@ -117,6 +117,34 @@ public class PassengerDAO {
         boolean success = false;
         try{
             con = connection;
+            String sql = "UPDATE passengers SET deleteState = 1 WHERE email = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1,email);
+            int x = preparedStatement.executeUpdate();
+//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if(x != 0){
+                success = true;
+            }
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (con != null) try {
+//                con.close();
+            } catch (Exception ignore) {
+            }
+        }
+        return success;
+//        return passenger;
+    }
+
+    public static boolean deletePassengerPermenent(String email){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+        try{
+            con = connection;
             String sql = "DELETE FROM passengers WHERE email = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1,email);
@@ -146,7 +174,7 @@ public class PassengerDAO {
         List<PassengerModel> passengers = new ArrayList<>();
         try{
             con = connection;
-            String sql = "SELECT * FROM passengers";
+            String sql = "SELECT * FROM passengers WHERE deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
@@ -175,7 +203,7 @@ public class PassengerDAO {
         List<PassengerModel> passengers = new ArrayList<>();
         try{
             con = connection;
-            String sql = "SELECT * FROM passengers WHERE email = ?";
+            String sql = "SELECT * FROM passengers WHERE email = ? AND deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1,email);
             ResultSet resultSet = preparedStatement.executeQuery();

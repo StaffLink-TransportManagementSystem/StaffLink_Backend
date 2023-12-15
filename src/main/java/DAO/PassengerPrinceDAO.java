@@ -61,7 +61,7 @@ public class PassengerPrinceDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         PassengerPrice passengerPrice = new PassengerPrice();
         try {
-            String sql = "SELECT * FROM passengerprice WHERE Date = ?";
+            String sql = "SELECT * FROM passengerprice WHERE Date = ? AND deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, today());
             preparedStatement.executeUpdate();
@@ -71,6 +71,24 @@ public class PassengerPrinceDAO {
         return passengerPrice;
     }
     public static boolean deletePassengerPrice(PassengerPrice passengerPrice) {
+        System.out.println("Inside deletePassengerPrice");
+        Connection connection = DBConnection.getInstance().getConnection();
+        boolean success = false;
+
+        try {
+            String sql = "DELETE FROM passengerprice WHERE Date = ? AND deleteState = 0";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, today());
+            preparedStatement.executeUpdate();
+            success = true;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return success;
+    }
+
+    public static boolean deletePassengerPricePermenent(PassengerPrice passengerPrice) {
         System.out.println("Inside deletePassengerPrice");
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
