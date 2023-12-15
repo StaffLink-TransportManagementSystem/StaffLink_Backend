@@ -14,7 +14,7 @@ public class VehicleDAO {
         VehicleModel vehicle = new VehicleModel();
 
         try{
-            String sql = "SELECT * FROM vehicles WHERE vehicleNo = ?";
+            String sql = "SELECT * FROM vehicles WHERE vehicleNo = ? && deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,vehicleNo);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -101,7 +101,7 @@ public class VehicleDAO {
         try{
             con = connection;
             System.out.println("trydlxa");
-            String sql = "UPDATE vehicles SET ownerEmail = ?, vehicleNo = ?, vehicleBrand = ?, regNo = ?, driverEmail = ?, startingPoint=?,endingPoint=?,trips=?,model=?,type=?,seatsCount=? WHERE vehicleNo = ?";
+            String sql = "UPDATE vehicles SET ownerEmail = ?, vehicleNo = ?, vehicleBrand = ?, regNo = ?, driverEmail = ?, startingPoint=?,endingPoint=?,trips=?,model=?,type=?,seatsCount=? WHERE vehicleNo = ? && deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,vehicle.getOwnerEmail());
             preparedStatement.setString(2,vehicle.getVehicleNo());
@@ -146,6 +146,34 @@ public class VehicleDAO {
         boolean success = false;
         try{
             con = connection;
+            String sql = "UPDATE vehicles SET deleteState = 1 WHERE vehicleNo = ? && deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1,VehicleNo);
+            int x = preparedStatement.executeUpdate();
+//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if(x != 0){
+                success = true;
+            }
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (con != null) try {
+//                con.close();
+            } catch (Exception ignore) {
+            }
+        }
+        return success;
+//        return passenger;
+    }
+
+    public static boolean deleteVehiclePermanent(String VehicleNo){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+        try{
+            con = connection;
             String sql = "DELETE FROM vehicles WHERE vehicleNo = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1,VehicleNo);
@@ -175,7 +203,7 @@ public class VehicleDAO {
         List<VehicleModel> vehicles = new ArrayList<>();
         try{
             con = connection;
-            String sql = "SELECT * FROM vehicles";
+            String sql = "SELECT * FROM vehicles WHERE deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
@@ -210,7 +238,7 @@ public class VehicleDAO {
         List<VehicleModel> vehicles = new ArrayList<>();
         try{
             con = connection;
-            String sql = "SELECT * FROM vehicles WHERE ownerEmail = ?";
+            String sql = "SELECT * FROM vehicles WHERE ownerEmail = ? && deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1,ownerEmail);
             ResultSet resultSet = preparedStatement.executeQuery();
