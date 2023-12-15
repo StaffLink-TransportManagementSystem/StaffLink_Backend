@@ -11,8 +11,13 @@ public class RequestModel {
     private float price;
     private String startingPoint;
     private String endingPoint;
+    private String startingDate;
+    private String endingDate;
+    private String onTime;
+    private String offTime;
     private String type;
     private String status;
+    private int deleteState;
     public RequestModel() {
     }
 
@@ -39,6 +44,20 @@ public class RequestModel {
         this.price = price;
         this.startingPoint = startingPoint;
         this.endingPoint = endingPoint;
+        this.type = type;
+        this.status = status;
+    }
+    public RequestModel(int id, String vehicleNo, String passengerEmail, float price, String startingPoint, String endingPoint, String startingDate, String endingDate, String onTime, String offTime, String type, String status) {
+        this.id = id;
+        this.vehicleNo = vehicleNo;
+        this.passengerEmail = passengerEmail;
+        this.price = price;
+        this.startingPoint = startingPoint;
+        this.endingPoint = endingPoint;
+        this.startingDate = startingDate;
+        this.endingDate = endingDate;
+        this.onTime = onTime;
+        this.offTime = offTime;
         this.type = type;
         this.status = status;
     }
@@ -92,6 +111,46 @@ public class RequestModel {
         return status;
     }
 
+    public String getStartingDate() {
+        return startingDate;
+    }
+
+    public void setStartingDate(String startingDate) {
+        this.startingDate = startingDate;
+    }
+
+    public String getEndingDate() {
+        return endingDate;
+    }
+
+    public void setEndingDate(String endingDate) {
+        this.endingDate = endingDate;
+    }
+
+    public String getOnTime() {
+        return onTime;
+    }
+
+    public void setOnTime(String onTime) {
+        this.onTime = onTime;
+    }
+
+    public String getOffTime() {
+        return offTime;
+    }
+
+    public void setOffTime(String offTime) {
+        this.offTime = offTime;
+    }
+
+    public int getDeleteState() {
+        return deleteState;
+    }
+
+    public void setDeleteState(int deleteState) {
+        this.deleteState = deleteState;
+    }
+
     public RequestModel(String vehicleNo, String passengerEmail, float price, String startingPoint, String endingPoint, String type) {
         this.vehicleNo = vehicleNo;
         this.passengerEmail = passengerEmail;
@@ -116,6 +175,17 @@ public class RequestModel {
     public RequestModel(int id) {
         this.id = id;
     }
+    public RequestModel(String vehicleNo, String passengerEmail, float price, String startingPoint, String endingPoint, String type, String status, int id, int deleteState) {
+        this.vehicleNo = vehicleNo;
+        this.passengerEmail = passengerEmail;
+        this.price = price;
+        this.startingPoint = startingPoint;
+        this.endingPoint = endingPoint;
+        this.type = type;
+        this.status = status;
+        this.id = id;
+        this.deleteState = deleteState;
+    }
 
 
     public boolean createRequest(){
@@ -139,6 +209,17 @@ public class RequestModel {
         RequestDAO requestDAO = new RequestDAO();
         List<RequestModel> requests = requestDAO.viewAllRequests(email);
         return requests;
+    }
+
+    public List<RequestModel> viewRequestsByPassenger(String email){
+        RequestDAO requestDAO = new RequestDAO();
+        List<RequestModel> requests = requestDAO.viewRequestsByPassenger(email);
+        return requests;
+    }
+    public RequestModel getRequest(String vehicleNo, String passengerEmail){
+        RequestDAO requestDAO = new RequestDAO();
+        RequestModel request = requestDAO.getRequest(vehicleNo,passengerEmail);
+        return request;
     }
 
 }

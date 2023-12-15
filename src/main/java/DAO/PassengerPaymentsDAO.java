@@ -6,6 +6,8 @@ import Model.PassengerPaymentsModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,14 @@ public class PassengerPaymentsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         System.out.println("Inside create passenger payment");
         boolean success = false;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(dtf.format(now));
+        String paymentType = passengerPayments.getPaymentType().toLowerCase();
+        System.out.println(paymentType);
+        if(paymentType.equals("card")){
+            passengerPayments.setStatus("Paid");
+        }
 
         try {
             String sql = "INSERT INTO passengerPayments (requestID, reservationID, passengerEmail, vehicleNo, date, paymentType, amount, status) VALUES (?,?,?,?,?,?,?,?)";
@@ -22,7 +32,7 @@ public class PassengerPaymentsDAO {
             preparedStatement.setInt(2, passengerPayments.getReservationID());
             preparedStatement.setString(3, passengerPayments.getPassengerEmail());
             preparedStatement.setString(4, passengerPayments.getVehicleNo());
-            preparedStatement.setString(5, passengerPayments.getDate());
+            preparedStatement.setString(5, dtf.format(now));
             preparedStatement.setString(6, passengerPayments.getPaymentType());
             preparedStatement.setFloat(7, passengerPayments.getAmount());
             preparedStatement.setString(8, passengerPayments.getStatus());
@@ -42,7 +52,7 @@ public class PassengerPaymentsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
         try {
-            String sql = "UPDATE passengerPayments SET requestID = ?, reservationID = ?. passengerEmail = ?, vehicleNo = ?, date = ?, paymentType = ?, amount = ?, status = ? WHERE id = ?";
+            String sql = "UPDATE passengerPayments SET requestID = ?, reservationID = ?. passengerEmail = ?, vehicleNo = ?, date = ?, paymentType = ?, amount = ?, status = ? WHERE id = ? && deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, passengerPayments.getRequestID());
             preparedStatement.setInt(2, passengerPayments.getReservationID());
@@ -67,7 +77,7 @@ public class PassengerPaymentsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         PassengerPaymentsModel passengerPayments = null;
         try {
-            String sql = "SELECT * FROM passengerPayments WHERE id = ?";
+            String sql = "SELECT * FROM passengerPayments WHERE id = ? && deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
             preparedStatement.executeQuery();
@@ -93,7 +103,7 @@ public class PassengerPaymentsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         List<PassengerPaymentsModel> passengerPayments = null;
         try{
-            String sql = "SELECT * FROM passengerPayments WHERE passengerEmail = ?";
+            String sql = "SELECT * FROM passengerPayments WHERE passengerEmail = ? && deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, passengerEmail);
             preparedStatement.executeQuery();
@@ -125,6 +135,24 @@ public class PassengerPaymentsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
         try {
+            String sql = "UUPDATE passengerPayments SET deleteState = 1 WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            int temp = preparedStatement.executeUpdate();
+            if (temp == 1) {
+                success = true;
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return success;
+    }
+
+    public static boolean deletePassengerPaymentPermenent(int id) {
+        Connection connection = DBConnection.getInstance().getConnection();
+        boolean success = false;
+        try {
             String sql = "DELETE FROM passengerPayments WHERE id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
@@ -142,7 +170,7 @@ public class PassengerPaymentsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         List<PassengerPaymentsModel> passengerPayments = null;
         try{
-            String sql = "SELECT * FROM passengerPayments WHERE passengerEmail = ?";
+            String sql = "SELECT * FROM passengerPayments WHERE passengerEmail = ? && deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, email);
             preparedStatement.executeQuery();
@@ -173,7 +201,7 @@ public class PassengerPaymentsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         List<PassengerPaymentsModel> passengerPayments = null;
         try{
-            String sql = "SELECT * FROM passengerPayments WHERE vehicleNo IN (SELECT vehicleNo FROM vehicles WHERE ownerEmail = ?)";
+            String sql = "SELECT * FROM passengerPayments WHERE vehicleNo IN (SELECT vehicleNo FROM vehicles WHERE ownerEmail = ?) && deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, email);
             preparedStatement.executeQuery();

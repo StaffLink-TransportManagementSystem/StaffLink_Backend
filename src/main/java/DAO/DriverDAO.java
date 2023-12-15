@@ -15,7 +15,7 @@ public class DriverDAO {
         DriverModel owner = new DriverModel();
 
         try{
-            String sql = "SELECT * FROM drivers WHERE email = ?";
+            String sql = "SELECT * FROM drivers WHERE email = ? AND deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,email);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -95,7 +95,7 @@ public class DriverDAO {
         System.out.println(driver.getEmail());
         try{
             con = connection;
-            String sql = "UPDATE drivers SET name = ?,email = ?,NIC = ?, age=?, contact=? ,password = ? WHERE email = ?";
+            String sql = "UPDATE drivers SET name = ?,email = ?,NIC = ?, age=?, contact=? ,password = ? WHERE email = ? AND deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,driver.getName());
             preparedStatement.setString(2,driver.getEmail());
@@ -132,6 +132,34 @@ public class DriverDAO {
         try{
             System.out.println(email);
             con = connection;
+            String sql = "UPDATE drivers SET deleteState = 1 WHERE email = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1,email);
+            int x = preparedStatement.executeUpdate();
+//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if(x != 0){
+                success = true;
+            }
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (con != null) try {
+//                con.close();
+            } catch (Exception ignore) {
+            }
+        }
+        return success;
+    }
+
+    public static boolean deleteDriverPermenent(String email){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+        try{
+            System.out.println(email);
+            con = connection;
             String sql = "DELETE FROM drivers WHERE email = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1,email);
@@ -160,7 +188,7 @@ public class DriverDAO {
         List<DriverModel> drivers = new ArrayList<>();
         try{
             con = connection;
-            String sql = "SELECT * FROM drivers";
+            String sql = "SELECT * FROM drives WHERE deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
