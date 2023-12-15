@@ -34,6 +34,22 @@ public class WaypointsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
         try {
+            String sql = "UPDATE waypoints SET deleteState = 1 WHERE waypointId = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, waypoints.getWaypointId());
+            preparedStatement.executeUpdate();
+            success = true;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return success;
+    }
+
+    public static boolean deleteWaypointPermenet(Waypoints waypoints) {
+        System.out.println("Inside deleteWaypointDAO");
+        Connection connection = DBConnection.getInstance().getConnection();
+        boolean success = false;
+        try {
             String sql = "DELETE FROM waypoints WHERE waypointId = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, waypoints.getWaypointId());
@@ -50,7 +66,7 @@ public class WaypointsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
         try {
-            String sql = "UPDATE waypoints SET routeNo = ?, location = ?, orderNo = ?, arrivalTime=?, deadlineTime=?, reservationId=? WHERE waypointId = ?";
+            String sql = "UPDATE waypoints SET routeNo = ?, location = ?, orderNo = ?, arrivalTime=?, deadlineTime=?, reservationId=? WHERE waypointId = ? && deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, waypoints.getRouteNo());
             preparedStatement.setString(2, waypoints.getLocation());
@@ -72,7 +88,7 @@ public class WaypointsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         List<Waypoints> waypoints = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM waypoints WHERE routeNo = ?";
+            String sql = "SELECT * FROM waypoints WHERE routeNo = ? && deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, routeNo);
             ResultSet resultSet = preparedStatement.executeQuery();

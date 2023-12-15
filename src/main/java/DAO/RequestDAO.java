@@ -14,7 +14,7 @@ public class RequestDAO {
         RequestModel request = new RequestModel();
 
         try{
-            String sql = "SELECT * FROM requests WHERE vehicleNo = ? AND passengerEmail = ?";
+            String sql = "SELECT * FROM requests WHERE vehicleNo = ? AND passengerEmail = ? AND deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,vehicleNo);
             preparedStatement.setString(2,passengerEmail);
@@ -102,7 +102,7 @@ public class RequestDAO {
         try{
             con = connection;
             System.out.println("trydlxa");
-            String sql = "UPDATE requests SET vehicleNo = ?, passengerEmail = ?, price = ?, startingPoint = ?, endingPoint = ?, startingDate = ?, endingDate = ?, onTime = ?, offTime = ?, type = ?, status = ? WHERE vehicleNo = ? AND passengerEmail = ?";
+            String sql = "UPDATE requests SET vehicleNo = ?, passengerEmail = ?, price = ?, startingPoint = ?, endingPoint = ?, startingDate = ?, endingDate = ?, onTime = ?, offTime = ?, type = ?, status = ? WHERE vehicleNo = ? AND passengerEmail = ? AND deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, request.getVehicleNo());
             preparedStatement.setString(2, request.getPassengerEmail());
@@ -148,6 +148,35 @@ public class RequestDAO {
         boolean success = false;
         try{
             con = connection;
+            String sql = "UPDATE requests SET deleteState = 1 WHERE vehicleNo = ? AND passengerEmail = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1,VehicleNo);
+            preparedStatement.setString(2,passengerEmail);
+            int x = preparedStatement.executeUpdate();
+//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if(x != 0){
+                success = true;
+            }
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (con != null) try {
+//                con.close();
+            } catch (Exception ignore) {
+            }
+        }
+        return success;
+//        return passenger;
+    }
+
+    public static boolean deleteRequestPermenent(String VehicleNo,String passengerEmail){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+        try{
+            con = connection;
             String sql = "DELETE FROM requests WHERE vehicleNo = ? AND passengerEmail = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1,VehicleNo);
@@ -178,7 +207,7 @@ public class RequestDAO {
         //Error occors below this statement
         try {
             con = connection;
-            String sql = "SELECT * FROM requests WHERE vehicleNo IN (SELECT vehicleNo FROM vehicles WHERE ownerEmail = ?)";
+            String sql = "SELECT * FROM requests WHERE vehicleNo IN (SELECT vehicleNo FROM vehicles WHERE ownerEmail = ?) AND deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, email);
 //            preparedStatement.setString(1, vehicleNo);
@@ -218,7 +247,7 @@ public class RequestDAO {
         //Error occors below this statement
         try {
             con = connection;
-            String sql = "SELECT * FROM requests WHERE passengerEmail = ?";
+            String sql = "SELECT * FROM requests WHERE passengerEmail = ? AND deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -255,7 +284,7 @@ public class RequestDAO {
 //        System.out.println(java.time.LocalTime.now());
         try {
             con = connection;
-            String sql = "UPDATE requests SET status = ? WHERE id = ?";
+            String sql = "UPDATE requests SET status = ? WHERE id = ? AND deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, status);
             preparedStatement.setInt(2, id);

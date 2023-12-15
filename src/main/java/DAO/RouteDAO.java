@@ -43,6 +43,25 @@ public class RouteDAO {
         boolean success = false;
 
         try {
+            String sql = "UPDATE route SET deleteState = 1 WHERE vehicleNo = ? AND style = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, route.getVehicleNo());
+            preparedStatement.setString(2, route.getStyle());
+            preparedStatement.executeUpdate();
+            success = true;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return success;
+    }
+
+    public static boolean deleteRoutePermenent(RouteModel route) {
+        System.out.println("Inside deleteRoute");
+        Connection connection = DBConnection.getInstance().getConnection();
+        boolean success = false;
+
+        try {
             String sql = "DELETE FROM route WHERE vehicleNo = ? AND style = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, route.getVehicleNo());
@@ -61,7 +80,7 @@ public class RouteDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
         try {
-            String sql = "UPDATE route SET startingLocation = ?, endingLocation = ?, startingTime = ?, endingTime = ? WHERE vehicleNo = ? AND style = ?";
+            String sql = "UPDATE route SET startingLocation = ?, endingLocation = ?, startingTime = ?, endingTime = ? WHERE vehicleNo = ? AND style = ? AND deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, route.getStaringLocation());
             preparedStatement.setString(2, route.getEndingLocation());
@@ -81,7 +100,7 @@ public class RouteDAO {
         System.out.println("Inside getRoute");
         Connection connection = DBConnection.getInstance().getConnection();
         try {
-            String sql = "SELECT * FROM route WHERE vehicleNo = ? AND style = ?";
+            String sql = "SELECT * FROM route WHERE vehicleNo = ? AND style = ? AND deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, route.getVehicleNo());
             preparedStatement.setString(2, route.getStyle());
@@ -105,7 +124,7 @@ public class RouteDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         ArrayList<RouteModel> routes = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM route";
+            String sql = "SELECT * FROM route WHERE deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {

@@ -15,7 +15,7 @@ public class ReservationDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         ReservationModel reservationModel = null;
         try {
-            String sql = "SELECT * FROM reservations WHERE reservationId = ?";
+            String sql = "SELECT * FROM reservations WHERE reservationId = ? && deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, reservationId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -64,6 +64,22 @@ public class ReservationDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
         try {
+            String sql = "UPDATE reservations SET deleteState = 1 WHERE reservationId = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, reservationModel.getReservationId());
+            preparedStatement.executeUpdate();
+            success = true;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return success;
+    }
+
+    public static boolean deleteReservationPermenent(ReservationModel reservationModel) {
+        System.out.println("Inside deleteReservationDAO");
+        Connection connection = DBConnection.getInstance().getConnection();
+        boolean success = false;
+        try {
             String sql = "DELETE FROM reservations WHERE reservationId = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, reservationModel.getReservationId());
@@ -81,7 +97,7 @@ public class ReservationDAO {
         System.out.println(reservationModel.getReservationId());
         boolean success = false;
         try {
-            String sql = "UPDATE reservations SET passengerEmail = ?, vehicleNo = ?, startingDate = ?, endingDate = ?, startingWaypoint = ?, endingWaypoint = ?, status=? WHERE reservationId = ?";
+            String sql = "UPDATE reservations SET passengerEmail = ?, vehicleNo = ?, startingDate = ?, endingDate = ?, startingWaypoint = ?, endingWaypoint = ?, status=? WHERE reservationId = ? && deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, reservationModel.getPassengerEmail());
             preparedStatement.setString(2, reservationModel.getVehicleNo());
@@ -104,7 +120,7 @@ public class ReservationDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         List<ReservationModel> reservations = null;
         try {
-            String sql = "SELECT * FROM reservations";
+            String sql = "SELECT * FROM reservations WHERE deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -131,7 +147,7 @@ public class ReservationDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         List<ReservationModel> reservations = new ArrayList<ReservationModel>();
         try {
-            String sql = "SELECT * FROM reservations WHERE passengerEmail = ?";
+            String sql = "SELECT * FROM reservations WHERE passengerEmail = ? && deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, passengerEmail);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -159,7 +175,7 @@ public class ReservationDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         List<ReservationModel> reservations = new ArrayList<ReservationModel>();
         try {
-            String sql = "SELECT * FROM reservations WHERE vehicleNo IN (SELECT vehicleNo FROM vehicles WHERE ownerEmail = ?)";
+            String sql = "SELECT * FROM reservations WHERE vehicleNo IN (SELECT vehicleNo FROM vehicles WHERE ownerEmail = ? && deleteState = 0)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, ownerEmail);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -187,7 +203,7 @@ public class ReservationDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         List<ReservationModel> reservations = new ArrayList<ReservationModel>();
         try {
-            String sql = "SELECT * FROM reservations WHERE vehicleNo = ?";
+            String sql = "SELECT * FROM reservations WHERE vehicleNo = ? && deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, vehicleNo);
             ResultSet resultSet = preparedStatement.executeQuery();

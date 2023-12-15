@@ -15,7 +15,7 @@ public class AbsentDAO {
         AbsentModel absent = new AbsentModel();
 
         try{
-            String sql = "SELECT * FROM absents WHERE absentId = ?";
+            String sql = "SELECT * FROM absents WHERE absentId = ? AND deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -51,7 +51,7 @@ public class AbsentDAO {
         List<AbsentModel> absents = new ArrayList<>();
 
         try {
-            String sql = "SELECT * FROM absents WHERE vehicleNo = ?";
+            String sql = "SELECT * FROM absents WHERE vehicleNo = ? AND deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,vehicleNo);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -81,7 +81,7 @@ public class AbsentDAO {
         List<AbsentModel> absents = new ArrayList<>();
 
         try {
-            String sql = "SELECT * FROM absents";
+            String sql = "SELECT * FROM absents WHERE deleteState = 0";
             System.out.println("check1");
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -158,7 +158,7 @@ public class AbsentDAO {
 //        System.out.println(java.time.LocalTime.now());
         try{
             con = connection;
-            String sql = "UPDATE absents SET vehicleNo = ?, passengerEmail = ?, daysOfAbsent = ?, startingDate = ?, endingDate = ? WHERE absentId = ? ";
+            String sql = "UPDATE absents SET vehicleNo = ?, passengerEmail = ?, daysOfAbsent = ?, startingDate = ?, endingDate = ? WHERE absentId = ? AND deleteState = 0";
 //            String sql = "UPDATE requests SET vehicalNo = ?, passengerEmail = ?, price = ?, startingPoint = ?, endingPoint = ?, type = ?, status = ? WHERE vehicalNo = ? AND passengerEmail = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,absent.getVehicleNo());
@@ -198,6 +198,34 @@ public class AbsentDAO {
         boolean success = false;
         try{
             con = connection;
+            String sql = "UPDATE absents SET deleteState = 1 WHERE absentId = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1,id);
+
+            int x = preparedStatement.executeUpdate();
+
+            if(x != 0){
+                success = true;
+            }
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (con != null) try {
+
+            } catch (Exception ignore) {
+            }
+        }
+        return success;
+    }
+
+    public static boolean deleteAbsentPermenent(int id){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+        try{
+            con = connection;
             String sql = "DELETE FROM absents WHERE absentId = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setInt(1,id);
@@ -219,12 +247,13 @@ public class AbsentDAO {
         }
         return success;
     }
+
     public static List<AbsentModel> getAbsentList(String vehicleNo){
         Connection connection = DBConnection.getInstance().getConnection();
         System.out.println("Inside getAbsentList");
         List<AbsentModel> absents = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM absents WHERE vehicleNo = ?";
+            String sql = "SELECT * FROM absents WHERE vehicleNo = ? AND deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,vehicleNo);
             ResultSet resultSet = preparedStatement.executeQuery();

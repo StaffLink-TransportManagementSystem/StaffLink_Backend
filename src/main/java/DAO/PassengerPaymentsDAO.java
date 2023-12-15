@@ -52,7 +52,7 @@ public class PassengerPaymentsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
         try {
-            String sql = "UPDATE passengerPayments SET requestID = ?, reservationID = ?. passengerEmail = ?, vehicleNo = ?, date = ?, paymentType = ?, amount = ?, status = ? WHERE id = ?";
+            String sql = "UPDATE passengerPayments SET requestID = ?, reservationID = ?. passengerEmail = ?, vehicleNo = ?, date = ?, paymentType = ?, amount = ?, status = ? WHERE id = ? && deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, passengerPayments.getRequestID());
             preparedStatement.setInt(2, passengerPayments.getReservationID());
@@ -77,7 +77,7 @@ public class PassengerPaymentsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         PassengerPaymentsModel passengerPayments = null;
         try {
-            String sql = "SELECT * FROM passengerPayments WHERE id = ?";
+            String sql = "SELECT * FROM passengerPayments WHERE id = ? && deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
             preparedStatement.executeQuery();
@@ -103,7 +103,7 @@ public class PassengerPaymentsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         List<PassengerPaymentsModel> passengerPayments = null;
         try{
-            String sql = "SELECT * FROM passengerPayments WHERE passengerEmail = ?";
+            String sql = "SELECT * FROM passengerPayments WHERE passengerEmail = ? && deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, passengerEmail);
             preparedStatement.executeQuery();
@@ -135,6 +135,24 @@ public class PassengerPaymentsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
         try {
+            String sql = "UUPDATE passengerPayments SET deleteState = 1 WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            int temp = preparedStatement.executeUpdate();
+            if (temp == 1) {
+                success = true;
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return success;
+    }
+
+    public static boolean deletePassengerPaymentPermenent(int id) {
+        Connection connection = DBConnection.getInstance().getConnection();
+        boolean success = false;
+        try {
             String sql = "DELETE FROM passengerPayments WHERE id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
@@ -152,7 +170,7 @@ public class PassengerPaymentsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         List<PassengerPaymentsModel> passengerPayments = null;
         try{
-            String sql = "SELECT * FROM passengerPayments WHERE passengerEmail = ?";
+            String sql = "SELECT * FROM passengerPayments WHERE passengerEmail = ? && deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, email);
             preparedStatement.executeQuery();
@@ -183,7 +201,7 @@ public class PassengerPaymentsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         List<PassengerPaymentsModel> passengerPayments = null;
         try{
-            String sql = "SELECT * FROM passengerPayments WHERE vehicleNo IN (SELECT vehicleNo FROM vehicles WHERE ownerEmail = ?)";
+            String sql = "SELECT * FROM passengerPayments WHERE vehicleNo IN (SELECT vehicleNo FROM vehicles WHERE ownerEmail = ?) && deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, email);
             preparedStatement.executeQuery();
