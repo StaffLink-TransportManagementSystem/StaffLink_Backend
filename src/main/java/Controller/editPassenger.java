@@ -15,6 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import Model.loginModel;
+import Validation.Passenger;
 import com.google.gson.Gson;
 
 @WebServlet("/passengerEdit")
@@ -32,18 +33,34 @@ public class editPassenger extends HttpServlet{
 
             System.out.println(editPassenger.getNIC());
 
-            boolean passengerUpdate = editPassenger.updatePassenger();
+            boolean passengerUpdate = false;
             System.out.println(editPassenger.getId());
             System.out.println(editPassenger.getEmail());
             System.out.println(editPassenger.getPassword());
-            if(passengerUpdate) {
-                res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"message\": \"Update successfully\"}");
-                System.out.println("Update successful");
-            }else{
+
+            Passenger passengerValidation = new Passenger();
+            if(passengerValidation.validateEmail(editPassenger.getEmail())) {
+                if(passengerValidation.validation(editPassenger)) {
+                    System.out.println("Validation success");
+                }
+                else{
+                    editPassenger = passengerValidation.setPassenger(editPassenger);
+                }
+                passengerUpdate = editPassenger.updatePassenger();
+                if(passengerUpdate) {
+                    res.setStatus(HttpServletResponse.SC_OK);
+                    out.write("{\"message\": \"Update successfully\"}");
+                    System.out.println("Update successful");
+                }else{
+                    res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    out.write("{\"message\": \"Update unsuccessfully\"}");
+                    System.out.println("Update incorrect");
+                }
+}
+            else{
                 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.write("{\"message\": \"Update unsuccessfully\"}");
-                System.out.println("Update incorrect");
+                out.write("{\"message\": \"Something went wrong\"}");
+                System.out.println("Validation error");
             }
 
         }

@@ -227,4 +227,50 @@ public class PassengerDAO {
         }
     }
 
+    public static boolean checkPassengerEmail(String email){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+        try{
+            con = connection;
+            String sql = "SELECT COUNT(*) FROM passengers WHERE email = ? AND deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1,email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                success = true;
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return success;
+        }
+    }
+
+    public static boolean checkPassengerNIC(String nic){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+        try{
+            con = connection;
+            String sql = "SELECT COUNT(*) FROM passengers WHERE NIC = ? AND deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1,nic);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                success = true;
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return success;
+        }
+    }
+
 }
