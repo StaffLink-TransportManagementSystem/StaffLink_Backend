@@ -39,14 +39,11 @@ public class editPassenger extends HttpServlet{
             System.out.println(editPassenger.getPassword());
 
             Passenger passengerValidation = new Passenger();
-            if(passengerValidation.validateEmail(editPassenger.getEmail())) {
-                if(passengerValidation.validation(editPassenger)) {
-                    System.out.println("Validation success");
-                }
-                else{
-                    editPassenger = passengerValidation.setPassenger(editPassenger);
-                }
-                passengerUpdate = editPassenger.updatePassenger();
+            PassengerModel passengerModel = new PassengerModel();
+//            passengerModel = passengerValidation.setPassenger(editPassenger);
+
+//            if(passengerModel != null){
+                passengerUpdate = passengerModel.updatePassenger();
                 if(passengerUpdate) {
                     res.setStatus(HttpServletResponse.SC_OK);
                     out.write("{\"message\": \"Update successfully\"}");
@@ -56,12 +53,39 @@ public class editPassenger extends HttpServlet{
                     out.write("{\"message\": \"Update unsuccessfully\"}");
                     System.out.println("Update incorrect");
                 }
-}
-            else{
-                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.write("{\"message\": \"Something went wrong\"}");
-                System.out.println("Validation error");
-            }
+//            }
+//            else{
+//                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//                out.write("{\"message\": \"Something went wrong\"}");
+//                System.out.println("Validation error");
+//            }
+
+
+
+
+//            if(passengerValidation.validateEmail(editPassenger.getEmail())) {
+//                if(passengerValidation.validation(editPassenger)) {
+//                    System.out.println("Validation success");
+//                }
+//                else{
+//                    editPassenger = passengerValidation.setPassenger(editPassenger);
+//                }
+//                passengerUpdate = editPassenger.updatePassenger();
+//                if(passengerUpdate) {
+//                    res.setStatus(HttpServletResponse.SC_OK);
+//                    out.write("{\"message\": \"Update successfully\"}");
+//                    System.out.println("Update successful");
+//                }else{
+//                    res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//                    out.write("{\"message\": \"Update unsuccessfully\"}");
+//                    System.out.println("Update incorrect");
+//                }
+//}
+//            else{
+//                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//                out.write("{\"message\": \"Something went wrong\"}");
+//                System.out.println("Validation error");
+//            }
 
         }
         catch (Exception e) {
