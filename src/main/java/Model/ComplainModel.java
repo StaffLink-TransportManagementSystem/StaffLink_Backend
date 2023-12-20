@@ -1,5 +1,7 @@
 package Model;
 
+import DAO.ComplainDAO;
+
 public class ComplainModel {
     private int id;
     private String complainerEmail; //person who is complaining
@@ -90,5 +92,23 @@ public class ComplainModel {
 
     public void setDeleteState(int deleteState) {
         this.deleteState = deleteState;
+    }
+
+    public boolean createComplain(){
+        ComplainDAO complainDAO = new ComplainDAO();
+        boolean status = complainDAO.addComplain(this);
+        return  status;
+    }
+
+    public boolean editComplain(){
+        ComplainDAO complainDAO = new ComplainDAO();
+        boolean status = complainDAO.updateComplain(this);
+        return  status;
+    }
+
+    public boolean deleteComplain(){
+        ComplainDAO complainDAO = new ComplainDAO();
+        boolean status = complainDAO.deleteComplain(id);
+        return  status;
     }
 }
