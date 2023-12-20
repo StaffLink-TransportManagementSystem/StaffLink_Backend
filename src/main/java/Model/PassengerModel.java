@@ -177,7 +177,7 @@ public class PassengerModel {
     }
     public boolean updatePassenger(){
         PassengerDAO passengerDAO = new PassengerDAO();
-        boolean status = PassengerDAO.updatePassenger(this);
+        boolean status = passengerDAO.updatePassenger(this);
         return  status;
     }
 

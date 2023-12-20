@@ -38,21 +38,33 @@ public class editPassenger extends HttpServlet{
             System.out.println(editPassenger.getEmail());
             System.out.println(editPassenger.getPassword());
 
-            Passenger passengerValidation = new Passenger();
-            PassengerModel passengerModel = new PassengerModel();
+            passengerUpdate = editPassenger.updatePassenger();
+            if(passengerUpdate) {
+                res.setStatus(HttpServletResponse.SC_OK);
+                out.write("{\"message\": \"Update successfully\"}");
+                System.out.println("Update successful");
+            }else{
+                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                out.write("{\"message\": \"Update unsuccessfully\"}");
+                System.out.println("Update incorrect");
+            }
+
+
+//            Passenger passengerValidation = new Passenger();
+//            PassengerModel passengerModel = new PassengerModel();
 //            passengerModel = passengerValidation.setPassenger(editPassenger);
 
 //            if(passengerModel != null){
-                passengerUpdate = passengerModel.updatePassenger();
-                if(passengerUpdate) {
-                    res.setStatus(HttpServletResponse.SC_OK);
-                    out.write("{\"message\": \"Update successfully\"}");
-                    System.out.println("Update successful");
-                }else{
-                    res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    out.write("{\"message\": \"Update unsuccessfully\"}");
-                    System.out.println("Update incorrect");
-                }
+//                passengerUpdate = passengerModel.updatePassenger();
+//                if(passengerUpdate) {
+//                    res.setStatus(HttpServletResponse.SC_OK);
+//                    out.write("{\"message\": \"Update successfully\"}");
+//                    System.out.println("Update successful");
+//                }else{
+//                    res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//                    out.write("{\"message\": \"Update unsuccessfully\"}");
+//                    System.out.println("Update incorrect");
+//                }
 //            }
 //            else{
 //                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

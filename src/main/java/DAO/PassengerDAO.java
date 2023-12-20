@@ -82,14 +82,12 @@ public class PassengerDAO {
         boolean success = false;
         try{
             con = connection;
-            String sql = "UPDATE passengers SET name = ?,email = ?,NIC = ?,password = ? WHERE email = ? AND deleteState = 0";
+            String sql = "UPDATE passengers SET name = ?,email = ?,NIC = ? WHERE email = ? && deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,passenger.getName());
             preparedStatement.setString(2,passenger.getEmail());
             preparedStatement.setString(3,passenger.getNIC());
-            preparedStatement.setString(4,passenger.getPassword());
-
-            preparedStatement.setString(5,passenger.getEmail());
+            preparedStatement.setString(4,passenger.getEmail());
             int temp = preparedStatement.executeUpdate();
             System.out.println(temp);
 //            ResultSet resultSet = preparedStatement.getGeneratedKeys();
