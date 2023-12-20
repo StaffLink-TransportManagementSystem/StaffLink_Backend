@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.Buffer;
 @MultipartConfig(
-        location = "C:\\Users\\User\\Documents\\Group Project\\Implementation\\try2\\src\\main\\java\\Images",
+        location = "C:/Users/User/Documents/Group Project/Implementation/try2/src/main/java/Images",
         fileSizeThreshold = 2 * 1024 * 1024, // 2MB
         maxFileSize = 5 * 1024 * 1024, // 5MB
         maxRequestSize = 11 * 1024 * 1024 //10MB
