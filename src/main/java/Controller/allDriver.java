@@ -26,7 +26,7 @@ public class allDriver extends HttpServlet {
 
 
         DriverModel driverModel = new DriverModel();
-        List<DriverModel> drivers = DriverModel.viewAllDrivers();
+        List<DriverModel> drivers = driverModel.viewAllDrivers();
 
         Gson gson = new Gson();
         String centerJson = gson.toJson(drivers);
@@ -43,6 +43,8 @@ public class allDriver extends HttpServlet {
             // TODO handle
         }
     }
+
+
 
 
 }

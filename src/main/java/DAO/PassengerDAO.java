@@ -82,14 +82,12 @@ public class PassengerDAO {
         boolean success = false;
         try{
             con = connection;
-            String sql = "UPDATE passengers SET name = ?,email = ?,NIC = ?,password = ? WHERE email = ? AND deleteState = 0";
+            String sql = "UPDATE passengers SET name = ?,email = ?,NIC = ? WHERE email = ? && deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,passenger.getName());
             preparedStatement.setString(2,passenger.getEmail());
             preparedStatement.setString(3,passenger.getNIC());
-            preparedStatement.setString(4,passenger.getPassword());
-
-            preparedStatement.setString(5,passenger.getEmail());
+            preparedStatement.setString(4,passenger.getEmail());
             int temp = preparedStatement.executeUpdate();
             System.out.println(temp);
 //            ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -224,6 +222,52 @@ public class PassengerDAO {
             throw new RuntimeException(e);
         } finally {
             return passengers;
+        }
+    }
+
+    public static boolean checkPassengerEmail(String email){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+        try{
+            con = connection;
+            String sql = "SELECT COUNT(*) FROM passengers WHERE email = ? AND deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1,email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                success = true;
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return success;
+        }
+    }
+
+    public static boolean checkPassengerNIC(String nic){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+        try{
+            con = connection;
+            String sql = "SELECT COUNT(*) FROM passengers WHERE NIC = ? AND deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1,nic);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                success = true;
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return success;
         }
     }
 
