@@ -93,7 +93,7 @@ public class ComplainDAO {
         }
     }
 
-    public static ComplainModel getCompalin(int complainID){
+    public static ComplainModel getComplain(int complainID){
         Connection connection = DBConnection.getInstance().getConnection();
         ComplainModel complainModel = new ComplainModel();
 
