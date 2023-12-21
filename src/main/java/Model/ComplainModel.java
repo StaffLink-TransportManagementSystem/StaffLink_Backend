@@ -2,6 +2,8 @@ package Model;
 
 import DAO.ComplainDAO;
 
+import java.util.List;
+
 public class ComplainModel {
     private int id;
     private String complainerEmail; //person who is complaining
@@ -110,5 +112,11 @@ public class ComplainModel {
         ComplainDAO complainDAO = new ComplainDAO();
         boolean status = complainDAO.deleteComplain(id);
         return  status;
+    }
+
+    public List<ComplainModel> viewAllOwners(){
+        ComplainDAO complainDAO = new ComplainDAO();
+        List<ComplainModel> complains = complainDAO.getAllComplains();
+        return complains;
     }
 }
