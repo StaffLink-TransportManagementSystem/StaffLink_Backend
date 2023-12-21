@@ -119,4 +119,15 @@ public class ComplainModel {
         List<ComplainModel> complains = complainDAO.getAllComplains();
         return complains;
     }
+
+    public List<ComplainModel> getComplainByPassenger(String email){
+        ComplainDAO complainDAO = new ComplainDAO();
+        List<ComplainModel> complains = complainDAO.getComplainsByPassenger(email);
+        return complains;
+    }
+    public List<ComplainModel> getComplainByOwner(String email){
+        ComplainDAO complainDAO = new ComplainDAO();
+        List<ComplainModel> complains = complainDAO.getComplainsByOwner(email);
+        return complains;
+    }
 }
