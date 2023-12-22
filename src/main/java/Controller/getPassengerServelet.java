@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import Validation.Passenger;
 import com.google.gson.Gson;
 
 @WebServlet("/getPassenger")
@@ -26,22 +28,32 @@ public class getPassengerServelet  extends HttpServlet{
 //        int account_id = Integer.parseInt(request.getParameter("id"));
 
         try {
-            PassengerDAO passengerDAO = new PassengerDAO();
-            PassengerModel passenger = passengerDAO.getPassenger(email);
+            Passenger passengerValidation = new Passenger();
+            if(passengerValidation.validateEmail(email)) {
+                System.out.println("Validation success");
+                PassengerDAO passengerDAO = new PassengerDAO();
+                PassengerModel passenger = passengerDAO.getPassenger(email);
 
-            Gson gson = new Gson();
-            // Object array to json
-            String object = gson.toJson(passenger);
+                Gson gson = new Gson();
+                // Object array to json
+                String object = gson.toJson(passenger);
 
-            if (passenger.getId() != 0) {
-                response.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"passenger\": " + object + "}");
-                System.out.println("Send passenger");
-            } else {
-                response.setStatus(HttpServletResponse.SC_ACCEPTED);
-                out.write("{\"passenger\": \"No passenger\"}");
-                System.out.println("No passenger");
+                if (passenger.getId() != 0) {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    out.write("{\"passenger\": " + object + "}");
+                    System.out.println("Send passenger");
+                } else {
+                    response.setStatus(HttpServletResponse.SC_ACCEPTED);
+                    out.write("{\"passenger\": \"No passenger\"}");
+                    System.out.println("No passenger");
+                }
             }
+            else{
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                out.write("{\"message\": \"Something went wrong\"}");
+                System.out.println("Validation error");
+            }
+
             // TODO handle
 
         } catch (Exception e) {

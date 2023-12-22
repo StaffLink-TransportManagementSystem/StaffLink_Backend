@@ -188,7 +188,7 @@ public class DriverDAO {
         List<DriverModel> drivers = new ArrayList<>();
         try{
             con = connection;
-            String sql = "SELECT * FROM drives WHERE deleteState = 0";
+            String sql = "SELECT * FROM drivers WHERE deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){

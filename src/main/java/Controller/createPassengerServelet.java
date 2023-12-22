@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.PassengerModel;
+import Validation.Passenger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,16 +31,25 @@ public class createPassengerServelet extends HttpServlet{
             System.out.println(passenger.getEmail());
             System.out.println(passenger.getContactNo());
 
-            // All validations are passed then register
-            if(passenger.createPassenger()){
-                res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"message\": \"Registration successfully\"}");
-                System.out.println("Registration successful");
-            }else{
-                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.write("{\"message\": \"Registration unsuccessfully\"}");
-                System.out.println("Registration incorrect");
-            }
+//            Passenger passengerValidation = new Passenger();
+//            if(passengerValidation.validation(passenger)) {
+//                System.out.println("Validation success");
+                // All validations are passed then register
+                if (passenger.createPassenger()) {
+                    res.setStatus(HttpServletResponse.SC_OK);
+                    out.write("{\"message\": \"Registration successfully\"}");
+                    System.out.println("Registration successful");
+                } else {
+                    res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    out.write("{\"message\": \"Registration unsuccessfully\"}");
+                    System.out.println("Registration incorrect");
+                }
+//            }
+//            else{
+//                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//                out.write("{\"message\": \"Something went wrong\"}");
+//                System.out.println("Validation error");
+//            }
         }
         catch (Exception e) {
             e.printStackTrace();

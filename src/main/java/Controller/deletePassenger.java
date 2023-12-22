@@ -17,6 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import Model.loginModel;
+import Validation.Passenger;
 import com.google.gson.Gson;
 
 @WebServlet("/passengerDelete")
@@ -33,15 +34,25 @@ public class deletePassenger extends HttpServlet{
         PassengerModel deletePassenger = gson.fromJson(bufferedReader, PassengerModel.class);
 
         try {
-            PassengerDAO passengerDAO = new PassengerDAO();
-            if(passengerDAO.deletePassenger(deletePassenger.getEmail())){
-                res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"message\": \"Delete successfully\"}");
-                System.out.println("Delete successful");
-            }else{
+
+            Passenger passengerValidation = new Passenger();
+            if(passengerValidation.validateEmail(deletePassenger.getEmail())) {
+                System.out.println("Validation success");
+                PassengerDAO passengerDAO = new PassengerDAO();
+                if(passengerDAO.deletePassenger(deletePassenger.getEmail())){
+                    res.setStatus(HttpServletResponse.SC_OK);
+                    out.write("{\"message\": \"Delete successfully\"}");
+                    System.out.println("Delete successful");
+                }else{
+                    res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    out.write("{\"message\": \"Delete unsuccessfully\"}");
+                    System.out.println("Delete incorrect");
+                }
+            }
+            else{
                 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.write("{\"message\": \"Delete unsuccessfully\"}");
-                System.out.println("Delete incorrect");
+                out.write("{\"message\": \"Something went wrong\"}");
+                System.out.println("Validation error");
             }
         }
         catch (Exception e) {
