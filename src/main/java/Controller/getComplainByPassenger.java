@@ -14,7 +14,7 @@ import java.util.List;
 @WebServlet("/getComplainByPassenger")
 public class getComplainByPassenger extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        res.setContentType("application/json");
+        res.setContentType("multipart/mixed");
         PrintWriter out = res.getWriter();
 
         try {
