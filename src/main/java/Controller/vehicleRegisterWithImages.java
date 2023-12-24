@@ -87,7 +87,7 @@ public class vehicleRegisterWithImages extends HttpServlet {
 
             Date date = new Date();
             long timeMilli = date.getTime();
-            System.out.println("Time: "+timeMilli);
+            System.out.println("Time: " + timeMilli);
 
             VehicleModel vehicle = new VehicleModel();
             vehicle.setOwnerEmail(ownerEmail);
