@@ -40,6 +40,9 @@ public class testImageUpload extends HttpServlet {
             String email = request.getParameter("email");
             System.out.println("Email: " + email);
 
+            String ownerEmail = request.getParameter("vehicleNumber");
+            System.out.println("Owner Email: " + ownerEmail);
+
 //            String fileType = getFileTypeFromApplicationPart(part);
             String filename = getSubmittedFileName(part);
 
