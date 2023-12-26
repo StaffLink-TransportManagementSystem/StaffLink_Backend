@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @WebServlet("/testSendImages")
@@ -25,8 +28,22 @@ public class testSendImages extends HttpServlet {
             BufferedReader bufferedReader = request.getReader();
             VehicleModel vehicle = gson.fromJson(bufferedReader, VehicleModel.class);
 
-            VehicleImageDAO vehicleImageDAO = new VehicleImageDAO();
-            List<VehicleModel> vehicleImages = vehicleImageDAO.getVehicleImages(vehicle.getVehicleNo());
+//            VehicleImageDAO vehicleImageDAO = new VehicleImageDAO();
+//            List<VehicleModel> vehicleImages = vehicleImageDAO.getVehicleImages(vehicle.getVehicleNo());
+
+//            byte[] image = convertImageToByteArray("C:/Users/User/Documents/Group Project/Implementation/try2/src/main/java/Images"+vehicleImages.get(0).getFrontImage()+"."+vehicleImages.get(0).getFrontImageType());
+            byte[] image = convertImageToByteArray("C:/Users/User/Documents/Group Project/Implementation/try2/src/main/java/Images/Capture.png");
+
+            if (image.length != 0) {
+                response.setStatus(HttpServletResponse.SC_OK);
+                out.write("{\"size\": " + image.length + ",\"list\":" + image + "}");
+                System.out.println("View all images");
+            } else if (image.length == 0) {
+                response.setStatus(HttpServletResponse.SC_ACCEPTED);
+                out.write("{\"size\": \"0\"}");
+                System.out.println("No images");
+            }
+
 
 
 
@@ -36,5 +53,10 @@ public class testSendImages extends HttpServlet {
         } finally {
             out.close();
         }
+    }
+
+    private byte[] convertImageToByteArray(String imagePath) throws IOException {
+        Path path = Paths.get(imagePath);
+        return Files.readAllBytes(path);
     }
 }
