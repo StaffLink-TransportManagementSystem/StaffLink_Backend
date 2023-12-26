@@ -1,6 +1,7 @@
 package Model;
 
 import DAO.VehicleDAO;
+import DAO.VehicleImageDAO;
 
 import java.sql.Time;
 import java.util.Date;
@@ -344,6 +345,11 @@ public class VehicleModel {
     public VehicleModel getVehicleByNo(){
         VehicleDAO vehicleDAO = new VehicleDAO();
         return vehicleDAO.getVehicle(vehicleNo);
+    }
+
+    public VehicleModel getVehicleImages(String vehicleNo){
+        VehicleImageDAO vehicleImageDAO = new VehicleImageDAO();
+        return vehicleImageDAO.getVehicleImage(vehicleNo);
     }
 
 }

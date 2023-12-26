@@ -120,4 +120,38 @@ public class VehicleImageDAO {
         }
     }
 
+    public VehicleModel getVehicleImage(String vehicleNo){
+        Connection connection = DBConnection.getInstance().getConnection();
+        VehicleModel vehicleImages = new VehicleModel();
+
+        try{
+            String query = "SELECT * FROM vehicle_images WHERE vehicle_no = ? AND deleteStatus = 0";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, vehicleNo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                vehicleImages.setFrontImage(resultSet.getString(2));
+                vehicleImages.setBackImage(resultSet.getString(3));
+                vehicleImages.setSideImage(resultSet.getString(4));
+                vehicleImages.setInsideImage(resultSet.getString(5));
+                vehicleImages.setCertificate(resultSet.getString(6));
+                vehicleImages.setInsurance(resultSet.getString(7));
+                vehicleImages.setFrontImageType(resultSet.getString(8));
+                vehicleImages.setBackImageType(resultSet.getString(9));
+                vehicleImages.setSideImageType(resultSet.getString(10));
+                vehicleImages.setInsideImageType(resultSet.getString(11));
+                vehicleImages.setCertificateType(resultSet.getString(12));
+                vehicleImages.setInsuranceType(resultSet.getString(13));
+                vehicleImages.setVehicleNo(resultSet.getString(14));
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            return vehicleImages;
+        }
+    }
+
 }
