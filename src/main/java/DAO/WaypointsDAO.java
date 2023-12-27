@@ -1,7 +1,15 @@
 package DAO;
 import Database.DBConnection;
+import Model.VehicleModel;
 import Model.Waypoints;
+import com.google.gson.Gson;
 
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,5 +116,39 @@ public class WaypointsDAO {
             System.out.println(e);
         }
         return waypoints;
+    }
+
+    @WebServlet("/getVehicleImages")
+    public static class GetVehicleImagesServelet extends HttpServlet {
+        public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+            res.setContentType("application/json");
+            PrintWriter out = res.getWriter();
+            System.out.println("Vehicle Images");
+
+            try {
+                String email = req.getParameter("VehicleNo");
+                VehicleModel vehicleModel = new VehicleModel();
+                VehicleModel vehicleImage = vehicleModel.getVehicleImages(email);
+
+                Gson gson = new Gson();
+                String centerJson = gson.toJson(vehicles);
+
+                if (vehicles.size() != 0) {
+                    res.setStatus(HttpServletResponse.SC_OK);
+                    out.write("{\"size\": " + vehicles.size() + ",\"list\":" + centerJson + "}");
+                    System.out.println("View all vehicles");
+                } else if (vehicles.size() == 0) {
+                    res.setStatus(HttpServletResponse.SC_ACCEPTED);
+                    out.write("{\"size\": \"0\"}");
+                    System.out.println("No vehicles");
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            } finally {
+                out.close();
+            }
+        }
     }
 }

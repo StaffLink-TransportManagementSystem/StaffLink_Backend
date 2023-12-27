@@ -65,7 +65,7 @@ public class GetVehicleWithImages extends HttpServlet {
                 imageList.add(certificate_image);
                 imageList.add(insurance_image);
             }
-//            List<byte[]> images = vehicleModel.getVehicleImages(vehicles);
+
 
             if(vehicles.size() != 0) {
                 res.setStatus(HttpServletResponse.SC_OK);
