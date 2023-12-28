@@ -56,7 +56,7 @@ public class VehicleDAO {
         boolean success = false;
         try{
             System.out.println("try");
-            String sql = "INSERT INTO vehicles (vehicleNo, ownerEmail, vehicleBrand, regNo, driverEmail, model, type, seatsCount,startingPoint,endingPoint, trips, varifiedState) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO vehicles (vehicleNo, ownerEmail, vehicleBrand, regNo, driverEmail, model, type, seatsCount,startingPoint,endingPoint, trips, verifiedState) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 //            System.out.println("try");
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,vehicle.getVehicleNo());

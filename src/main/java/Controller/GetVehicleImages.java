@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 
 @WebServlet("/getVehicleImages")
 public class GetVehicleImages extends HttpServlet {
-    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
         System.out.println("get vehicle Images");

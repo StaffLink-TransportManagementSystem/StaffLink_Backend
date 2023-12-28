@@ -352,4 +352,13 @@ public class VehicleModel {
         return vehicleImageDAO.getVehicleImage(vehicleNo);
     }
 
+    public boolean deleteVehicle(){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.deleteVehicle(vehicleNo);
+    }
+    public boolean insertVehicleImages(){
+        VehicleImageDAO vehicleImageDAO = new VehicleImageDAO();
+        return vehicleImageDAO.insertVehicleImages(this);
+    }
+
 }

@@ -115,83 +115,90 @@ public class vehicleRegisterWithImages extends HttpServlet {
             vehicle.setInsuranceType(insuranceImageType);
             vehicle.setVarifiedState("Not Verified");
 
-            Boolean imageUpload = true;
+            Boolean success = false;
+            success = vehicle.createVehicle();
 
-            if(frontImageName != null){
-                String fullFileName = "frontImage_"+ vehicleNo+ "_" + timeMilli + "." + frontImageType;
-                frontImage.write(fullFileName);
-                vehicle.setFrontImage(fullFileName);
-                System.out.println("Front Image upload successful");
-            }
-            else {
-                imageUpload = false;
-                System.out.println("Front Image upload incorrect");
-            }
-            if(backImageName != null){
-                String fullFileName = "backImage_"+ vehicleNo+ "_" + timeMilli + "." + backImageType;
-                backImage.write(fullFileName);
-                vehicle.setBackImage(fullFileName);
-                System.out.println("Back Image upload successful");
-            }
-            else {
-                imageUpload = false;
-                System.out.println("Back Image upload incorrect");
-            }
-            if(sideImageName != null){
-                String fullFileName = "sideImage_"+ vehicleNo+ "_" + timeMilli + "." + sideImageType;
-                sideImage.write(fullFileName);
-                vehicle.setSideImage(fullFileName);
-                System.out.println("Side Image upload successful");
-            }
-            else {
-                imageUpload = false;
-                System.out.println("Side Image upload incorrect");
-            }
-            if(insideImageName != null){
-                String fullFileName = "insideImage_"+ vehicleNo+ "_" + timeMilli + "." + insideImageType;
-                insideImage.write(fullFileName);
-                vehicle.setInsideImage(fullFileName);
-                System.out.println("Inside Image upload successful");
-            }
-            else {
-                imageUpload = false;
-                System.out.println("Inside Image upload incorrect");
-            }
-            if(certificateImageName != null){
-                String fullFileName = "certificate_"+ vehicleNo+ "_" + timeMilli + "." + certificateImageType;
-                certificateImage.write(fullFileName);
-                vehicle.setCertificate(fullFileName);
-                System.out.println("Certificate Image upload successful");
-            }
-            else {
-                imageUpload = false;
-                System.out.println("Certificate Image upload incorrect");
-            }
-            if(insuranceImageName != null){
-                String fullFileName = "insurance_"+ vehicleNo+ "_" + timeMilli + "." + insuranceImageType;
-                insuranceImage.write(fullFileName);
-                vehicle.setInsurance(fullFileName);
-                System.out.println("Insurance Image upload successful");
-            }
-            else {
-                imageUpload = false;
-                System.out.println("Insurance Image upload incorrect");
-            }
-            if(imageUpload){
-                if(vehicle.createVehicle()){
-                    response.setStatus(HttpServletResponse.SC_OK);
-                    out.write("{\"message\": \"Registration successfully\"}");
-                    System.out.println("Vehicle register successful");
-                }else{
+            if(success) {
+
+                Boolean imageUpload = true;
+
+                if (frontImageName != null) {
+                    String fullFileName = "frontImage_" + vehicleNo + "_" + timeMilli + "." + frontImageType;
+                    frontImage.write(fullFileName);
+                    vehicle.setFrontImage(fullFileName);
+                    System.out.println("Front Image upload successful");
+                } else {
+                    imageUpload = false;
+                    System.out.println("Front Image upload incorrect");
+                }
+                if (backImageName != null) {
+                    String fullFileName = "backImage_" + vehicleNo + "_" + timeMilli + "." + backImageType;
+                    backImage.write(fullFileName);
+                    vehicle.setBackImage(fullFileName);
+                    System.out.println("Back Image upload successful");
+                } else {
+                    imageUpload = false;
+                    System.out.println("Back Image upload incorrect");
+                }
+                if (sideImageName != null) {
+                    String fullFileName = "sideImage_" + vehicleNo + "_" + timeMilli + "." + sideImageType;
+                    sideImage.write(fullFileName);
+                    vehicle.setSideImage(fullFileName);
+                    System.out.println("Side Image upload successful");
+                } else {
+                    imageUpload = false;
+                    System.out.println("Side Image upload incorrect");
+                }
+                if (insideImageName != null) {
+                    String fullFileName = "insideImage_" + vehicleNo + "_" + timeMilli + "." + insideImageType;
+                    insideImage.write(fullFileName);
+                    vehicle.setInsideImage(fullFileName);
+                    System.out.println("Inside Image upload successful");
+                } else {
+                    imageUpload = false;
+                    System.out.println("Inside Image upload incorrect");
+                }
+                if (certificateImageName != null) {
+                    String fullFileName = "certificate_" + vehicleNo + "_" + timeMilli + "." + certificateImageType;
+                    certificateImage.write(fullFileName);
+                    vehicle.setCertificate(fullFileName);
+                    System.out.println("Certificate Image upload successful");
+                } else {
+                    imageUpload = false;
+                    System.out.println("Certificate Image upload incorrect");
+                }
+                if (insuranceImageName != null) {
+                    String fullFileName = "insurance_" + vehicleNo + "_" + timeMilli + "." + insuranceImageType;
+                    insuranceImage.write(fullFileName);
+                    vehicle.setInsurance(fullFileName);
+                    System.out.println("Insurance Image upload successful");
+                } else {
+                    imageUpload = false;
+                    System.out.println("Insurance Image upload incorrect");
+                }
+                if (imageUpload) {
+                    if(vehicle.insertVehicleImages()) {
+                        response.setStatus(HttpServletResponse.SC_OK);
+                        out.write("{\"message\": \"Images registration successfully\"}");
+                        System.out.println("Vehicle images register successful");
+                    }
+                    else {
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        out.write("{\"message\": \"Something Went Wrong\"}");
+                        System.out.println("Vehicle images register incorrect");
+                        vehicle.deleteVehicle();
+                    }
+                } else {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    out.write("{\"message\": \"Vehicle register unsuccessfully\"}");
-                    System.out.println("Vehicle register incorrect");
+                    out.write("{\"message\": \"Something Went Wrong\"}");
+                    System.out.println("Image upload incorrect");
+                    vehicle.deleteVehicle();
                 }
             }
             else {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 out.write("{\"message\": \"Something Went Wrong\"}");
-                System.out.println("Image upload incorrect");
+                System.out.println("Vehicle register incorrect");
             }
 
         }

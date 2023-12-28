@@ -118,37 +118,4 @@ public class WaypointsDAO {
         return waypoints;
     }
 
-    @WebServlet("/getVehicleImages")
-    public static class GetVehicleImagesServelet extends HttpServlet {
-        public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-            res.setContentType("application/json");
-            PrintWriter out = res.getWriter();
-            System.out.println("Vehicle Images");
-
-            try {
-                String email = req.getParameter("VehicleNo");
-                VehicleModel vehicleModel = new VehicleModel();
-                VehicleModel vehicleImage = vehicleModel.getVehicleImages(email);
-
-                Gson gson = new Gson();
-                String centerJson = gson.toJson(vehicles);
-
-                if (vehicles.size() != 0) {
-                    res.setStatus(HttpServletResponse.SC_OK);
-                    out.write("{\"size\": " + vehicles.size() + ",\"list\":" + centerJson + "}");
-                    System.out.println("View all vehicles");
-                } else if (vehicles.size() == 0) {
-                    res.setStatus(HttpServletResponse.SC_ACCEPTED);
-                    out.write("{\"size\": \"0\"}");
-                    System.out.println("No vehicles");
-                }
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            } finally {
-                out.close();
-            }
-        }
-    }
 }
