@@ -1,6 +1,7 @@
 package Model;
 
 import DAO.VehicleDAO;
+import DAO.VehicleImageDAO;
 
 import java.sql.Time;
 import java.util.Date;
@@ -16,11 +17,23 @@ public class VehicleModel {
     private String model;
     private String type;
     private int seatsCount;
-//    private String AC;
     private String startingPoint;
     private String endingPoint;
     private String trips;
     private int deleteState;
+    private String frontImage;
+    private String backImage;
+    private String sideImage;
+    private String insideImage;
+    private String certificate;
+    private String insurance;
+    private String frontImageType;
+    private String backImageType;
+    private String sideImageType;
+    private String insideImageType;
+    private String certificateType;
+    private String insuranceType;
+    private String varifiedState;
 
     public VehicleModel() {
     }
@@ -66,6 +79,35 @@ public class VehicleModel {
         this.endingPoint = endingPoint;
         this.trips = trips;
         this.deleteState = deleteState;
+    }
+
+    public VehicleModel(int id, String ownerEmail, String vehicleNo, String vehicleBrand, String regNo, String driverEmail, String model, String type, int seatsCount, String startingPoint, String endingPoint, String trips,int deleteState,String frontImage,String backImage,String sideImage,String insideImage,String certificate,String insurance,String frontImageType,String backImageType,String sideImageType,String insideImageType,String certificateType,String insuranceType,String varifiedState) {
+        this.id = id;
+        this.ownerEmail = ownerEmail;
+        this.vehicleNo = vehicleNo;
+        this.vehicleBrand = vehicleBrand;
+        this.regNo = regNo;
+        this.driverEmail = driverEmail;
+        this.model = model;
+        this.type = type;
+        this.seatsCount = seatsCount;
+        this.startingPoint = startingPoint;
+        this.endingPoint = endingPoint;
+        this.trips = trips;
+        this.deleteState = deleteState;
+        this.frontImage = frontImage;
+        this.backImage = backImage;
+        this.sideImage = sideImage;
+        this.insideImage = insideImage;
+        this.certificate = certificate;
+        this.insurance = insurance;
+        this.frontImageType = frontImageType;
+        this.backImageType = backImageType;
+        this.sideImageType = sideImageType;
+        this.insideImageType = insideImageType;
+        this.certificateType = certificateType;
+        this.insuranceType = insuranceType;
+        this.varifiedState = varifiedState;
     }
 
     public VehicleModel(String vehicleNo) {
@@ -176,8 +218,112 @@ public class VehicleModel {
         this.deleteState = deleteState;
     }
 
+    public String getFrontImage() {
+        return frontImage;
+    }
+
+    public void setFrontImage(String frontImage) {
+        this.frontImage = frontImage;
+    }
+
+    public String getBackImage() {
+        return backImage;
+    }
+
+    public void setBackImage(String backImage) {
+        this.backImage = backImage;
+    }
+
+    public String getSideImage() {
+        return sideImage;
+    }
+
+    public void setSideImage(String sideImage) {
+        this.sideImage = sideImage;
+    }
+
+    public String getInsideImage() {
+        return insideImage;
+    }
+
+    public void setInsideImage(String insideImage) {
+        this.insideImage = insideImage;
+    }
+
+    public String getCertificate() {
+        return certificate;
+    }
+
+    public void setCertificate(String certificate) {
+        this.certificate = certificate;
+    }
+
+    public String getInsurance() {
+        return insurance;
+    }
+
+    public void setInsurance(String insurance) {
+        this.insurance = insurance;
+    }
+
+    public String getFrontImageType() {
+        return frontImageType;
+    }
+
+    public void setFrontImageType(String frontImageType) {
+        this.frontImageType = frontImageType;
+    }
+
+    public String getBackImageType() {
+        return backImageType;
+    }
+
+    public void setBackImageType(String backImageType) {
+        this.backImageType = backImageType;
+    }
+
+    public String getSideImageType() {
+        return sideImageType;
+    }
+
+    public void setSideImageType(String sideImageType) {
+        this.sideImageType = sideImageType;
+    }
+
+    public String getInsideImageType() {
+        return insideImageType;
+    }
+
+    public void setInsideImageType(String insideImageType) {
+        this.insideImageType = insideImageType;
+    }
+
+    public String getCertificateType() {
+        return certificateType;
+    }
+
+    public void setCertificateType(String certificateType) {
+        this.certificateType = certificateType;
+    }
+
+    public String getInsuranceType() {
+        return insuranceType;
+    }
+
+    public void setInsuranceType(String insuranceType) {
+        this.insuranceType = insuranceType;
+    }
+
+    public String getVarifiedState() {
+        return varifiedState;
+    }
+
+    public void setVarifiedState(String varifiedState) {
+        this.varifiedState = varifiedState;
+    }
+
     public boolean createVehicle(){
-        System.out.println("check");
+//        System.out.println("check");
         VehicleDAO vehicleDAO = new VehicleDAO();
         boolean status = vehicleDAO.createVehicle(this);
         return  status;
@@ -199,6 +345,20 @@ public class VehicleModel {
     public VehicleModel getVehicleByNo(){
         VehicleDAO vehicleDAO = new VehicleDAO();
         return vehicleDAO.getVehicle(vehicleNo);
+    }
+
+    public VehicleModel getVehicleImages(String vehicleNo){
+        VehicleImageDAO vehicleImageDAO = new VehicleImageDAO();
+        return vehicleImageDAO.getVehicleImage(vehicleNo);
+    }
+
+    public boolean deleteVehicle(){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.deleteVehicle(vehicleNo);
+    }
+    public boolean insertVehicleImages(){
+        VehicleImageDAO vehicleImageDAO = new VehicleImageDAO();
+        return vehicleImageDAO.insertVehicleImages(this);
     }
 
 }
