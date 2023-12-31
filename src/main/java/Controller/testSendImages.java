@@ -83,7 +83,7 @@ public class testSendImages extends HttpServlet {
                 String base64Image = Base64.getEncoder().encodeToString(image);
 
                 response.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"size\": " + image.length + ", \"base64Image\": \"" + base64Image + "\"}");
+                out.write("{\"size\": " + image.length + ", \"image\": \"" + base64Image + "\"}");
                 System.out.println("View all images");
             } else {
                 response.setStatus(HttpServletResponse.SC_ACCEPTED);

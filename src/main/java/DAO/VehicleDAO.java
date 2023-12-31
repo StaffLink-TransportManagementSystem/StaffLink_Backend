@@ -240,12 +240,14 @@ public class VehicleDAO {
         List<VehicleModel> vehicles = new ArrayList<>();
         try{
             con = connection;
-            String sql = "SELECT * FROM vehicles WHERE ownerEmail = ? && deleteState = 0";
+            String sql = "SELECT * FROM vehicles WHERE ownerEmail = ? AND deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1,ownerEmail);
             ResultSet resultSet = preparedStatement.executeQuery();
+            System.out.println(ownerEmail);
             while(resultSet.next()){
                 VehicleModel vehicle = new VehicleModel();
+                System.out.println(resultSet.getInt("id"));
                 vehicle.setId(resultSet.getInt("id"));
                 vehicle.setVehicleNo(resultSet.getString("vehicleNo"));
                 vehicle.setOwnerEmail(resultSet.getString("ownerEmail"));
@@ -258,7 +260,7 @@ public class VehicleDAO {
                 vehicle.setStartingPoint(resultSet.getString("startingPoint"));
                 vehicle.setEndingPoint(resultSet.getString("endingPoint"));
                 vehicle.setTrips(resultSet.getString("trips"));
-                vehicle.setVarifiedState(resultSet.getString("varifiedState"));
+                vehicle.setVarifiedState(resultSet.getString("verifiedState"));
                 vehicles.add(vehicle);
             }
             resultSet.close();
