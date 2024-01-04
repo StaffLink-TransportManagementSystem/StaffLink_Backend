@@ -58,7 +58,7 @@ public class DriverValidations {
         if(password == null ) {
             System.out.println("Password validation error");
             return false;
-        } else if (password.length() < 8) {
+        } else if (password.length() < 6) {
             System.out.println("Password validation error");
             return false;
         }
