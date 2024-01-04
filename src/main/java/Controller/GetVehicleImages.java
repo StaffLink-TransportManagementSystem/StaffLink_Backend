@@ -50,7 +50,7 @@ public class GetVehicleImages extends HttpServlet {
 
             if (frontImage.length != 0 || backImage.length != 0 || sideImage.length != 0 || insideImage.length != 0 || certificateImage.length != 0 || insuranceImage.length != 0) {
                 res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"message\":\"success\",\"frontImage\": \"" + Base64.getEncoder().encodeToString(frontImage) + "\",\"backImage\":\"" + Base64.getEncoder().encodeToString(backImage) + "\",\"sideImage\":\"" + Base64.getEncoder().encodeToString(sideImage) + "\",\"insideImage\":\"" + Base64.getEncoder().encodeToString(insideImage) + "\",\"certificateImage\":\"" + Base64.getEncoder().encodeToString(certificateImage) + "\",\"insuranceImage\":\"" + Base64.getEncoder().encodeToString(insuranceImage) + "\"}");
+                out.write("{\"message\":\"success\",\"frontImage\": \"" + Base64.getEncoder().encodeToString(frontImage)+"\"}");
                 System.out.println("View all images");
             } else if (frontImage.length == 0 && backImage.length == 0 && sideImage.length == 0 && insideImage.length == 0 && certificateImage.length == 0 && insuranceImage.length == 0) {
                 res.setStatus(HttpServletResponse.SC_ACCEPTED);
