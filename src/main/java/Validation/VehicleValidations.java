@@ -126,42 +126,49 @@ public boolean validatePrice(double price) {
     }
     public boolean validateVehicleOnUpdate(VehicleModel vehicleModel) {
         boolean valid = true;
-        if (vehicleModel.getVehicleNo() != null) {
+        if (valid && vehicleModel.getVehicleNo() != null) {
             valid = validateVehicleNo(vehicleModel.getVehicleNo());
         }
-        if (vehicleModel.getType() != null) {
+        if (valid && vehicleModel.getType() != null) {
             valid = validateVehicleType(vehicleModel.getType());
         }
-        if (vehicleModel.getOwnerEmail() != null) {
+        if (valid && vehicleModel.getOwnerEmail() != null) {
             valid = validateVehicleOwner(vehicleModel.getOwnerEmail());
         }
-        if (vehicleModel.getTrips() != null) {
+        if (valid && vehicleModel.getTrips() != null) {
             valid = validateTrips(vehicleModel.getTrips());
         }
-        if (vehicleModel.getVehicleBrand() != null) {
+        if (valid && vehicleModel.getVehicleBrand() != null) {
             valid = validateVehicleBrand(vehicleModel.getVehicleBrand());
         }
-        if (vehicleModel.getModel() != null) {
+        if (valid && vehicleModel.getModel() != null) {
             valid = validateVehicleModel(vehicleModel.getModel());
         }
-        if (vehicleModel.getRegNo() != null) {
+        if (valid && vehicleModel.getRegNo() != null) {
             valid = validateRegNo(vehicleModel.getRegNo());
         }
-        if (vehicleModel.getDriverEmail() != null) {
+        if (valid && vehicleModel.getDriverEmail() != null) {
             valid = validateDriverEmail(vehicleModel.getDriverEmail());
         }
-        if (vehicleModel.getSeatsCount() != 0) {
+        if (valid && vehicleModel.getSeatsCount() != 0) {
             valid = validateNoOfSeats(vehicleModel.getSeatsCount());
         }
-        if (vehicleModel.getStartingPoint() != null) {
+        if (valid && vehicleModel.getStartingPoint() != null) {
             valid = validateStartingLocation(vehicleModel.getStartingPoint());
         }
-        if (vehicleModel.getEndingPoint() != null) {
+        if (valid && vehicleModel.getEndingPoint() != null) {
             valid = validateDestination(vehicleModel.getEndingPoint());
         }
-        if (vehicleModel.getOwnerEmail() != null) {
+        if (valid && vehicleModel.getOwnerEmail() != null) {
             valid = validateVehicleOwner(vehicleModel.getOwnerEmail());
         }
-        return valid;
+        if(valid){
+            System.out.println("Vehicle validation success");
+            return true;
+        }
+        else{
+            System.out.println("Vehicle validation error");
+            return false;
+        }
     }
 }

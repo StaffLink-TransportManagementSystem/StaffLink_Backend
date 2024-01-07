@@ -99,25 +99,25 @@ public class DriverValidations {
     }
     public boolean validateDriverOnUpdate(DriverModel driverModel) {
         boolean valid = true;
-        if (driverModel.getName() != null) {
+        if (valid && driverModel.getName() != null) {
             valid = validateDriverName(driverModel.getName());
         }
-        if (driverModel.getEmail() != null) {
+        if (valid && driverModel.getEmail() != null) {
             valid = validateDriverEmail(driverModel.getEmail());
         }
-        if (driverModel.getNIC() != null) {
+        if (valid && driverModel.getNIC() != null) {
             valid = validateDriverNIC(driverModel.getNIC());
         }
-        if (driverModel.getAge() != 0) {
+        if (valid && driverModel.getAge() != 0) {
             valid = validateDriverAge(driverModel.getAge());
         }
-        if (driverModel.getContact() != null) {
+        if (valid && driverModel.getContact() != null) {
             valid = validateDriverContactNo(driverModel.getContact());
         }
-        if (driverModel.getPassword() != null) {
+        if (valid && driverModel.getPassword() != null) {
             valid = validateDriverPassword(driverModel.getPassword());
         }
-        if (driverModel.getOwnerEmail() != null) {
+        if (valid && driverModel.getOwnerEmail() != null) {
             valid = validateOwnerEmail(driverModel.getOwnerEmail());
         }
         if (valid) {

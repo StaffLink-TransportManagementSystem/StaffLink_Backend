@@ -107,6 +107,14 @@ public class ComplainsValidations {
         if(valid && (complainModel.getStatus() != null)){
             valid = validateStatus(complainModel.getStatus());
         }
-        return valid;
+        if(valid){
+            System.out.println("Complain validation success");
+            return true;
+        }
+        else{
+            System.out.println("Complain validation error");
+            return false;
+        }
+//        return valid;
     }
 }

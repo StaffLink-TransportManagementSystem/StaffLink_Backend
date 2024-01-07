@@ -95,21 +95,28 @@ public class AbasntValidation {
     }
     public boolean validateAbsantOnUpdate(AbsentModel absentModel){
         boolean valid = true;
-        if(absentModel.getPassengerEmail()!=null){
+        if(valid && absentModel.getPassengerEmail()!=null){
             valid = validatePassengerEmail(absentModel.getPassengerEmail());
         }
-        if(absentModel.getVehicleNo()!=null){
+        if(valid && absentModel.getVehicleNo()!=null){
             valid = validateVehicleNo(absentModel.getVehicleNo());
         }
-        if(absentModel.getDaysOfAbsent()!=null){
+        if(valid && absentModel.getDaysOfAbsent()!=null){
             valid = validateDaysOfAbsent(absentModel.getDaysOfAbsent());
         }
-        if(absentModel.getStartingDate()!=null){
+        if(valid && absentModel.getStartingDate()!=null){
             valid = validateStartingDate(absentModel.getStartingDate());
         }
-        if(absentModel.getEndingDate()!=null){
+        if(valid && absentModel.getEndingDate()!=null){
             valid = validateEndingDate(absentModel.getEndingDate(), absentModel.getStartingDate());
         }
-        return valid;
+        if(valid){
+            System.out.println("Absent validation success");
+            return true;
+        }
+        else{
+            System.out.println("Absent validation error");
+            return false;
+        }
     }
 }
