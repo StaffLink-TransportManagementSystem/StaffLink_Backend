@@ -1,5 +1,7 @@
 package Validation;
 
+import Model.ComplainModel;
+
 import java.util.regex.Pattern;
 
 public class ComplainsValidations {
@@ -74,5 +76,37 @@ public class ComplainsValidations {
             System.out.println("Status validation error");
             return false;
         }
+    }
+
+    public boolean complainValidationOnInsert(ComplainModel complainModel){
+        if(validateComplainerEmail(complainModel.getComplainerEmail()) && validateComplainerType(complainModel.getComplainerType()) && validateComplaineeEmail(complainModel.getComplaineeEmail()) && validateComplaineeType(complainModel.getComplaineeType()) && validateComplain(complainModel.getComplain()) && validateStatus(complainModel.getStatus())){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public boolean complainValidationOnUpdate(ComplainModel complainModel){
+        boolean valid = true;
+        if(valid && (complainModel.getComplainerEmail() != null)){
+            valid = validateComplainerEmail(complainModel.getComplainerEmail());
+        }
+        if(valid && (complainModel.getComplainerType() != null)){
+            valid = validateComplainerType(complainModel.getComplainerType());
+        }
+        if(valid && (complainModel.getComplaineeEmail() != null)){
+            valid = validateComplaineeEmail(complainModel.getComplaineeEmail());
+        }
+        if(valid && (complainModel.getComplaineeType() != null)){
+            valid = validateComplaineeType(complainModel.getComplaineeType());
+        }
+        if(valid && (complainModel.getComplain() != null)){
+            valid = validateComplain(complainModel.getComplain());
+        }
+        if(valid && (complainModel.getStatus() != null)){
+            valid = validateStatus(complainModel.getStatus());
+        }
+        return valid;
     }
 }
