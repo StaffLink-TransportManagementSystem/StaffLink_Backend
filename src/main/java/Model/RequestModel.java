@@ -16,7 +16,7 @@ public class RequestModel {
     private String onTime;
     private String offTime;
     private String type;
-    private String status;
+    private String status; //pending, accepted, rejected
     private int deleteState;
     public RequestModel() {
     }

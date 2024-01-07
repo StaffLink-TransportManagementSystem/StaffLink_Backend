@@ -93,34 +93,36 @@ public class PassengerPaymentValidation {
 
     boolean validatePassengerPaymentOnUpdate(PassengerPaymentsModel passengerPaymentsModel){
         boolean valid = true;
-        if(passengerPaymentsModel.getRequestID()!=0){
+        if(valid && passengerPaymentsModel.getRequestID()!=0){
             valid = validateRequestID(passengerPaymentsModel.getRequestID());
         }
-        if(passengerPaymentsModel.getReservationID()!=0){
+        if(valid && passengerPaymentsModel.getReservationID()!=0){
             valid = validateReservationID(passengerPaymentsModel.getReservationID());
         }
-        if(passengerPaymentsModel.getPassengerEmail()!=null){
+        if(valid && passengerPaymentsModel.getPassengerEmail()!=null){
             valid = validatePassengerEmail(passengerPaymentsModel.getPassengerEmail());
         }
-        if(passengerPaymentsModel.getVehicleNo()!=null){
+        if(valid && passengerPaymentsModel.getVehicleNo()!=null){
             valid = validateVehicleNo(passengerPaymentsModel.getVehicleNo());
         }
-        if(passengerPaymentsModel.getDate()!=null){
+        if(valid && passengerPaymentsModel.getDate()!=null){
             valid = validateDate(passengerPaymentsModel.getDate());
         }
-        if(passengerPaymentsModel.getPaymentType()!=null){
+        if(valid && passengerPaymentsModel.getPaymentType()!=null){
             valid = validatePaymentType(passengerPaymentsModel.getPaymentType());
         }
-        if(passengerPaymentsModel.getAmount()!=0){
+        if(valid && passengerPaymentsModel.getAmount()!=0){
             valid = validateAmount(passengerPaymentsModel.getAmount());
         }
-        if(passengerPaymentsModel.getStatus()!=null){
+        if(valid && passengerPaymentsModel.getStatus()!=null){
             valid = validateStatus(passengerPaymentsModel.getStatus());
         }
         if(valid){
+            System.out.println("PassengerPayment validation success");
             return true;
         }
         else{
+            System.out.println("PassengerPayment validation error");
             return false;
         }
     }

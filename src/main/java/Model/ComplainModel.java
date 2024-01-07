@@ -13,7 +13,7 @@ public class ComplainModel {
     private String complain;
     private String date;
     private String time;
-    private String status;
+    private String status; //pending, accepted, rejected
     private int deleteState;
 
     public int getId() {
