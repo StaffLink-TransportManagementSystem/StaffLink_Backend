@@ -18,8 +18,7 @@ public class VehicleDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,vehicleNo);
             ResultSet resultSet = preparedStatement.executeQuery();
-//            preparedStatement.executeUpdate();
-//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+
             while(resultSet.next()){
                 vehicle.setId(resultSet.getInt("id"));
                 vehicle.setVehicleNo(resultSet.getString("vehicleNo"));
@@ -33,6 +32,8 @@ public class VehicleDAO {
                 vehicle.setStartingPoint(resultSet.getString("startingPoint"));
                 vehicle.setEndingPoint(resultSet.getString("endingPoint"));
                 vehicle.setTrips(resultSet.getString("trips"));
+                vehicle.setVarifiedState(resultSet.getString("varifiedState"));
+                vehicle.setDeleteState(resultSet.getInt("deleteState"));
             }
             resultSet.close();
             preparedStatement.close();
@@ -55,7 +56,7 @@ public class VehicleDAO {
         boolean success = false;
         try{
             System.out.println("try");
-            String sql = "INSERT INTO vehicles (vehicleNo, ownerEmail, vehicleBrand, regNo, driverEmail, model, type, seatsCount,startingPoint,endingPoint, trips) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO vehicles (vehicleNo, ownerEmail, vehicleBrand, regNo, driverEmail, model, type, seatsCount,startingPoint,endingPoint, trips, verifiedState) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 //            System.out.println("try");
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,vehicle.getVehicleNo());
@@ -69,6 +70,7 @@ public class VehicleDAO {
             preparedStatement.setString(9,vehicle.getStartingPoint());
             preparedStatement.setString(10,vehicle.getEndingPoint());
             preparedStatement.setString(11,vehicle.getTrips());
+            preparedStatement.setString(12,vehicle.getVarifiedState());
 
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -118,7 +120,6 @@ public class VehicleDAO {
 
             int temp = preparedStatement.executeUpdate();
 
-            System.out.println("hhhhhh");
             System.out.println(temp);
 //            ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if(temp==1){
@@ -220,6 +221,7 @@ public class VehicleDAO {
                 vehicle.setStartingPoint(resultSet.getString("startingPoint"));
                 vehicle.setEndingPoint(resultSet.getString("endingPoint"));
                 vehicle.setTrips(resultSet.getString("trips"));
+                vehicle.setVarifiedState(resultSet.getString("varifiedState"));
                 vehicles.add(vehicle);
             }
             resultSet.close();
@@ -238,12 +240,14 @@ public class VehicleDAO {
         List<VehicleModel> vehicles = new ArrayList<>();
         try{
             con = connection;
-            String sql = "SELECT * FROM vehicles WHERE ownerEmail = ? && deleteState = 0";
+            String sql = "SELECT * FROM vehicles WHERE ownerEmail = ? AND deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1,ownerEmail);
             ResultSet resultSet = preparedStatement.executeQuery();
+            System.out.println(ownerEmail);
             while(resultSet.next()){
                 VehicleModel vehicle = new VehicleModel();
+                System.out.println(resultSet.getInt("id"));
                 vehicle.setId(resultSet.getInt("id"));
                 vehicle.setVehicleNo(resultSet.getString("vehicleNo"));
                 vehicle.setOwnerEmail(resultSet.getString("ownerEmail"));
@@ -256,6 +260,7 @@ public class VehicleDAO {
                 vehicle.setStartingPoint(resultSet.getString("startingPoint"));
                 vehicle.setEndingPoint(resultSet.getString("endingPoint"));
                 vehicle.setTrips(resultSet.getString("trips"));
+                vehicle.setVarifiedState(resultSet.getString("verifiedState"));
                 vehicles.add(vehicle);
             }
             resultSet.close();
@@ -267,4 +272,51 @@ public class VehicleDAO {
             return vehicles;
         }
     }
+
+    public static boolean verifyVehicle(String vehicleNo) {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+        try {
+            con = connection;
+            String sql = "UPDATE vehicles SET varifiedState = 'Verified' WHERE vehicleNo = ? && deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, vehicleNo);
+            int x = preparedStatement.executeUpdate();
+//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if (x != 0) {
+                success = true;
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return success;
+        }
+    }
+
+    public static boolean unverifyVehicle(String vehicleNo) {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+        try {
+            con = connection;
+            String sql = "UPDATE vehicles SET varifiedState = 'Unverified' WHERE vehicleNo = ? && deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, vehicleNo);
+            int x = preparedStatement.executeUpdate();
+//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if (x != 0) {
+                success = true;
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return success;
+        }
+    }
+
+
+
 }
