@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 public class VehicleValidations {
     public boolean validateVehicleNo(String vehicleNo) {
         System.out.println("VehicleNo validation"+vehicleNo);
-        String vehicleNoRegex = "^[A-Za-z]{3}-\\\\d{4}$|^[A-Za-z]{2}-\\\\d{4}$";
+        String vehicleNoRegex = "^[A-Za-z]{3}-\\d{4}$|^[A-Za-z]{2}-\\d{4}$";
         Pattern pattern = Pattern.compile(vehicleNoRegex);
         if(vehicleNo == null) {
             System.out.println("VehicleNo validation error");
@@ -56,21 +56,21 @@ public class VehicleValidations {
         }
     }
     public boolean validateVehicleBrand(String vehicleBrand) {
-        if(vehicleBrand == null) {
+        if(vehicleBrand == null || vehicleBrand.equals("")) {
             System.out.println("VehicleBrand validation error");
             return false;
         }
         return true;
     }
     public boolean validateVehicleModel(String vehicleModel) {
-        if(vehicleModel == null) {
+        if(vehicleModel == null || vehicleModel.equals("")) {
             System.out.println("VehicleModel validation error");
             return false;
         }
         return true;
     }
     public boolean validateRegNo(String regNo) {
-        if(regNo == null) {
+        if(regNo == null || regNo.equals("")) {
             System.out.println("Registration no validation error");
             return false;
         }
@@ -90,21 +90,21 @@ public class VehicleValidations {
     }
 
     public boolean validateNoOfSeats(int noOfSeats) {
-        if(noOfSeats == 0) {
+        if(noOfSeats == 0 || noOfSeats > 80 || noOfSeats < 0) {
             System.out.println("NoOfSeats validation error");
             return false;
         }
         return true;
     }
     public boolean validateStartingLocation(String startingLocation) {
-        if(startingLocation == null) {
+        if(startingLocation == null || startingLocation.equals("")) {
             System.out.println("StartingLocation validation error");
             return false;
         }
         return true;
     }
     public boolean validateDestination(String destination) {
-        if(destination == null) {
+        if(destination == null || destination.equals("")) {
             System.out.println("Destination validation error");
             return false;
         }
@@ -178,6 +178,10 @@ public boolean validatePrice(double price) {
         boolean valid = true;
         if (valid && vehicleModel.getVehicleNo() != null) {
             valid = validateVehicleNo(vehicleModel.getVehicleNo());
+        }
+        else {
+            System.out.println("VehicleNo validation error");
+            return false;
         }
         if (valid && vehicleModel.getType() != null) {
             valid = validateVehicleType(vehicleModel.getType());

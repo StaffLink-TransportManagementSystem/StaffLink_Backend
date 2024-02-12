@@ -23,6 +23,7 @@ public class allVehicle extends HttpServlet {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         PrintWriter out = resp.getWriter();
+        System.out.println("View all Vehicles");
 
 
         VehicleModel vehicleModel = new VehicleModel();
