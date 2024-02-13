@@ -49,6 +49,8 @@ public class loginOwner extends HttpServlet{
                     JwtUtils jwtUtils = new JwtUtils(payload);
                     String token = jwtUtils.generateJwt();
 
+                    System.out.println("Token: " + token);
+
                     Cookie cookie = new Cookie("jwt", token);
                     cookie.setPath("/");
                     cookie.setSecure(true); // For HTTPS
@@ -61,7 +63,7 @@ public class loginOwner extends HttpServlet{
                     res.addCookie(cookie);
 
                     res.setStatus(HttpServletResponse.SC_OK);
-                    out.write("{\"message\": \"Login successfully\",\"page\":\""+ "owner" +"\"}");
+                    out.write("{\"jwt\":\""+token+"\",\"message\": \"Login successfully\",\"page\":\""+ "owner" +"\"}");
                     System.out.println("Login successful");
 
                 }else{
