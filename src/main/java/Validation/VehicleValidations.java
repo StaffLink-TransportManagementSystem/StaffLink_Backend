@@ -6,12 +6,14 @@ import java.util.regex.Pattern;
 
 public class VehicleValidations {
     public boolean validateVehicleNo(String vehicleNo) {
-        String vehicleNoRegex = "^[A-Za-z]{3}-\\\\d{4}$|^[A-Za-z]{2}-\\\\d{4}$";
+        System.out.println("VehicleNo validation"+vehicleNo);
+        String vehicleNoRegex = "^[A-Za-z]{3}-\\d{4}$|^[A-Za-z]{2}-\\d{4}$";
+        Pattern pattern = Pattern.compile(vehicleNoRegex);
         if(vehicleNo == null) {
             System.out.println("VehicleNo validation error");
             return false;
         }
-        if(vehicleNo.matches(vehicleNoRegex)) {
+        if(pattern.matcher(vehicleNo).matches()) {
             System.out.println("VehicleNo validation success");
             return true;
         } else {
@@ -54,21 +56,21 @@ public class VehicleValidations {
         }
     }
     public boolean validateVehicleBrand(String vehicleBrand) {
-        if(vehicleBrand == null) {
+        if(vehicleBrand == null || vehicleBrand.equals("")) {
             System.out.println("VehicleBrand validation error");
             return false;
         }
         return true;
     }
     public boolean validateVehicleModel(String vehicleModel) {
-        if(vehicleModel == null) {
+        if(vehicleModel == null || vehicleModel.equals("")) {
             System.out.println("VehicleModel validation error");
             return false;
         }
         return true;
     }
     public boolean validateRegNo(String regNo) {
-        if(regNo == null) {
+        if(regNo == null || regNo.equals("")) {
             System.out.println("Registration no validation error");
             return false;
         }
@@ -88,21 +90,21 @@ public class VehicleValidations {
     }
 
     public boolean validateNoOfSeats(int noOfSeats) {
-        if(noOfSeats == 0) {
+        if(noOfSeats == 0 || noOfSeats > 80 || noOfSeats < 0) {
             System.out.println("NoOfSeats validation error");
             return false;
         }
         return true;
     }
     public boolean validateStartingLocation(String startingLocation) {
-        if(startingLocation == null) {
+        if(startingLocation == null || startingLocation.equals("")) {
             System.out.println("StartingLocation validation error");
             return false;
         }
         return true;
     }
     public boolean validateDestination(String destination) {
-        if(destination == null) {
+        if(destination == null || destination.equals("")) {
             System.out.println("Destination validation error");
             return false;
         }
@@ -116,6 +118,54 @@ public boolean validatePrice(double price) {
         return true;
     }
     public boolean validateVehicleOnInsert(VehicleModel vehicleModel) {
+        if(vehicleModel == null) {
+            System.out.println("Vehicle validation error");
+            return false;
+        }
+        if(vehicleModel.getVehicleNo() == null) {
+            System.out.println("VehicleNo validation error");
+            return false;
+        }
+        if(vehicleModel.getType() == null) {
+            System.out.println("VehicleType validation error");
+            return false;
+        }
+        if(vehicleModel.getOwnerEmail() == null) {
+            System.out.println("VehicleOwner validation error");
+            return false;
+        }
+        if(vehicleModel.getTrips() == null) {
+            System.out.println("Trips validation error");
+            return false;
+        }
+        if(vehicleModel.getVehicleBrand() == null) {
+            System.out.println("VehicleBrand validation error");
+            return false;
+        }
+        if(vehicleModel.getModel() == null) {
+            System.out.println("VehicleModel validation error");
+            return false;
+        }
+        if(vehicleModel.getRegNo() == null) {
+            System.out.println("Registration no validation error");
+            return false;
+        }
+        if(vehicleModel.getDriverEmail() == null) {
+            System.out.println("DriverEmail validation error");
+            return false;
+        }
+        if(vehicleModel.getSeatsCount() == 0) {
+            System.out.println("NoOfSeats validation error");
+            return false;
+        }
+        if(vehicleModel.getStartingPoint() == null) {
+            System.out.println("StartingLocation validation error");
+            return false;
+        }
+        if(vehicleModel.getEndingPoint() == null) {
+            System.out.println("Destination validation error");
+            return false;
+        }
         if(validateVehicleNo(vehicleModel.getVehicleNo()) && validateVehicleType(vehicleModel.getType()) && validateVehicleOwner(vehicleModel.getOwnerEmail()) && validateTrips(vehicleModel.getTrips()) && validateVehicleBrand(vehicleModel.getVehicleBrand()) && validateVehicleModel(vehicleModel.getModel()) && validateRegNo(vehicleModel.getRegNo()) && validateDriverEmail(vehicleModel.getDriverEmail()) && validateNoOfSeats(vehicleModel.getSeatsCount()) && validateStartingLocation(vehicleModel.getStartingPoint()) && validateDestination(vehicleModel.getEndingPoint())) {
             System.out.println("Vehicle validation success");
             return true;
@@ -128,6 +178,10 @@ public boolean validatePrice(double price) {
         boolean valid = true;
         if (valid && vehicleModel.getVehicleNo() != null) {
             valid = validateVehicleNo(vehicleModel.getVehicleNo());
+        }
+        else {
+            System.out.println("VehicleNo validation error");
+            return false;
         }
         if (valid && vehicleModel.getType() != null) {
             valid = validateVehicleType(vehicleModel.getType());

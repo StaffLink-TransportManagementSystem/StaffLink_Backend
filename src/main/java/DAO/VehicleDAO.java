@@ -32,7 +32,7 @@ public class VehicleDAO {
                 vehicle.setStartingPoint(resultSet.getString("startingPoint"));
                 vehicle.setEndingPoint(resultSet.getString("endingPoint"));
                 vehicle.setTrips(resultSet.getString("trips"));
-                vehicle.setVarifiedState(resultSet.getString("varifiedState"));
+                vehicle.setVarifiedState(resultSet.getString("verifiedState"));
                 vehicle.setDeleteState(resultSet.getInt("deleteState"));
             }
             resultSet.close();
@@ -221,7 +221,7 @@ public class VehicleDAO {
                 vehicle.setStartingPoint(resultSet.getString("startingPoint"));
                 vehicle.setEndingPoint(resultSet.getString("endingPoint"));
                 vehicle.setTrips(resultSet.getString("trips"));
-                vehicle.setVarifiedState(resultSet.getString("varifiedState"));
+//                vehicle.setVarifiedState(resultSet.getString("varifiedState"));
                 vehicles.add(vehicle);
             }
             resultSet.close();
