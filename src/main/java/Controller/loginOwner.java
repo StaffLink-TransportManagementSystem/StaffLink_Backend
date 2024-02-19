@@ -44,7 +44,7 @@ public class loginOwner extends HttpServlet{
                     JSONObject payload = new JSONObject();
                     payload.put("email", ownerModel.getEmail());
                     payload.put("id", ownerModel.getEmail());
-                    payload.put("page", "owner");
+                    payload.put("role", "owner");
 
                     JwtUtils jwtUtils = new JwtUtils(payload);
                     String token = jwtUtils.generateJwt();
@@ -61,7 +61,7 @@ public class loginOwner extends HttpServlet{
                     cookie.setMaxAge(oneDayInSeconds);
 
                     res.addCookie(cookie);
-
+    
                     res.setStatus(HttpServletResponse.SC_OK);
                     out.write("{\"jwt\":\""+token+"\",\"message\": \"Login successfully\",\"page\":\""+ "owner" +"\"}");
                     System.out.println("Login successful");
