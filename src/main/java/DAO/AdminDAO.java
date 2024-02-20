@@ -93,7 +93,7 @@ public class AdminDAO
         return success;
     }
 
-    public static boolean deleteAdmin(AdminModel admin) {
+    public static boolean deleteAdmin(String email) {
         Connection connection = DBConnection.getInstance().getConnection();
         System.out.println("Inside CO");
         boolean success = false;
@@ -101,7 +101,7 @@ public class AdminDAO
             System.out.println("try");
             String sql = "UPDATE admins SET deleteState = 1 WHERE email = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, admin.getEmail());
+            preparedStatement.setString(1, email);
 
             if(preparedStatement.executeUpdate() > 0) {
                 success = true;

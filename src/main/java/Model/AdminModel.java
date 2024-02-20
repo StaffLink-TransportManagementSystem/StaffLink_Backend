@@ -1,5 +1,9 @@
 package Model;
 
+import DAO.AdminDAO;
+
+import java.util.List;
+
 public class AdminModel {
     private int id;
     private String name;
@@ -134,8 +138,30 @@ public class AdminModel {
     }
 
     public boolean createAdmin(){
-        return true;
+        AdminDAO adminDAO = new AdminDAO();
+        return adminDAO.createAdmin(this);
     }
+
+    public static AdminModel getAdmin(String email){
+        AdminDAO adminDAO = new AdminDAO();
+        return adminDAO.getAdmin(email);
+    }
+
+    public static boolean updateAdmin(AdminModel admin){
+        AdminDAO adminDAO = new AdminDAO();
+        return adminDAO.updateAdmin(admin);
+    }
+
+    public boolean deleteAdmin(){
+        AdminDAO adminDAO = new AdminDAO();
+        return adminDAO.deleteAdmin(this.email);
+    }
+
+    public List<AdminModel> viewAllAdmins(){
+        AdminDAO adminDAO = new AdminDAO();
+        return adminDAO.viewAllAdmins();
+    }
+
 
 
 
