@@ -2,9 +2,9 @@ package Controller;
 
 
 import Auth.JwtUtils;
+import Model.AdminModel;
 import Model.OwnerModel;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -13,38 +13,36 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import Model.loginModel;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
-@WebServlet("/ownerLogin")
-public class loginOwner extends HttpServlet{
+@WebServlet("/adminLogin")
+public class loginAdmin extends HttpServlet{
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        System.out.println("Hello login" );
+        System.out.println("Hello admin login" );
         try {
             Gson gson = new Gson();
 
             // json data to user object
             BufferedReader bufferedReader = req.getReader();
             loginModel loginModel = gson.fromJson(bufferedReader, loginModel.class);
-            OwnerModel ownerModel = loginModel.getOwner();
-            System.out.println(ownerModel.getEmail());
-            System.out.println(ownerModel.getPassword());
+            AdminModel adminModel = loginModel.getAdmin();
+            System.out.println(adminModel.getEmail());
+            System.out.println(adminModel.getPassword());
 
 
-            if(ownerModel.getId() != 0){
+            if(adminModel.getId() != 0){
                 res.setStatus(HttpServletResponse.SC_OK);
-                if(ownerModel.getPassword().equals(loginModel.getPassword())) {
+                if(adminModel.getPassword().equals(loginModel.getPassword())) {
 
                     JSONObject payload = new JSONObject();
-                    payload.put("email", ownerModel.getEmail());
-                    payload.put("id", ownerModel.getEmail());
-                    payload.put("role", "owner");
+                    payload.put("email", adminModel.getEmail());
+                    payload.put("id", adminModel.getEmail());
+                    payload.put("role", "admin");
 
                     JwtUtils jwtUtils = new JwtUtils(payload);
                     String token = jwtUtils.generateJwt();
@@ -61,7 +59,7 @@ public class loginOwner extends HttpServlet{
                     cookie.setMaxAge(oneDayInSeconds);
 
                     res.addCookie(cookie);
-    
+
                     res.setStatus(HttpServletResponse.SC_OK);
                     out.write("{\"jwt\":\""+token+"\",\"message\": \"Login successfully\",\"page\":\""+ "owner" +"\"}");
                     System.out.println("Login successful");
