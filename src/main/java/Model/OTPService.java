@@ -4,6 +4,8 @@ import java.util.Properties;
 import java.util.Random;
 import javax.mail.*;
 import javax.mail.internet.*;
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
 
 public class OTPService {
 

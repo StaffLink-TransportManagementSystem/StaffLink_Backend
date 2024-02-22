@@ -6,8 +6,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
-@WebServlet("/verify-otp")
+@WebServlet("/verifyotp")
 public class VerifyOTPController extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -19,15 +20,17 @@ public class VerifyOTPController extends HttpServlet {
 
         // Verify OTP
         if (enteredOTP.equals(actualOTP)) {
-            // OTP verification successful, update password in the database (replace this with your database logic)
-            String newPassword = request.getParameter("newPassword");
-            // Code to update password in database goes here...
-
-            // Redirect to profile page upon successful password update
-            response.sendRedirect("profile.html");
+            // Respond to the client
+            response.setStatus(HttpServletResponse.SC_OK);
+            PrintWriter out = response.getWriter();
+            out.write("{\"status\": \"OTP verified successfully\"}");
+            out.close();
         } else {
-            // Redirect back to change password page with an error message
-            response.sendRedirect("change-password.html?error=1");
+            // Respond to the client
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            PrintWriter out = response.getWriter();
+            out.write("{\"status\": \"Invalid OTP\"}");
+            out.close();
         }
     }
 }
