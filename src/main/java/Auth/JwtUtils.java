@@ -131,5 +131,13 @@ public class JwtUtils {
         return new JSONObject(new String(Base64.getUrlDecoder().decode(jwtSegments[1])));
     }
 
+    public String getJWTRole(String payload) {
+        JsonParser jsonParser = new JsonParser();
+        JsonObject jsonObject = jsonParser.parse(payload).getAsJsonObject();
+        String role = jsonObject.get("role").getAsString();
+        System.out.println("Role: " + role);
+        return role;
+    }
+
 
 }

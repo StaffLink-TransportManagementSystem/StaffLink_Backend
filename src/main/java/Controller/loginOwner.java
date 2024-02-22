@@ -63,7 +63,7 @@ public class loginOwner extends HttpServlet{
                     res.addCookie(cookie);
     
                     res.setStatus(HttpServletResponse.SC_OK);
-                    out.write("{\"jwt\":\""+token+"\",\"message\": \"Login successfully\",\"page\":\""+ "owner" +"\"}");
+                        out.write("{\"jwt\":\""+token+"\",\"message\": \"Login successfully\",\"page\":\""+ "owner" +"\"}");
                     System.out.println("Login successful");
 
                 }else{

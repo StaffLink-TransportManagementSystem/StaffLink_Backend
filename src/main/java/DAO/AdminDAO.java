@@ -56,6 +56,8 @@ public class AdminDAO
             preparedStatement.setString(2, admin.getEmail());
             preparedStatement.setString(3, admin.getNIC());
             preparedStatement.setString(4, admin.getContactNo());
+            preparedStatement.setString(5, admin.getPassword());
+            preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
 
             if(resultSet.next()) {
