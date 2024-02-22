@@ -60,6 +60,16 @@ public class allComplains extends HttpServlet {
             return;
         }
 
+        String role = jsonObject.getString("role");
+        System.out.println(role);
+
+        if(!role.equals("admin")){
+            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            out.write("{\"message\": \"UnAuthorized\"}");
+            System.out.println("Unauthorized access");
+            return;
+        }
+
         ComplainModel complainModel = new ComplainModel();
         List<ComplainModel> complains = complainModel.viewAllOwners();
 
