@@ -1,12 +1,11 @@
 package Controller;
 
-
 import Auth.JwtUtils;
-import DAO.PassengerDAO;
-import Model.OwnerModel;
-import Model.PassengerModel;
+import Model.DriverModel;
+import Model.VehicleModel;
+import com.google.gson.Gson;
+import org.json.JSONObject;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -15,23 +14,25 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Arrays;
+import java.util.List;
 
-import Model.loginModel;
-import Validation.Passenger;
-import com.google.gson.Gson;
-import org.json.JSONObject;
-
-@WebServlet("/passengerDelete")
-public class deletePassenger extends HttpServlet{
+@WebServlet("/getVehicleListByDriver")
+public class GetVehiclesByDriver extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        System.out.println("Get vehicle List by driver");
+        Cookie[] cookies = req.getCookies();
+        System.out.println("Cookies: " + Arrays.toString(cookies));
+
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        System.out.println("Passenger delete" );
+        ;
+
+        String authorizationHeader = req.getHeader("Autharization");
+        System.out.println("Authorization: " + authorizationHeader);
 
         // Get all cookies from the request
-        Cookie[] cookies = req.getCookies();
+
         JSONObject jsonObject = new JSONObject();
         int user_id = 0;
         boolean jwtCookieFound = false;
@@ -66,41 +67,34 @@ public class deletePassenger extends HttpServlet{
             return;
         }
 
-
-        Gson gson = new Gson();
-
-        // json data to user object
-        BufferedReader bufferedReader = req.getReader();
-        PassengerModel deletePassenger = gson.fromJson(bufferedReader, PassengerModel.class);
-
         try {
+            Gson gson = new Gson();
+            BufferedReader bufferedReader = req.getReader();
+            DriverModel driverModel = gson.fromJson(bufferedReader, DriverModel.class);
+            System.out.println(driverModel.getEmail());
 
-            Passenger passengerValidation = new Passenger();
+            List<VehicleModel> vehicleList = VehicleModel.getVehiclesByDriver(driverModel.getEmail());
+            String object = gson.toJson(vehicleList);
 
-            if(passengerValidation.validateEmail(deletePassenger.getEmail())) {
-                System.out.println("Validation success");
-                PassengerDAO passengerDAO = new PassengerDAO();
-                if(passengerDAO.deletePassenger(deletePassenger.getEmail())){
-                    res.setStatus(HttpServletResponse.SC_OK);
-                    out.write("{\"message\": \"Delete successfully\"}");
-                    System.out.println("Delete successful");
-                }else{
-                    res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    out.write("{\"message\": \"Delete unsuccessfully\"}");
-                    System.out.println("Delete incorrect");
-                }
+            if (vehicleList.size() == 0) {
+                res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                out.write("{\"message\": \"No vehicles found\"}");
+                return;
             }
-            else{
-                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.write("{\"message\": \"Something went wrong\"}");
-                System.out.println("Validation error");
+            if (vehicleList.size() > 0) {
+                res.setStatus(HttpServletResponse.SC_OK);
+                out.write("{\"size\": " + vehicleList.size() + ",\"list\":" + object + "}");
+            } else {
+                res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                out.write("{\"message\": \"Internal server error\"}");
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         } finally {
             out.close();
         }
     }
+
+
 }

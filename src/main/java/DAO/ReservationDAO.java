@@ -225,4 +225,32 @@ public class ReservationDAO {
         }
         return reservations;
     }
+
+    public static List<ReservationModel> getPassengersByVehicle(String vehicleNo){
+        System.out.println("Inside getPassengersByVehicleDAO");
+        Connection connection = DBConnection.getInstance().getConnection();
+        List<ReservationModel> reservations = new ArrayList<ReservationModel>();
+        try {
+            String sql = "SELECT * FROM reservations WHERE vehicleNo = ? && deleteState = 0";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, vehicleNo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                ReservationModel reservationModel = new ReservationModel(
+                        resultSet.getInt("reservationId"),
+                        resultSet.getString("passengerEmail"),
+                        resultSet.getString("vehicleNo"),
+                        resultSet.getString("startingDate"),
+                        resultSet.getString("endingDate"),
+                        resultSet.getInt("startingWaypoint"),
+                        resultSet.getInt("endingWaypoint"),
+                        resultSet.getString("status")
+                );
+                reservations.add(reservationModel);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return reservations;
+    }
 }

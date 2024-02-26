@@ -361,4 +361,9 @@ public class VehicleModel {
         return vehicleImageDAO.insertVehicleImages(this);
     }
 
+    public static List<VehicleModel> getVehiclesByDriver(String email){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.getVehiclesByDriver(email);
+    }
+
 }

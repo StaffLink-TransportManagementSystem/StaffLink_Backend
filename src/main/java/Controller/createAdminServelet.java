@@ -1,10 +1,8 @@
 package Controller;
 
 import Auth.JwtUtils;
-import DAO.PassengerDAO;
-import DAO.RequestDAO;
-import Model.PassengerModel;
-
+import Model.AdminModel;
+import Model.OwnerModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,21 +15,22 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import Model.RequestModel;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
-@WebServlet("/getRequest")
-public class getRequestServelet  extends HttpServlet{
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
+@WebServlet("/adminRegister")
+public class createAdminServelet extends HttpServlet{
+
+    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        res.setContentType("application/json");
+        PrintWriter out = res.getWriter();
+        System.out.println("Hello");
 
         // Get all cookies from the request
-        Cookie[] cookies = request.getCookies();
+        Cookie[] cookies = req.getCookies();
         JSONObject jsonObject = new JSONObject();
         int user_id = 0;
+        String role = "";
         boolean jwtCookieFound = false;
 
         if (cookies != null) {
@@ -39,7 +38,7 @@ public class getRequestServelet  extends HttpServlet{
                 if ("jwt".equals(cookie.getName())) {
                     JwtUtils jwtUtils = new JwtUtils(cookie.getValue());
                     if (!jwtUtils.verifyJwtAuthentication()) {
-                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                         out.write("{\"message\": \"UnAuthorized\"}");
                         System.out.println("UnAuthorized1");
                         return;
@@ -50,7 +49,7 @@ public class getRequestServelet  extends HttpServlet{
                 }
             }
         } else {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             out.write("{\"message\": \"UnAuthorized\"}");
             System.out.println("No cookies found in the request.");
             return;
@@ -58,53 +57,52 @@ public class getRequestServelet  extends HttpServlet{
 
         // If "jwt" cookie is not found, respond with unauthorized status
         if (!jwtCookieFound) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             out.write("{\"message\": \"UnAuthorized - JWT cookie not found\"}");
             System.out.println("UnAuthorized - JWT cookie not found");
             return;
         }
 
+        role = jsonObject.getString("role");
+        System.out.println(role);
 
-//        String id = request.getParameter("id");
-//        int account_id = Integer.parseInt(request.getParameter("id"));
+        if(!role.equals("admin")){
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            out.write("{\"message\": \"UnAuthorized\"}");
+            System.out.println("Unauthorized access");
+            return;
+        }
+
 
         try {
             Gson gson = new Gson();
 
             // json data to user object
-            BufferedReader bufferedReader = request.getReader();
-            RequestModel getRequest = gson.fromJson(bufferedReader, RequestModel.class);
+            BufferedReader bufferedReader = req.getReader();
+            AdminModel admin = gson.fromJson(bufferedReader, AdminModel.class);
 
-            System.out.println(getRequest.getVehicleNo());
-            System.out.println(getRequest.getPassengerEmail());
+            System.out.println("Admin email: " + admin.getEmail());
+            System.out.println("Admin password: " + admin.getPassword());
+            System.out.println("Admin contactNo: " + admin.getContactNo());
+            System.out.println("Admin name: " + admin.getName());
 
-            RequestDAO requestDAO = new RequestDAO();
-            RequestModel requestModel = requestDAO.getRequest(getRequest.getVehicleNo(), getRequest.getPassengerEmail());
-
-            Gson gson1 = new Gson();
-            // Object array to json
-            String object = gson1.toJson(requestModel);
-
-            System.out.println("Request: " + object);
-
-
-            if (requestModel.getId() != 0) {
-                response.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"Request\": " + object + "}");
-                System.out.println("Send Request");
-            } else {
-                response.setStatus(HttpServletResponse.SC_ACCEPTED);
-                out.write("{\"Request\": \"No Request\"}");
-                System.out.println("No Request");
+            // All validations are passed then register
+            if(admin.createAdmin()){
+                res.setStatus(HttpServletResponse.SC_OK);
+                out.write("{\"message\": \"Registration successfully\"}");
+                System.out.println("Registration successful");
+            }else{
+                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                out.write("{\"message\": \"Registration unsuccessfully\"}");
+                System.out.println("Registration incorrect");
             }
-            // TODO handle
-
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         } finally {
             out.close();
         }
-
     }
+
 }
