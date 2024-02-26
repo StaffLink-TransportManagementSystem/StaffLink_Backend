@@ -1,8 +1,12 @@
 package Controller;
 
-
 import Auth.JwtUtils;
+import DAO.DriverDAO;
+import DAO.VehicleDAO;
 import Model.DriverModel;
+import Model.OwnerModel;
+import Model.PassengerModel;
+import Model.VehicleModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,22 +17,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import Model.loginModel;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
-@WebServlet("/driverEdit")
-public class editDriver extends HttpServlet{
-    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        res.setContentType("application/json");
-        PrintWriter out = res.getWriter();
-        System.out.println("Hello Edit" );
+@WebServlet("/getDriversByOwner")
+public class getDriversListByOwner  extends HttpServlet{
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        System.out.println("get driver List");
 
         // Get all cookies from the request
-        Cookie[] cookies = req.getCookies();
+        Cookie[] cookies = request.getCookies();
         JSONObject jsonObject = new JSONObject();
         int user_id = 0;
         boolean jwtCookieFound = false;
@@ -38,7 +41,7 @@ public class editDriver extends HttpServlet{
                 if ("jwt".equals(cookie.getName())) {
                     JwtUtils jwtUtils = new JwtUtils(cookie.getValue());
                     if (!jwtUtils.verifyJwtAuthentication()) {
-                        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                         out.write("{\"message\": \"UnAuthorized\"}");
                         System.out.println("UnAuthorized1");
                         return;
@@ -49,7 +52,7 @@ public class editDriver extends HttpServlet{
                 }
             }
         } else {
-            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             out.write("{\"message\": \"UnAuthorized\"}");
             System.out.println("No cookies found in the request.");
             return;
@@ -57,41 +60,44 @@ public class editDriver extends HttpServlet{
 
         // If "jwt" cookie is not found, respond with unauthorized status
         if (!jwtCookieFound) {
-            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             out.write("{\"message\": \"UnAuthorized - JWT cookie not found\"}");
             System.out.println("UnAuthorized - JWT cookie not found");
             return;
         }
 
+
+        String email = request.getParameter("email");
+//        int account_id = Integer.parseInt(request.getParameter("id"));
+
         try {
             Gson gson = new Gson();
+//            BufferedReader reader = request.getReader();
+//            OwnerModel owner = gson.fromJson(reader, OwnerModel.class);
 
-            // json data to user object
-            BufferedReader bufferedReader = req.getReader();
-            DriverModel editDriver = gson.fromJson(bufferedReader, DriverModel.class);
+            System.out.println("Owner email: " + email);
 
-            System.out.println("NIC:"+editDriver.getNIC());
-            System.out.println("email: " + editDriver.getEmail());
-            System.out.println("name: " + editDriver.getName());
-            System.out.println("age: " + editDriver.getAge());
-            System.out.println("contact: " + editDriver.getContact());
+            DriverModel driverModel = new DriverModel();
+//            DriverModel driver = driverDAO.getDriversByOwner(owner.getEmail());
 
-            boolean driverUpdate = editDriver.updateDriver();
-            System.out.println(editDriver.getId());
-            System.out.println(editDriver.getEmail());
-            System.out.println(editDriver.getPassword());
-            if(driverUpdate) {
-                res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"message\": \"Update successfully\"}");
-                System.out.println("Update successful");
-            }else{
-                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.write("{\"message\": \"Update unsuccessfully\"}");
-                System.out.println("Update incorrect");
+            List<DriverModel> driverList = driverModel.getDriversListByOwner(email);
+
+
+            // Object array to json
+            String object = gson.toJson(driverList);
+
+            if (driverList.size() > 0){
+                response.setStatus(HttpServletResponse.SC_OK);
+                out.write("{\"drivers\": " + object + "}");
+                System.out.println("Send driver");
+            } else {
+                response.setStatus(HttpServletResponse.SC_ACCEPTED);
+                out.write("{\"drivers\": \"No driver\"}");
+                System.out.println("No driver");
             }
+            // TODO handle
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         } finally {
