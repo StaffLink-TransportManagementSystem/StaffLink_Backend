@@ -85,6 +85,8 @@ public class getRequestServelet  extends HttpServlet{
             // Object array to json
             String object = gson1.toJson(requestModel);
 
+            System.out.println("Request: " + object);
+
 
             if (requestModel.getId() != 0) {
                 response.setStatus(HttpServletResponse.SC_OK);

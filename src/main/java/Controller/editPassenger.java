@@ -26,7 +26,7 @@ public class editPassenger extends HttpServlet{
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        System.out.println("Hello Edit" );
+        System.out.println("Passenger Edit" );
 
         // Get all cookies from the request
         Cookie[] cookies = req.getCookies();

@@ -4,36 +4,68 @@ import Model.RequestModel;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RequestValidation {
+    public class RequestValidation {
     public boolean validateVehicleNo(String vehicleNo) {
-        String vehicleNoRegex = "^[A-Za-z]{3}-\\\\d{4}$|^[A-Za-z]{2}-\\\\d{4}$";
+//        String vehicleNoRegex = "^[A-Za-z]{3}-\\\\d{4}$|^[A-Za-z]{2}-\\\\d{4}$";
         if(vehicleNo == null) {
             System.out.println("VehicleNo validation error");
             return false;
         }
-        if(vehicleNo.matches(vehicleNoRegex)) {
+
+        vehicleNo = vehicleNo.replaceAll("[^a-zA-Z0-9\\s-]", "");
+
+        // Check if the vehicle number matches the specified formats with a dash or a space
+        Pattern pattern1 = Pattern.compile("^[A-Za-z]{3}-\\d{4}$");
+        Pattern pattern2 = Pattern.compile("^[A-Za-z]{2}-\\d{4}$");
+        Pattern pattern3 = Pattern.compile("^[A-Za-z]{3} \\d{4}$");
+        Pattern pattern4 = Pattern.compile("^[A-Za-z]{2} \\d{4}$");
+
+        // New patterns to allow for vehicle numbers with either three or two letters
+        Pattern pattern5 = Pattern.compile("^[A-Za-z]{3}\\d{4}$");
+        Pattern pattern6 = Pattern.compile("^[A-Za-z]{2}\\d{4}$");
+
+        Matcher matcher1 = pattern1.matcher(vehicleNo);
+        Matcher matcher2 = pattern2.matcher(vehicleNo);
+        Matcher matcher3 = pattern3.matcher(vehicleNo);
+        Matcher matcher4 = pattern4.matcher(vehicleNo);
+        Matcher matcher5 = pattern5.matcher(vehicleNo);
+        Matcher matcher6 = pattern6.matcher(vehicleNo);
+
+        if(matcher1.matches() || matcher2.matches() || matcher3.matches() || matcher4.matches() || matcher5.matches() || matcher6.matches()){
             System.out.println("VehicleNo validation success");
             return true;
         } else {
             System.out.println("VehicleNo validation error");
             return false;
         }
+
+//        return matcher1.matches() || matcher2.matches() || matcher3.matches() || matcher4.matches();
     }
     public boolean validationPassengerEmail(String passengerEmail) {
-        String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,7}$";
+//        String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,7}$";
         if(passengerEmail == null) {
             System.out.println("PassengerEmail validation error");
             return false;
         }
-        if(passengerEmail.matches(EMAIL_REGEX)) {
+        String emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
+
+        // Create a Pattern object
+        Pattern pattern = Pattern.compile(emailRegex);
+
+        // Create a Matcher object
+        Matcher matcher = pattern.matcher(passengerEmail);
+
+        if(matcher.matches()) {
             System.out.println("PassengerEmail validation success");
-            return true;
         } else {
             System.out.println("PassengerEmail validation error");
-            return false;
         }
+
+        // Return true if the email matches the pattern, false otherwise
+        return matcher.matches();
     }
     public boolean validatePrice(float price) {
         if(price > 0) {
@@ -152,11 +184,44 @@ public class RequestValidation {
     }
     public boolean validateRequestOnUpdate(RequestModel requestModel) {
         boolean valid = true;
-        if(valid && requestModel.getVehicleNo() != null) {
+        if(requestModel.getVehicleNo() == null && requestModel.getPassengerEmail() == null) {
+            return false;
+        }
+        if(requestModel.getVehicleNo() != null) {
             valid = validateVehicleNo(requestModel.getVehicleNo());
         }
         if(valid && requestModel.getPassengerEmail() != null) {
             valid = validationPassengerEmail(requestModel.getPassengerEmail());
+        }
+        if (valid){
+            RequestModel currentRequest = new RequestModel();
+            currentRequest = currentRequest.getRequest(requestModel.getVehicleNo(), requestModel.getPassengerEmail());
+
+            if(requestModel.getPrice() == 0){
+                requestModel.setPrice(currentRequest.getPrice());
+            }
+            if(requestModel.getStartingPoint() == null){
+                requestModel.setStartingPoint(currentRequest.getStartingPoint());
+            }
+            if(requestModel.getEndingPoint() == null){
+                requestModel.setEndingPoint(currentRequest.getEndingPoint());
+            }
+            if(requestModel.getStartingDate() == null){
+                requestModel.setStartingDate(currentRequest.getStartingDate());
+            }
+            if(requestModel.getEndingDate() == null){
+                requestModel.setEndingDate(currentRequest.getEndingDate());
+            }
+            if(requestModel.getOnTime() == null){
+                requestModel.setOnTime(currentRequest.getOnTime());
+            }
+            if(requestModel.getOffTime() == null){
+                requestModel.setOffTime(currentRequest.getOffTime());
+            }
+            if(requestModel.getStatus() == null){
+                requestModel.setStatus(currentRequest.getStatus());
+            }
+
         }
         if(valid && requestModel.getPrice() != 0) {
             valid = validatePrice(requestModel.getPrice());
@@ -183,5 +248,36 @@ public class RequestValidation {
             valid = validateStatus(requestModel.getStatus());
         }
         return valid;
+    }
+
+    public RequestModel updateRequest(RequestModel requestModel) {
+        RequestModel currentRequest = new RequestModel();
+        currentRequest = currentRequest.getRequest(requestModel.getVehicleNo(), requestModel.getPassengerEmail());
+
+        if(requestModel.getPrice() == 0){
+            requestModel.setPrice(currentRequest.getPrice());
+        }
+        if(requestModel.getStartingPoint() == null){
+            requestModel.setStartingPoint(currentRequest.getStartingPoint());
+        }
+        if(requestModel.getEndingPoint() == null){
+            requestModel.setEndingPoint(currentRequest.getEndingPoint());
+        }
+        if(requestModel.getStartingDate() == null){
+            requestModel.setStartingDate(currentRequest.getStartingDate());
+        }
+        if(requestModel.getEndingDate() == null){
+            requestModel.setEndingDate(currentRequest.getEndingDate());
+        }
+        if(requestModel.getOnTime() == null){
+            requestModel.setOnTime(currentRequest.getOnTime());
+        }
+        if(requestModel.getOffTime() == null){
+            requestModel.setOffTime(currentRequest.getOffTime());
+        }
+        if(requestModel.getStatus() == null){
+            requestModel.setStatus(currentRequest.getStatus());
+        }
+        return requestModel;
     }
 }

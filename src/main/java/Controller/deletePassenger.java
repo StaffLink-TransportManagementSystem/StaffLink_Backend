@@ -28,7 +28,7 @@ public class deletePassenger extends HttpServlet{
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        System.out.println("Hello delete" );
+        System.out.println("Passenger delete" );
 
         // Get all cookies from the request
         Cookie[] cookies = req.getCookies();
@@ -76,6 +76,7 @@ public class deletePassenger extends HttpServlet{
         try {
 
             Passenger passengerValidation = new Passenger();
+
             if(passengerValidation.validateEmail(deletePassenger.getEmail())) {
                 System.out.println("Validation success");
                 PassengerDAO passengerDAO = new PassengerDAO();

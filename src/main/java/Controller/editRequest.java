@@ -3,6 +3,7 @@ package Controller;
 
 import Auth.JwtUtils;
 import Model.RequestModel;
+import Validation.RequestValidation;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -69,6 +70,18 @@ public class editRequest extends HttpServlet{
             System.out.println(editRequest.getVehicleNo());
             System.out.println(editRequest.getPassengerEmail());
             System.out.println(editRequest.getStatus());
+
+            RequestValidation requestValidation = new RequestValidation();
+            boolean requestValid = requestValidation.validateRequestOnUpdate(editRequest);
+
+            if(!requestValid) {
+                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                out.write("{\"message\": \"Update unsuccessfully\"}");
+                System.out.println("Validation Failed");
+                return;
+            }
+
+            editRequest = requestValidation.updateRequest(editRequest);
 
             boolean requestUpdate = editRequest.updateRequest();
 

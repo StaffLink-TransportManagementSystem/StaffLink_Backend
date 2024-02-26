@@ -75,6 +75,7 @@ public class GetReservationsByPassenger extends HttpServlet {
                 VehicleModel vehicleModel = new VehicleModel();
                 vehicleModel.setVehicleNo(reservation.getVehicleNo());
                 vehicleModel = vehicleModel.getVehicleByNo();
+                System.out.println(vehicleModel.getVehicleNo());
                 vehicles.add(vehicleModel);
             }
 
@@ -86,7 +87,7 @@ public class GetReservationsByPassenger extends HttpServlet {
 
             if (reservations.size() != 0) {
                 response.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"reservations\": " + object + ",\"vehicles\": " + object2 + "}");
+                    out.write("{\"reservations\": " + object + ",\"vehicles\": " + object2 + "}");
                 System.out.println("Send reservations");
             } else {
                 response.setStatus(HttpServletResponse.SC_ACCEPTED);
