@@ -227,4 +227,31 @@ public class PassengerPaymentsDAO {
         }
         return passengerPayments;
     }
+
+    public static PassengerPaymentsModel getPaymentByRequestID(int requestID) {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PassengerPaymentsModel passengerPayments = null;
+        try {
+            String sql = "SELECT * FROM passengerPayments WHERE requestID = ? && deleteState = 0";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, requestID);
+            preparedStatement.executeQuery();
+            if (preparedStatement.getResultSet().next()) {
+                passengerPayments = new PassengerPaymentsModel();
+                passengerPayments.setId(preparedStatement.getResultSet().getInt("id"));
+                passengerPayments.setRequestID(preparedStatement.getResultSet().getInt("requestID"));
+                passengerPayments.setReservationID(preparedStatement.getResultSet().getInt("reservationID"));
+                passengerPayments.setPassengerEmail(preparedStatement.getResultSet().getString("passengerEmail"));
+                passengerPayments.setVehicleNo(preparedStatement.getResultSet().getString("vehicleNo"));
+                passengerPayments.setDate(preparedStatement.getResultSet().getString("date"));
+                passengerPayments.setPaymentType(preparedStatement.getResultSet().getString("paymentType"));
+                passengerPayments.setAmount(preparedStatement.getResultSet().getFloat("amount"));
+                passengerPayments.setStatus(preparedStatement.getResultSet().getString("status"));
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return passengerPayments;
+    }
 }
