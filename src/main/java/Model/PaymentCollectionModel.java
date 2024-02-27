@@ -1,12 +1,17 @@
 package Model;
 
+import DAO.PaymentCollectionDAO;
+
+import java.util.List;
+
 public class PaymentCollectionModel {
     private int id;
     private String passengerEmail;
+    private String passengerName;
     private String vehicleNo;
     private String date;
     private float amount;
-    private int requestID;
+    private int reservationID;
     private String paymentStatus;
     private String ownerEmail;
 
@@ -50,12 +55,12 @@ public class PaymentCollectionModel {
         this.amount = amount;
     }
 
-    public int getRequestID() {
-        return requestID;
+    public int getReservationID() {
+        return reservationID;
     }
 
-    public void setRequestID(int requestID) {
-        this.requestID = requestID;
+    public void setReservationID(int reservationID) {
+        this.reservationID = reservationID;
     }
 
     public String getPaymentStatus() {
@@ -74,13 +79,21 @@ public class PaymentCollectionModel {
         this.ownerEmail = ownerEmail;
     }
 
+    public String getPassengerName() {
+        return passengerName;
+    }
+
+    public void setPassengerName(String passengerName) {
+        this.passengerName = passengerName;
+    }
+
     void PassengerPaymentsModel(int id, String passengerEmail, String vehicleNo, String date, float amount, int requestID, String paymentStatus, String ownerEmail) {
         this.id = id;
         this.passengerEmail = passengerEmail;
         this.vehicleNo = vehicleNo;
         this.date = date;
         this.amount = amount;
-        this.requestID = requestID;
+        this.reservationID = requestID;
         this.paymentStatus = paymentStatus;
         this.ownerEmail = ownerEmail;
     }
@@ -90,7 +103,7 @@ public class PaymentCollectionModel {
         this.vehicleNo = vehicleNo;
         this.date = date;
         this.amount = amount;
-        this.requestID = requestID;
+        this.reservationID = requestID;
         this.paymentStatus = paymentStatus;
         this.ownerEmail = ownerEmail;
     }
@@ -99,7 +112,7 @@ public class PaymentCollectionModel {
         this.vehicleNo = vehicleNo;
         this.date = date;
         this.amount = amount;
-        this.requestID = requestID;
+        this.reservationID = requestID;
         this.paymentStatus = paymentStatus;
     }
     void PassengerPaymentsModel(String passengerEmail, String vehicleNo, String date, float amount, int requestID) {
@@ -107,7 +120,7 @@ public class PaymentCollectionModel {
         this.vehicleNo = vehicleNo;
         this.date = date;
         this.amount = amount;
-        this.requestID = requestID;
+        this.reservationID = requestID;
     }
     void PassengerPaymentsModel(String passengerEmail, String vehicleNo, String date, float amount) {
         this.passengerEmail = passengerEmail;
@@ -128,6 +141,11 @@ public class PaymentCollectionModel {
         this.passengerEmail = passengerEmail;
     }
     void PassengerPaymentsModel() {
+    }
+
+    public static List<PaymentCollectionModel> getPaymentCollection(String driverEmail) {
+        PaymentCollectionDAO paymentCollectionDAO = new PaymentCollectionDAO();
+        return paymentCollectionDAO.getPaymentCollection(driverEmail);
     }
 
 }
