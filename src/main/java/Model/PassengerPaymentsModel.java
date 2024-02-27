@@ -189,5 +189,9 @@ public class PassengerPaymentsModel {
         return passengerPaymentsDAO.getPaymentByRequestID(requestID);
     }
 
+    public boolean makePayment(){
+        PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
+        return passengerPaymentsDAO.makePayment(this);
+    }
 
 }

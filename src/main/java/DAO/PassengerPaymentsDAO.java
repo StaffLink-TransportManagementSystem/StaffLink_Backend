@@ -254,4 +254,23 @@ public class PassengerPaymentsDAO {
         }
         return passengerPayments;
     }
+
+    public static boolean makePayment(PassengerPaymentsModel passengerPayments) {
+        Connection connection = DBConnection.getInstance().getConnection();
+        boolean success = false;
+        try {
+            String sql = "UPDATE passengerPayments SET status = ? WHERE id = ? && deleteState = 0";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, "Paid");
+            preparedStatement.setInt(2, passengerPayments.getId());
+            int temp = preparedStatement.executeUpdate();
+            if (temp == 1) {
+                success = true;
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return success;
+    }
 }

@@ -17,7 +17,7 @@ public class PaymentCollectionDAO {
                     "FROM passengerpayments " +
                     "INNER JOIN vehicles ON passengerpayments.vehicleNo = vehicles.vehicleNo " +
                     "INNER JOIN drivers ON vehicles.driverEmail = drivers.email " +
-                    "WHERE passengerpayments.deleteState = 0 AND vehicles.deleteState = 0 AND drivers.deleteState = 0 AND drivers.email = ? AND passengerpayments.paymentType = \"Card\";";
+                    "WHERE passengerpayments.deleteState = 0 AND vehicles.deleteState = 0 AND drivers.deleteState = 0 AND drivers.email = ? AND passengerpayments.paymentType = \"Cash\";";
             java.sql.PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, driverEmail);
             java.sql.ResultSet resultSet = preparedStatement.executeQuery();
