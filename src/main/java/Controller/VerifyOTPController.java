@@ -1,5 +1,7 @@
 package Controller;
 
+import Model.OTPService;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,8 +17,10 @@ public class VerifyOTPController extends HttpServlet {
         // Retrieve entered OTP from request parameter
         String enteredOTP = request.getParameter("otp");
 
-        // Retrieve actual OTP associated with user's email (you may fetch it from session or database)
-        String actualOTP = (String) request.getSession().getAttribute("otp");
+        // Retrieve actual OTP associated with user's email
+        String email = request.getParameter("email");
+        String actualOTP = OTPService.getStoredOTP(email);
+        OTPService.deleteStoredOTP("email");
 
         // Verify OTP
         if (enteredOTP.equals(actualOTP)) {

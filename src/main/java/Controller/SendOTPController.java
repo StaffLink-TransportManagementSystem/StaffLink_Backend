@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.OTPService;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +18,7 @@ public class SendOTPController extends HttpServlet {
         String email = request.getParameter("email");
 
         // Generate OTP
-        String otp = OTPService.generateOTP();
+        String otp = OTPService.generateAndStoreOTP(email);
 
         // Send OTP via email
         OTPService.sendOTPByEmail(email, otp);
@@ -25,8 +26,7 @@ public class SendOTPController extends HttpServlet {
         // Respond to the client
         response.setStatus(HttpServletResponse.SC_OK);
         PrintWriter out = response.getWriter();
-        out.write("{\"status\": \"OTP sent successfully to " + email+"\"}");
+        out.write("{\"status\": \"OTP sent successfully to " + email + "\"}");
         out.close();
     }
 }
-
