@@ -1,9 +1,12 @@
 package Controller;
 
-
 import Auth.JwtUtils;
-import Model.RequestModel;
-import Validation.RequestValidation;
+import Model.DriverModel;
+import Model.PassengerModel;
+import Model.ReservationModel;
+import Model.VehicleModel;
+import com.google.gson.Gson;
+import org.json.JSONObject;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -13,19 +16,24 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.List;
 
-import com.google.gson.Gson;
-import org.json.JSONObject;
-
-@WebServlet("/requestEdit")
-public class editRequest extends HttpServlet{
+@WebServlet("/getPassengersByVehicle")
+public class GetPassengersByVehicle extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        System.out.println("Get passengers by vehicle");
+        Cookie[] cookies = req.getCookies();
+        System.out.println("Cookies: " + Arrays.toString(cookies));
+
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        System.out.println("Hello Edit" );
+
+        String authorizationHeader = req.getHeader("Autharization");
+        System.out.println("Authorization: " + authorizationHeader);
 
         // Get all cookies from the request
-        Cookie[] cookies = req.getCookies();
+
         JSONObject jsonObject = new JSONObject();
         int user_id = 0;
         boolean jwtCookieFound = false;
@@ -52,49 +60,27 @@ public class editRequest extends HttpServlet{
             return;
         }
 
-        // If "jwt" cookie is not found, respond with unauthorized status
-        if (!jwtCookieFound) {
-            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            out.write("{\"message\": \"UnAuthorized - JWT cookie not found\"}");
-            System.out.println("UnAuthorized - JWT cookie not found");
-            return;
-        }
-
         try {
             Gson gson = new Gson();
-
-            // json data to user object
             BufferedReader bufferedReader = req.getReader();
-            RequestModel editRequest = gson.fromJson(bufferedReader, RequestModel.class);
 
-            System.out.println(editRequest.getVehicleNo());
-            System.out.println(editRequest.getPassengerEmail());
-            System.out.println(editRequest.getStatus());
+            VehicleModel vehicleModel = gson.fromJson(bufferedReader, VehicleModel.class);
+            System.out.println(vehicleModel.getVehicleNo());
 
-            RequestValidation requestValidation = new RequestValidation();
-            boolean requestValid = requestValidation.validateRequestOnUpdate(editRequest);
+            List<ReservationModel> reservations = ReservationModel.getPassengersByVehicle(vehicleModel.getVehicleNo());
+            String object = gson.toJson(reservations);
 
-            if(!requestValid) {
-                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.write("{\"message\": \"Update unsuccessfully\"}");
-                System.out.println("Validation Failed");
-                return;
-            }
-
-            editRequest = requestValidation.updateRequest(editRequest);
-
-            boolean requestUpdate = editRequest.updateRequest();
-
-            if(requestUpdate) {
+            if (reservations.size() != 0) {
                 res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"message\": \"Update successfully\"}");
-                System.out.println("Update successful");
-            }else{
-                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.write("{\"message\": \"Update unsuccessfully\"}");
-                System.out.println("Update incorrect");
+                out.write("{\"size\": " + reservations.size() + ",\"list\":" + object + "}");
+                System.out.println("view reservation list");
+            } else if (reservations.size() == 0) {
+                res.setStatus(HttpServletResponse.SC_ACCEPTED);
+                out.write("{\"size\": \"0\"}");
+                System.out.println("No reservations");
+            } else {
+                // TODO handle
             }
-
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -102,5 +88,7 @@ public class editRequest extends HttpServlet{
         } finally {
             out.close();
         }
+
     }
+
 }

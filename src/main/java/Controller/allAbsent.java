@@ -65,6 +65,16 @@ public class allAbsent extends HttpServlet {
             return;
         }
 
+        String role = jsonObject.getString("role");
+        System.out.println(role);
+
+        if(!role.equals("admin")){
+            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            out.write("{\"message\": \"UnAuthorized\"}");
+            System.out.println("Unauthorized access");
+            return;
+        }
+
 
         AbsentModel absentModel = new AbsentModel();
         List<AbsentModel> absents = absentModel.viewAllAbsents();

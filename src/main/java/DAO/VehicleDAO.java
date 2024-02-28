@@ -318,5 +318,41 @@ public class VehicleDAO {
     }
 
 
+    public static List<VehicleModel> getVehiclesByDriver(String email){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        List<VehicleModel> vehicles = new ArrayList<>();
+        try{
+            con = connection;
+            String sql = "SELECT * FROM vehicles WHERE driverEmail = ? AND deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1,email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                VehicleModel vehicle = new VehicleModel();
+                vehicle.setId(resultSet.getInt("id"));
+                vehicle.setVehicleNo(resultSet.getString("vehicleNo"));
+                vehicle.setOwnerEmail(resultSet.getString("ownerEmail"));
+                vehicle.setVehicleBrand(resultSet.getString("vehicleBrand"));
+                vehicle.setRegNo(resultSet.getString("regNo"));
+                vehicle.setDriverEmail(resultSet.getString("driverEmail"));
+                vehicle.setModel(resultSet.getString("model"));
+                vehicle.setType(resultSet.getString("type"));
+                vehicle.setSeatsCount(resultSet.getInt("seatsCount"));
+                vehicle.setStartingPoint(resultSet.getString("startingPoint"));
+                vehicle.setEndingPoint(resultSet.getString("endingPoint"));
+                vehicle.setTrips(resultSet.getString("trips"));
+                vehicle.setVarifiedState(resultSet.getString("verifiedState"));
+                vehicles.add(vehicle);
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return vehicles;
+        }
+    }
 
 }
