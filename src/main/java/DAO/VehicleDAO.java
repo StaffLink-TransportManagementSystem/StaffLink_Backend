@@ -355,4 +355,26 @@ public class VehicleDAO {
         }
     }
 
+    public static int getNoOfVehicles(){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        int noOfVehicles = 0;
+        try{
+            con = connection;
+            String sql = "SELECT COUNT(*) FROM vehicles WHERE deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                noOfVehicles = resultSet.getInt(1);
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return noOfVehicles;
+        }
+    }
+
 }

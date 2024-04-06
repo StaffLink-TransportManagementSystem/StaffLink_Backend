@@ -366,4 +366,9 @@ public class VehicleModel {
         return vehicleDAO.getVehiclesByDriver(email);
     }
 
+    public static int getNoOfVehicles(){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.getNoOfVehicles();
+    }
+
 }

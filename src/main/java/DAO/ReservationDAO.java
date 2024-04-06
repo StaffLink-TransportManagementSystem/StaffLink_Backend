@@ -1,6 +1,7 @@
 package DAO;
 
 import Database.DBConnection;
+import Model.PassengerModel;
 import Model.ReservationModel;
 
 import java.sql.Connection;
@@ -226,26 +227,22 @@ public class ReservationDAO {
         return reservations;
     }
 
-    public static List<ReservationModel> getPassengersByVehicle(String vehicleNo){
+    public static List<PassengerModel> getPassengersByVehicle(String vehicleNo){
         System.out.println("Inside getPassengersByVehicleDAO");
         Connection connection = DBConnection.getInstance().getConnection();
-        List<ReservationModel> reservations = new ArrayList<ReservationModel>();
+        List<PassengerModel> reservations = new ArrayList<PassengerModel>();
         try {
-            String sql = "SELECT * FROM reservations WHERE vehicleNo = ? && deleteState = 0";
+            String sql = "SELECT * FROM passengers WHERE email=(SELECT passengerEmail from reservations where vehicleNo=?) && deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, vehicleNo);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                ReservationModel reservationModel = new ReservationModel(
-                        resultSet.getInt("reservationId"),
-                        resultSet.getString("passengerEmail"),
-                        resultSet.getString("vehicleNo"),
-                        resultSet.getString("startingDate"),
-                        resultSet.getString("endingDate"),
-                        resultSet.getInt("startingWaypoint"),
-                        resultSet.getInt("endingWaypoint"),
-                        resultSet.getString("status")
-                );
+                PassengerModel reservationModel = new PassengerModel();
+                reservationModel.setId(resultSet.getInt("id"));
+                reservationModel.setEmail(resultSet.getString("email"));
+                reservationModel.setName(resultSet.getString("name"));
+                reservationModel.setNIC(resultSet.getString("NIC"));
+                reservationModel.setContactNo(resultSet.getString("contact"));
                 reservations.add(reservationModel);
             }
         } catch (Exception e) {

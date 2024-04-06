@@ -271,4 +271,26 @@ public class PassengerDAO {
         }
     }
 
+    public static int getNoOfPassengers(){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        int count = 0;
+        try{
+            con = connection;
+            String sql = "SELECT COUNT(*) FROM passengers WHERE deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                count = resultSet.getInt(1);
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return count;
+        }
+    }
+
 }

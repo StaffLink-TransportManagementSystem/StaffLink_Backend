@@ -183,7 +183,7 @@ public class ReservationModel {
         return ReservationDAO.getReservation(reservationId);
     }
 
-    public static List<ReservationModel> getPassengersByVehicle(String vehicleNo){
+    public static List<PassengerModel> getPassengersByVehicle(String vehicleNo){
         return ReservationDAO.getPassengersByVehicle(vehicleNo);
     }
 }

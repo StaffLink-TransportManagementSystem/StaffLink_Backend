@@ -194,4 +194,9 @@ public class PassengerModel {
         return passengers;
     }
 
+    public int getNoOfPassengers(){
+        PassengerDAO passengerDAO = new PassengerDAO();
+        int noOfPassengers = passengerDAO.getNoOfPassengers();
+        return noOfPassengers;
+    }
 }
