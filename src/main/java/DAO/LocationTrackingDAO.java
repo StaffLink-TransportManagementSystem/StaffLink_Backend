@@ -16,7 +16,7 @@ public class LocationTrackingDAO {
             java.sql.PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, locationTrackingModel.getLatitude());
             preparedStatement.setString(2, locationTrackingModel.getLongitude());
-            preparedStatement.setInt(3, locationTrackingModel.getTripId();
+            preparedStatement.setInt(3, locationTrackingModel.getTripId());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {

@@ -29,7 +29,7 @@ public class DriverDAO {
                 owner.setContactNo(resultSet.getString("contact"));
                 owner.setName(resultSet.getString("name"));
                 owner.setOwnerEmail(resultSet.getString("ownerEmail"));
-
+                owner.setOnTrip(resultSet.getString("onTrip"));
                 owner.setPassword(resultSet.getString("password"));
             }
             resultSet.close();
@@ -53,7 +53,7 @@ public class DriverDAO {
         boolean success = false;
         try{
             System.out.println("try");
-            String sql = "INSERT INTO drivers (name,email,NIC, age, contact,password,ownerEmail) VALUES (?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO drivers (name,email,NIC, age, contact,password,ownerEmail,onTrip) VALUES (?,?,?,?,?,?,?,?)";
 //            System.out.println("try");
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,driver.getName());
@@ -63,6 +63,7 @@ public class DriverDAO {
             preparedStatement.setString(5,driver.getContact());
             preparedStatement.setString(6,driver.getPassword());
             preparedStatement.setString(7,driver.getOwnerEmail());
+            preparedStatement.setString(8,"ontrip");
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
 
@@ -100,7 +101,7 @@ public class DriverDAO {
 
         try{
             con = connection;
-            String sql = "UPDATE drivers SET name = ?,email = ?,NIC = ?, age=?, contact=?  WHERE email = ? AND deleteState = 0";
+            String sql = "UPDATE drivers SET name = ?,email = ?,NIC = ?, age=?, contact=?, onTrip=?  WHERE email = ? AND deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,driver.getName());
             preparedStatement.setString(2,driver.getEmail());
@@ -109,6 +110,7 @@ public class DriverDAO {
             preparedStatement.setString(5,driver.getContact());
 //            preparedStatement.setString(6,driver.getPassword());
             preparedStatement.setString(6,driver.getEmail());
+            preparedStatement.setString(7,driver.getOnTrip());
             int temp = preparedStatement.executeUpdate();
             System.out.println(temp);
 //            ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -206,6 +208,7 @@ public class DriverDAO {
                 driver.setContactNo(resultSet.getString("contact"));
                 driver.setPassword(resultSet.getString("password"));
                 driver.setOwnerEmail(resultSet.getString("ownerEmail"));
+                driver.setOnTrip(resultSet.getString("onTrip"));
                 drivers.add(driver);
 
             }
@@ -239,6 +242,7 @@ public class DriverDAO {
                 driver.setContactNo(resultSet.getString("contact"));
                 driver.setPassword(resultSet.getString("password"));
                 driver.setOwnerEmail(resultSet.getString("ownerEmail"));
+                driver.setOnTrip(resultSet.getString("onTrip"));
                 drivers.add(driver);
 
             }

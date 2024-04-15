@@ -17,6 +17,18 @@ public class DriverModel {
     private String password;
     private String ownerEmail;
     private int deleteState;
+    private String onTrip;
+    public DriverModel(String name, String email, String NIC,int age, String contactNo, String password,String ownerEmail,int deleteState,String onTrip) {
+        this.name = name;
+        this.email = email;
+        this.NIC = NIC;
+        this.age = age;
+        this.contact = contactNo;
+        this.password = password;
+        this.ownerEmail = ownerEmail;
+        this.deleteState = deleteState;
+        this.onTrip = onTrip;
+    }
 
 
     public DriverModel(String name, String email, String NIC,int age, String contactNo, String password,String ownerEmail) {
@@ -125,6 +137,9 @@ public class DriverModel {
     public void setDeleteState(int deleteState) {
         this.deleteState = deleteState;
     }
+    public void setOnTrip(String onTrip) {
+        this.onTrip = onTrip;
+    }
 
     public int getId() {
         return id;
@@ -148,6 +163,9 @@ public class DriverModel {
     }
     public String getOwnerEmail() {
         return ownerEmail;
+    }
+    public String getOnTrip() {
+        return onTrip;
     }
 
     public boolean createDriver(){
