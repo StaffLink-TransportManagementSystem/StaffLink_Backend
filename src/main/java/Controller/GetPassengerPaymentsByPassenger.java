@@ -69,7 +69,7 @@ public class GetPassengerPaymentsByPassenger extends HttpServlet {
             // Object array to json
             String object = gson.toJson(payments);
 
-            if (payments.size() != 0) {
+            if (payments != null && payments.size() != 0) {
                 response.setStatus(HttpServletResponse.SC_OK);
                 out.write("{\"payments\": " + object + "}");
                 System.out.println("Send payments");

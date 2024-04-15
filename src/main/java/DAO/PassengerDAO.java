@@ -50,13 +50,14 @@ public class PassengerDAO {
         boolean success = false;
         try{
             System.out.println("try");
-            String sql = "INSERT INTO passengers (name,email,NIC,password) VALUES (?,?,?,?)";
+            String sql = "INSERT INTO passengers (name,email,NIC,password,contact) VALUES (?,?,?,?,?)";
 //            System.out.println("try");
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,passenger.getName());
             preparedStatement.setString(2,passenger.getEmail());
             preparedStatement.setString(3,passenger.getNIC());
             preparedStatement.setString(4,passenger.getPassword());
+            preparedStatement.setString(5,passenger.getContactNo());
 //            preparedStatement.setString(5,passenger.getContactNo());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -235,11 +236,32 @@ public class PassengerDAO {
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1,email);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
-                success = true;
+//            if(resultSet.next()){
+//                success = true;
+//            }
+            System.out.println(resultSet);
+            int count = 0;
+            if (resultSet.next()) {
+                count = resultSet.getInt(1); // Retrieving the count value from the result set
             }
-            resultSet.close();
-            preparedStatement.close();
+
+            if (count > 0) {
+                // Perform action if count is greater than 0
+                // For example:
+                System.out.println("Count is greater than 0. Do something here.");
+                success = true;
+            } else {
+                // Perform action if count is not greater than 0
+                // For example:
+                System.out.println("Count is not greater than 0. Do something else here.");
+                success = false;
+            }
+//
+//            if(resultSet.next() && resultSet.getInt(1) != 0){
+//                success = true;
+//            }
+//            resultSet.close();
+//            preparedStatement.close();
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
@@ -258,8 +280,21 @@ public class PassengerDAO {
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1,nic);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
+            int count = 0;
+            if (resultSet.next()) {
+                count = resultSet.getInt(1); // Retrieving the count value from the result set
+            }
+
+            if (count > 0) {
+                // Perform action if count is greater than 0
+                // For example:
                 success = true;
+                System.out.println("Count is greater than 0. Do something here.");
+            } else {
+                // Perform action if count is not greater than 0
+                // For example:
+                success = false;
+                System.out.println("Count is not greater than 0. Do something else here.");
             }
             resultSet.close();
             preparedStatement.close();
