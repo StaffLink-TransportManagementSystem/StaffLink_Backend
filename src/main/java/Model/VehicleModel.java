@@ -371,4 +371,9 @@ public class VehicleModel {
         return vehicleDAO.getNoOfVehicles();
     }
 
+    public static List<VehicleModel> getVehiclesByType(String type){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.getVehiclesByType(type);
+    }
+
 }

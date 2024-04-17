@@ -63,7 +63,7 @@ public class DriverDAO {
             preparedStatement.setString(5,driver.getContact());
             preparedStatement.setString(6,driver.getPassword());
             preparedStatement.setString(7,driver.getOwnerEmail());
-            preparedStatement.setString(8,"ontrip");
+            preparedStatement.setString(8,"notontrip");
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
 

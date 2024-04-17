@@ -9,42 +9,29 @@ public class RouteModel {
     private int routeNo;
     private String vehicleNo;
     private String style;   //morning or evening
-    private String staringLocation;
-    private String endingLocation;
+    private String startingLatitude;
+    private String startingLongitude;
+    private String endingLatitude;
+    private String endingLongitude;
     private String startingTime;
     private String endingTime;
     private int deleteState;
 
     public RouteModel() {
     }
-    public RouteModel(String vehicleNo, String style, String staringLocation, String endingLocation, String startingTime, String endingTime) {
-        this.vehicleNo = vehicleNo;
-        this.style = style;
-        this.staringLocation = staringLocation;
-        this.endingLocation = endingLocation;
-        this.startingTime = startingTime;
-        this.endingTime = endingTime;
-    }
-    public RouteModel(int routeNo, String vehicleNo, String style, String staringLocation, String endingLocation, String startingTime, String endingTime) {
+    public RouteModel(int routeNo, String vehicleNo, String style, String startingLatitude, String startingLongitude, String endingLatitude, String endingLongitude, String startingTime, String endingTime, int deleteState) {
         this.routeNo = routeNo;
         this.vehicleNo = vehicleNo;
         this.style = style;
-        this.staringLocation = staringLocation;
-        this.endingLocation = endingLocation;
-        this.startingTime = startingTime;
-        this.endingTime = endingTime;
-    }
-
-    public RouteModel(int routeNo, String vehicleNo, String style, String staringLocation, String endingLocation, String startingTime, String endingTime, int deleteState) {
-        this.routeNo = routeNo;
-        this.vehicleNo = vehicleNo;
-        this.style = style;
-        this.staringLocation = staringLocation;
-        this.endingLocation = endingLocation;
+        this.startingLatitude = startingLatitude;
+        this.startingLongitude = startingLongitude;
+        this.endingLatitude = endingLatitude;
+        this.endingLongitude = endingLongitude;
         this.startingTime = startingTime;
         this.endingTime = endingTime;
         this.deleteState = deleteState;
     }
+
     public int getRouteNo() {
         return routeNo;
     }
@@ -69,20 +56,36 @@ public class RouteModel {
         this.style = style;
     }
 
-    public String getStaringLocation() {
-        return staringLocation;
+    public String getStartingLatitude() {
+        return startingLatitude;
     }
 
-    public void setStaringLocation(String staringLocation) {
-        this.staringLocation = staringLocation;
+    public void setStartingLatitude(String startingLatitude) {
+        this.startingLatitude = startingLatitude;
     }
 
-    public String getEndingLocation() {
-        return endingLocation;
+    public String getStartingLongitude() {
+        return startingLongitude;
     }
 
-    public void setEndingLocation(String endingLocation) {
-        this.endingLocation = endingLocation;
+    public void setStartingLongitude(String startingLongitude) {
+        this.startingLongitude = startingLongitude;
+    }
+
+    public String getEndingLatitude() {
+        return endingLatitude;
+    }
+
+    public void setEndingLatitude(String endingLatitude) {
+        this.endingLatitude = endingLatitude;
+    }
+
+    public String getEndingLongitude() {
+        return endingLongitude;
+    }
+
+    public void setEndingLongitude(String endingLongitude) {
+        this.endingLongitude = endingLongitude;
     }
 
     public String getStartingTime() {

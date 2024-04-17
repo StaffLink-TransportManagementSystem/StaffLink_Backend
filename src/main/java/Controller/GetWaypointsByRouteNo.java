@@ -1,8 +1,8 @@
 package Controller;
 
 import Auth.JwtUtils;
-import DAO.DriverDAO;
-import Model.DriverModel;
+import Model.Waypoints;
+import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import javax.servlet.annotation.WebServlet;
@@ -12,16 +12,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
-@WebServlet("/checkOnTrip")
-public class checkOnTripServelet extends HttpServlet {
+@WebServlet("/getWaypoints")
+public class GetWaypointsByRouteNo extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        System.out.println("Hello getWaypointList");
         res.setContentType("application/json");
+
         PrintWriter out = res.getWriter();
-        System.out.println("checkOnTrip");
+
+        // Get all cookies from the request
         Cookie[] cookies = req.getCookies();
         JSONObject jsonObject = new JSONObject();
+        int user_id = 0;
         boolean jwtCookieFound = false;
+
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("jwt".equals(cookie.getName())) {
@@ -34,7 +40,7 @@ public class checkOnTripServelet extends HttpServlet {
                     }
                     jsonObject = jwtUtils.getAuthPayload();
                     jwtCookieFound = true;
-                    break;
+                    break;  // No need to continue checking if "jwt" cookie is found
                 }
             }
         } else {
@@ -43,6 +49,8 @@ public class checkOnTripServelet extends HttpServlet {
             System.out.println("No cookies found in the request.");
             return;
         }
+
+        // If "jwt" cookie is not found, respond with unauthorized status
         if (!jwtCookieFound) {
             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             out.write("{\"message\": \"UnAuthorized - JWT cookie not found\"}");
@@ -50,26 +58,32 @@ public class checkOnTripServelet extends HttpServlet {
             return;
         }
 
-        String email = req.getParameter("email");
-
-        try {
-            DriverModel driverModel = new DriverModel(email);
-            DriverDAO driverDAO = new DriverDAO();
-            driverModel = driverDAO.getDriver(email);
-
-            if (driverModel.getOnTrip().equals("onTrip")) {
-                res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"message\": \"On Trip\"}");
-                System.out.println("On Trip");
-            } else {
-                res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"message\": \"Not On Trip\"}");
-                System.out.println("Not On Trip");
+        try{
+            String route_no = req.getParameter("routeNo");
+            if(route_no == null){
+                res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.write("{\"message\": \"Route number is required\"}");
+                return;
             }
-        } catch (Exception e) {
-            res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            out.write("{\"message\": \"Internal Server Error\"}");
-            System.out.println("Internal Server Error");
+            // Get waypoints by route number
+            Waypoints waypoints = new Waypoints(Integer.parseInt(route_no));
+            List<Waypoints> waypointList = waypoints.getWaypoints();
+            Gson gson = new Gson();
+            String object = gson.toJson(waypointList);
+            if(waypointList.size() != 0){
+                res.setStatus(HttpServletResponse.SC_OK);
+                out.write("{\"size\": " + waypointList.size() + ",\"waypoints\":" + object + "}");
+                System.out.println("view vehicle list");
+            }
+            else if(waypointList.size() == 0){
+                res.setStatus(HttpServletResponse.SC_ACCEPTED);
+                out.write("{\"size\": \"0\"}");
+                System.out.println("No waypoints");
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+
         }
+
     }
 }
