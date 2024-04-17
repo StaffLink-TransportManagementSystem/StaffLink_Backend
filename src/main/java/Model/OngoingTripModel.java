@@ -1,5 +1,7 @@
 package Model;
 
+import DAO.OngoingTripDAO;
+
 public class OngoingTripModel {
     private int id;
     private String vehicleNo;
@@ -83,6 +85,16 @@ public class OngoingTripModel {
         this.endedTime = endedTime;
         this.status = status;
         this.routeNo = routeNo;
+    }
+
+    public boolean createOngoingTrip() {
+        OngoingTripDAO ongoingTripDAO = new OngoingTripDAO();
+        return ongoingTripDAO.createOngoingTrip(this);
+    }
+
+    public static OngoingTripModel getOngoingTripByVehicleNo(String vehicleNo, String driverEmail) {
+        OngoingTripDAO ongoingTripDAO = new OngoingTripDAO();
+        return ongoingTripDAO.getOngoingTripByVehicleNo(vehicleNo, driverEmail);
     }
 
 

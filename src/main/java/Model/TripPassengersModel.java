@@ -1,5 +1,7 @@
 package Model;
 
+import DAO.TripPassengersDAO;
+
 public class TripPassengersModel {
     private int id;
     private int tripId;
@@ -50,6 +52,11 @@ public class TripPassengersModel {
         this.tripId = tripId;
         this.passengerEmail = passengerEmail;
         this.status = status;
+    }
+
+    public boolean createTripPassengers() {
+        TripPassengersDAO tripPassengersDAO = new TripPassengersDAO();
+        return tripPassengersDAO.addPassenger(this);
     }
 
 }

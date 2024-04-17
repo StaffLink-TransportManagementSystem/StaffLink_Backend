@@ -153,4 +153,30 @@ public class RouteDAO {
         }
         return routes;
     }
+
+    public static RouteModel getRouteByVehicleNo(String vehicleNo) {
+        System.out.println("Inside getRouteByVehicleNo");
+        Connection connection = DBConnection.getInstance().getConnection();
+        RouteModel route = new RouteModel();
+        try {
+            String sql = "SELECT * FROM routes WHERE vehicleNo = ? AND deleteState = 0";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, vehicleNo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                route.setRouteNo(resultSet.getInt("routeNo"));
+                route.setVehicleNo(resultSet.getString("vehicleNo"));
+                route.setStyle(resultSet.getString("style"));
+                route.setStartingLatitude(resultSet.getString("startingLatitude"));
+                route.setStartingLongitude(resultSet.getString("startingLongitude"));
+                route.setEndingLatitude(resultSet.getString("endingLatitude"));
+                route.setEndingLongitude(resultSet.getString("endingLongitude"));
+                route.setStartingTime(resultSet.getString("startingTime"));
+                route.setEndingTime(resultSet.getString("endingTime"));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return route;
+    }
 }

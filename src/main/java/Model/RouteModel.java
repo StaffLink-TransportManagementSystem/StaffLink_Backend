@@ -129,4 +129,9 @@ public class RouteModel {
         boolean status = routeDAO.updateRoute(route);
         return  status;
     }
+    public static RouteModel getRouteByVehicleNo(String vehicleNo){
+        RouteDAO routeDAO = new RouteDAO();
+        RouteModel route = routeDAO.getRouteByVehicleNo(vehicleNo);
+        return route;
+    }
 }

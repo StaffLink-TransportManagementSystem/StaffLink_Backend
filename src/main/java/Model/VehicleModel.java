@@ -376,4 +376,13 @@ public class VehicleModel {
         return vehicleDAO.getVehiclesByType(type);
     }
 
+    public static VehicleModel getVehicleByDriverEmail(String email){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.getVehicleByDriverEmail(email);
+    }
+    public static VehicleModel getVehicleByDriver(String email){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.getVehicleByDriver(email);
+    }
+
 }

@@ -81,7 +81,33 @@ public class OngoingTripDAO {
         }
     }
 
-
+    public static OngoingTripModel getOngoingTripByVehicleNo(String vehicleNo, String driverEmail) {
+        // get ongoing trip by vehicle no
+        Connection connection = DBConnection.getInstance().getConnection();
+        OngoingTripModel ongoingTripModel = new OngoingTripModel();
+        try {
+            String sql = "SELECT * FROM ongoingtrips WHERE vehicleNo = ? AND driverEmail = ? AND status = 'ongoing'";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, vehicleNo);
+            preparedStatement.setString(2, driverEmail);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                ongoingTripModel.setId(resultSet.getInt("id"));
+                ongoingTripModel.setVehicleNo(resultSet.getString("vehicleNo"));
+                ongoingTripModel.setDriverEmail(resultSet.getString("driverEmail"));
+                ongoingTripModel.setStartedTime(resultSet.getString("startedTime"));
+                ongoingTripModel.setEndedTime(resultSet.getString("endedTime"));
+                ongoingTripModel.setStatus(resultSet.getString("status"));
+                ongoingTripModel.setRouteNo(resultSet.getInt("routeNo"));
+            }
+            resultSet.close();
+            preparedStatement.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            return ongoingTripModel;
+        }
+    }
 
 
 }
