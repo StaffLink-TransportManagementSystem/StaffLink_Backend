@@ -7,6 +7,7 @@ public class TripPassengersModel {
     private int tripId;
     private String passengerEmail;
     private String status;
+    private String driverEmail;
 
     public int getId() {
         return id;
@@ -40,6 +41,14 @@ public class TripPassengersModel {
         this.status = status;
     }
 
+    public String getDriverEmail() {
+        return driverEmail;
+    }
+
+    public void setDriverEmail(String driverEmail) {
+        this.driverEmail = driverEmail;
+    }
+
     public TripPassengersModel(int id, int tripId, String passengerEmail, String status) {
         this.id = id;
         this.tripId = tripId;
@@ -57,6 +66,11 @@ public class TripPassengersModel {
     public boolean createTripPassengers() {
         TripPassengersDAO tripPassengersDAO = new TripPassengersDAO();
         return tripPassengersDAO.addPassenger(this);
+    }
+
+    public boolean updatePassenger() {
+        TripPassengersDAO tripPassengersDAO = new TripPassengersDAO();
+        return tripPassengersDAO.updatePassenger(this);
     }
 
 }
