@@ -1,10 +1,12 @@
 package Controller;
 
 
+import Auth.JwtUtils;
 import Model.DriverModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +18,7 @@ import java.util.regex.Pattern;
 
 import Model.loginModel;
 import com.google.gson.Gson;
+import org.json.JSONObject;
 
 @WebServlet("/driverLogin")
 public class loginDriver extends HttpServlet{
@@ -39,7 +42,29 @@ public class loginDriver extends HttpServlet{
             if(driverModel.getId() != 0){
                 res.setStatus(HttpServletResponse.SC_OK);
                 if(driverModel.getPassword().equals(driver.getPassword())) {
-                    out.write("{\"message\": \"Login successfully\",\"page\":\""+ "driver" +"\"}");
+                    JSONObject payload = new JSONObject();
+                    payload.put("email", driverModel.getEmail());
+                    payload.put("id", driverModel.getEmail());
+                    payload.put("role", "driver");
+                    payload.put("OnTrip", driverModel.getOnTrip());
+
+                    JwtUtils jwtUtils = new JwtUtils(payload);
+                    String token = jwtUtils.generateJwt();
+
+                    System.out.println("Token: " + token);
+
+                    Cookie cookie = new Cookie("jwt", token);
+                    cookie.setPath("/");
+                    cookie.setSecure(true); // For HTTPS
+                    cookie.setHttpOnly(false);
+
+                    // Set the cookie to expire after one day (in seconds)
+                    int oneDayInSeconds = 24 * 60 * 60;
+                    cookie.setMaxAge(oneDayInSeconds);
+
+                    res.addCookie(cookie);
+
+                    out.write("{\"jwt\":\""+token+"\",\"message\": \"Login successfully\",\"page\":\""+ "driver" +"\"}");
                     System.out.println("Login successful");
                 }else{
                     out.write("{\"message\": \"Wrong Password\"}");

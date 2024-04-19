@@ -20,11 +20,11 @@ public class WaypointsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
         try {
-            String sql = "INSERT INTO waypoints (routeNo,location,orderNo,arrivalTime, deadlineTime, reservationId) VALUES (?,?,?,?,?,?)";
+            String sql = "INSERT INTO waypoints (routeNo,latitude, longitude,arrivalTime, deadlineTime, reservationId) VALUES (?,?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, waypoints.getRouteNo());
-            preparedStatement.setString(2, waypoints.getLocation());
-            preparedStatement.setInt(3, waypoints.getOrderNo());
+            preparedStatement.setString(2, waypoints.getLatitude());
+            preparedStatement.setString(3, waypoints.getLongitude());
             preparedStatement.setString(4, waypoints.getArrivalTime());
             preparedStatement.setString(5, waypoints.getDeadlineTime());
             preparedStatement.setString(6, waypoints.getReservationId());
@@ -74,11 +74,11 @@ public class WaypointsDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
         try {
-            String sql = "UPDATE waypoints SET routeNo = ?, location = ?, orderNo = ?, arrivalTime=?, deadlineTime=?, reservationId=? WHERE waypointId = ? && deleteState = 0";
+            String sql = "UPDATE waypoints SET routeNo = ?, latitude = ?, longitude = ?, arrivalTime=?, deadlineTime=?, reservationId=? WHERE waypointId = ? && deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, waypoints.getRouteNo());
-            preparedStatement.setString(2, waypoints.getLocation());
-            preparedStatement.setInt(3, waypoints.getOrderNo());
+            preparedStatement.setString(2, waypoints.getLatitude());
+            preparedStatement.setString(3, waypoints.getLongitude());
             preparedStatement.setString(4, waypoints.getArrivalTime());
             preparedStatement.setString(5, waypoints.getDeadlineTime());
             preparedStatement.setString(6, waypoints.getReservationId());
@@ -104,8 +104,8 @@ public class WaypointsDAO {
                 Waypoints waypoint = new Waypoints();
                 waypoint.setWaypointId(resultSet.getInt("waypointId"));
                 waypoint.setRouteNo(resultSet.getInt("routeNo"));
-                waypoint.setLocation(resultSet.getString("location"));
-                waypoint.setOrderNo(resultSet.getInt("orderNo"));
+                waypoint.setLatitude(resultSet.getString("latitude"));
+                waypoint.setLongitude(resultSet.getString("longitude"));
                 waypoint.setArrivalTime(resultSet.getString("arrivalTime"));
                 waypoint.setDeadlineTime(resultSet.getString("deadlineTime"));
                 waypoint.setReservationId(resultSet.getString("reservationId"));

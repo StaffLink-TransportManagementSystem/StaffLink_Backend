@@ -1,9 +1,11 @@
 package Controller;
 
+import Auth.JwtUtils;
 import Model.OwnerModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +15,7 @@ import java.io.PrintWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.google.gson.Gson;
+import org.json.JSONObject;
 
 @WebServlet("/ownerRegister")
 public class createOwnerServelet extends HttpServlet{
@@ -21,6 +24,7 @@ public class createOwnerServelet extends HttpServlet{
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
         System.out.println("Hello");
+
         try {
             Gson gson = new Gson();
 
@@ -31,7 +35,7 @@ public class createOwnerServelet extends HttpServlet{
             // All validations are passed then register
             if(owner.createOwner()){
                 res.setStatus(HttpServletResponse.SC_OK);
-                    out.write("{\"message\": \"Registration successfully\"}");
+                out.write("{\"message\": \"Registration successfully\"}");
                 System.out.println("Registration successful");
             }else{
                 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

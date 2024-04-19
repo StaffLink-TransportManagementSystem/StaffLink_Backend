@@ -1,15 +1,21 @@
 package Controller;
 
+import Auth.JwtUtils;
 import DAO.RouteDAO;
 import DAO.WaypointsDAO;
 import Model.RouteModel;
+import Model.VehicleModel;
 import Model.Waypoints;
+import Model.findVehicleModel;
 import com.google.gson.Gson;
+import org.json.JSONObject;
 
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -27,24 +33,67 @@ public class findTransportServelet extends HttpServlet {
         }
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         System.out.println("findTransport");
 
-        String homeLocation = request.getParameter("homeLocation");
-        String workLocation = request.getParameter("workLocation");
-        String type = request.getParameter("type");
-        String inTime = request.getParameter("inTime");
-        String outTime = request.getParameter("outTime");
-        System.out.println(homeLocation);
-        System.out.println(workLocation);
-        System.out.println(type);
-        System.out.println(inTime);
-        System.out.println(outTime);
+        // Get all cookies from the request
+        Cookie[] cookies = request.getCookies();
+        JSONObject jsonObject = new JSONObject();
+        int user_id = 0;
+        boolean jwtCookieFound = false;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("jwt".equals(cookie.getName())) {
+                    JwtUtils jwtUtils = new JwtUtils(cookie.getValue());
+                    if (!jwtUtils.verifyJwtAuthentication()) {
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        out.write("{\"message\": \"UnAuthorized\"}");
+                        System.out.println("UnAuthorized1");
+                        return;
+                    }
+                    jsonObject = jwtUtils.getAuthPayload();
+                    jwtCookieFound = true;
+                    break;  // No need to continue checking if "jwt" cookie is found
+                }
+            }
+        } else {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            out.write("{\"message\": \"UnAuthorized\"}");
+            System.out.println("No cookies found in the request.");
+            return;
+        }
+
+        // If "jwt" cookie is not found, respond with unauthorized status
+        if (!jwtCookieFound) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            out.write("{\"message\": \"UnAuthorized - JWT cookie not found\"}");
+            System.out.println("UnAuthorized - JWT cookie not found");
+            return;
+        }
+
+
+        Gson gson = new Gson();
+        // json data to user object
+        BufferedReader bufferedReader = request.getReader();
+        findVehicleModel findVehicleModel = gson.fromJson(bufferedReader, findVehicleModel.class);
 
 
         try {
+            if(findVehicleModel.getType() != null){
+                if(findVehicleModel.getType().equals("Morning")){
+                    List<VehicleModel> vehicles = VehicleModel.getVehiclesByType("Morning");
+                }
+                else if(findVehicleModel.getType().equals("Evening")){
+                    List<VehicleModel> vehicles = VehicleModel.getVehiclesByType("Evening");
+                }
+                else if(findVehicleModel.getType().equals("Both")){
+                    List<VehicleModel> vehicles = VehicleModel.getVehiclesByType("Both");
+                }
+            }
+
             boolean morning = false;
             boolean afternoon = false;
 
@@ -63,8 +112,8 @@ public class findTransportServelet extends HttpServlet {
 
             for (RouteModel route : routes) {
 
-                home = new Waypoints(route.getStaringLocation(),route.getStartingTime());
-                work = new Waypoints(route.getEndingLocation(),route.getEndingTime());
+//                home = new Waypoints(route.getStaringLocation(),route.getStartingTime());
+//                work = new Waypoints(route.getEndingLocation(),route.getEndingTime());
                 waypointsList = WaypointsDAO.getwaypoints(route.getRouteNo());
 
                 waypoints.add(home);
@@ -74,22 +123,22 @@ public class findTransportServelet extends HttpServlet {
                 waypoints.add(work);
 
 
-                homeDistance = calculateDistanceToRoute(convertCoordinatesString(homeLocation)[0], convertCoordinatesString(homeLocation)[1], waypoints);
-                workDistance = calculateDistanceToRoute(convertCoordinatesString(workLocation)[0], convertCoordinatesString(workLocation)[1], waypoints);
-
-
-                if(homeDistance < 5.0 && workDistance < 5.0){
-                    if(route.getStyle().toLowerCase() == type.toLowerCase() || route.getStyle().toLowerCase() == "both"){
-                        if(route.getStartingTime().compareTo(inTime) > 0 && route.getEndingTime().compareTo(outTime) < 0){
-                            result.add(route);
-                        }
-                    }
-                }
+//                homeDistance = calculateDistanceToRoute(convertCoordinatesString(homeLocation)[0], convertCoordinatesString(homeLocation)[1], waypoints);
+//                workDistance = calculateDistanceToRoute(convertCoordinatesString(workLocation)[0], convertCoordinatesString(workLocation)[1], waypoints);
+//
+//
+//                if(homeDistance < 5.0 && workDistance < 5.0){
+//                    if(route.getStyle().toLowerCase() == type.toLowerCase() || route.getStyle().toLowerCase() == "both"){
+//                        if(route.getStartingTime().compareTo(inTime) > 0 && route.getEndingTime().compareTo(outTime) < 0){
+//                            result.add(route);
+//                        }
+//                    }
+//                }
 //                TO COMPLETE
 
             }
 
-            Gson gson = new Gson();
+//            Gson gson = new Gson();
             // Object array to json
             String object = gson.toJson(result);
             if(result.size() != 0){
@@ -120,8 +169,8 @@ public class findTransportServelet extends HttpServlet {
         double distance = Double.MAX_VALUE;
 
         for (int i = 0; i < waypoints.size() - 1; i++) {
-            waypointCoordinates1 = convertCoordinatesString(waypoints.get(i).getLocation());
-            waypointCoordinates2 = convertCoordinatesString(waypoints.get(i + 1).getLocation());
+//            waypointCoordinates1 = convertCoordinatesString(waypoints.get(i).getLocation());
+//            waypointCoordinates2 = convertCoordinatesString(waypoints.get(i + 1).getLocation());
             distance = pointToLineDistance(locationLat, locationLon, waypointCoordinates1[0], waypointCoordinates1[1], waypointCoordinates2[0], waypointCoordinates2[1]);
             minDistance = Math.min(minDistance, distance);
         }

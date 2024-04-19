@@ -1,16 +1,22 @@
 package Controller;
 
+import Auth.JwtUtils;
+import DAO.PassengerDAO;
 import DAO.PassengerPaymentsDAO;
+import Model.PassengerModel;
 import Model.PassengerPaymentsModel;
 import Model.ReservationModel;
 import com.google.gson.Gson;
+import org.json.JSONObject;
 
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/getReservationsByOwner")
@@ -20,6 +26,43 @@ public class GetReservationsByOwner extends HttpServlet {
         PrintWriter out = response.getWriter();
         System.out.println("GetReservationsByOwner");
 
+        // Get all cookies from the request
+        Cookie[] cookies = request.getCookies();
+        JSONObject jsonObject = new JSONObject();
+        int user_id = 0;
+        boolean jwtCookieFound = false;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("jwt".equals(cookie.getName())) {
+                    JwtUtils jwtUtils = new JwtUtils(cookie.getValue());
+                    if (!jwtUtils.verifyJwtAuthentication()) {
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        out.write("{\"message\": \"UnAuthorized\"}");
+                        System.out.println("UnAuthorized1");
+                        return;
+                    }
+                    jsonObject = jwtUtils.getAuthPayload();
+                    jwtCookieFound = true;
+                    break;  // No need to continue checking if "jwt" cookie is found
+                }
+            }
+        } else {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            out.write("{\"message\": \"UnAuthorized\"}");
+            System.out.println("No cookies found in the request.");
+            return;
+        }
+
+        // If "jwt" cookie is not found, respond with unauthorized status
+        if (!jwtCookieFound) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            out.write("{\"message\": \"UnAuthorized - JWT cookie not found\"}");
+            System.out.println("UnAuthorized - JWT cookie not found");
+            return;
+        }
+
+
         String ownerEmail = request.getParameter("ownerEmail");
         System.out.println(ownerEmail);
 
@@ -27,13 +70,28 @@ public class GetReservationsByOwner extends HttpServlet {
             ReservationModel reservationModel = new ReservationModel();
             List<ReservationModel> reservations = reservationModel.getReservationsByOwner(ownerEmail);
 
+            List<PassengerModel> passengers = new ArrayList<>();
+            List<PassengerPaymentsModel> passengerPayments = new ArrayList<>();
+
+            for (ReservationModel reservation : reservations) {
+                PassengerDAO passengerDAO = new PassengerDAO();
+                PassengerModel passenger = passengerDAO.getPassenger(reservation.getPassengerEmail());
+                PassengerPaymentsModel passengerPayment = new PassengerPaymentsModel();
+                passengerPayment = passengerPayment.getPassengerPaymentByReservationID(reservation.getReservationId());
+
+                passengers.add(passenger);
+                passengerPayments.add(passengerPayment);
+            }
+
             Gson gson = new Gson();
             // Object array to json
             String object = gson.toJson(reservations);
+            String object1 = gson.toJson(passengers);
+            String object2 = gson.toJson(passengerPayments);
 
             if (reservations.size() != 0) {
                 response.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"reservations\": " + object + "}");
+                out.write("{\"reservations\": " + object + ", \"passengers\": " + object1 + ", \"payments\": " + object2 + "}");
                 System.out.println("Send reservations");
             } else {
                 response.setStatus(HttpServletResponse.SC_ACCEPTED);

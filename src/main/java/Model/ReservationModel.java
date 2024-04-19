@@ -2,18 +2,61 @@ package Model;
 
 import DAO.ReservationDAO;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class ReservationModel {
     private int reservationId;
     private String passengerEmail;
     private String vehicleNo;
-    private String startingDate;
-    private String endingDate;
-    private int startingWaypoint;
-    private int endingWaypoint;
+    private LocalDate startingDate;
+    private LocalDate endingDate;
+    private String startingLatitude;
+    private String startingLongitude;
+    private String endingLatitude;
+    private String endingLongitude;
     private String status;
     private int deleteState;
+
+    public void setStartingDate(LocalDate startingDate) {
+        this.startingDate = startingDate;
+    }
+
+    public void setEndingDate(LocalDate endingDate) {
+        this.endingDate = endingDate;
+    }
+
+    public String getStartingLatitude() {
+        return startingLatitude;
+    }
+
+    public void setStartingLatitude(String startingLatitude) {
+        this.startingLatitude = startingLatitude;
+    }
+
+    public String getStartingLongitude() {
+        return startingLongitude;
+    }
+
+    public void setStartingLongitude(String startingLongitude) {
+        this.startingLongitude = startingLongitude;
+    }
+
+    public String getEndingLatitude() {
+        return endingLatitude;
+    }
+
+    public void setEndingLatitude(String endingLatitude) {
+        this.endingLatitude = endingLatitude;
+    }
+
+    public String getEndingLongitude() {
+        return endingLongitude;
+    }
+
+    public void setEndingLongitude(String endingLongitude) {
+        this.endingLongitude = endingLongitude;
+    }
 
     public String getStatus() {
         return status;
@@ -27,66 +70,30 @@ public class ReservationModel {
 
     public ReservationModel() {
     }
-    public ReservationModel(String passengerEmail, String vehicleNo, String startingDate, String endingDate) {
+    public ReservationModel(String passengerEmail, String vehicleNo, LocalDate startingDate, LocalDate endingDate, String startingLatitude, String startingLongitude, String endingLatitude, String endingLongitude, String status) {
         this.passengerEmail = passengerEmail;
         this.vehicleNo = vehicleNo;
         this.startingDate = startingDate;
         this.endingDate = endingDate;
-    }
-    public ReservationModel(String passengerEmail, String vehicleNo, String startingDate, String endingDate, int startingWaypoint, int endingWaypoint) {
-        this.passengerEmail = passengerEmail;
-        this.vehicleNo = vehicleNo;
-        this.startingDate = startingDate;
-        this.endingDate = endingDate;
-        this.startingWaypoint = startingWaypoint;
-        this.endingWaypoint = endingWaypoint;
-    }
-    public ReservationModel(int reservationId, String passengerEmail, String vehicleNo, String startingDate, String endingDate) {
-        this.reservationId = reservationId;
-        this.passengerEmail = passengerEmail;
-        this.vehicleNo = vehicleNo;
-        this.startingDate = startingDate;
-        this.endingDate = endingDate;
-    }
-    public ReservationModel(int reservationId, String passengerEmail, String vehicleNo, String startingDate, String endingDate, int startingWaypoint, int endingWaypoint) {
-        this.reservationId = reservationId;
-        this.passengerEmail = passengerEmail;
-        this.vehicleNo = vehicleNo;
-        this.startingDate = startingDate;
-        this.endingDate = endingDate;
-        this.startingWaypoint = startingWaypoint;
-        this.endingWaypoint = endingWaypoint;
-    }
-    public ReservationModel(String passengerEmail, String vehicleNo, String startingDate, String endingDate, int startingWaypoint, int endingWaypoint, String status) {
-        this.passengerEmail = passengerEmail;
-        this.vehicleNo = vehicleNo;
-        this.startingDate = startingDate;
-        this.endingDate = endingDate;
-        this.startingWaypoint = startingWaypoint;
-        this.endingWaypoint = endingWaypoint;
+        this.startingLatitude = startingLatitude;
+        this.startingLongitude = startingLongitude;
+        this.endingLatitude = endingLatitude;
+        this.endingLongitude = endingLongitude;
         this.status = status;
     }
-    public ReservationModel(int reservationId, String passengerEmail, String vehicleNo, String startingDate, String endingDate, int startingWaypoint, int endingWaypoint, String status) {
+    public ReservationModel(int reservationId, String passengerEmail, String vehicleNo, LocalDate startingDate, LocalDate endingDate, String startingLatitude, String startingLongitude, String endingLatitude, String endingLongitude, String status) {
         this.reservationId = reservationId;
         this.passengerEmail = passengerEmail;
         this.vehicleNo = vehicleNo;
         this.startingDate = startingDate;
         this.endingDate = endingDate;
-        this.startingWaypoint = startingWaypoint;
-        this.endingWaypoint = endingWaypoint;
+        this.startingLatitude = startingLatitude;
+        this.startingLongitude = startingLongitude;
+        this.endingLatitude = endingLatitude;
+        this.endingLongitude = endingLongitude;
         this.status = status;
     }
-    public ReservationModel(int reservationId, String passengerEmail, String vehicleNo, String startingDate, String endingDate, int startingWaypoint, int endingWaypoint, String status, int deleteState) {
-        this.reservationId = reservationId;
-        this.passengerEmail = passengerEmail;
-        this.vehicleNo = vehicleNo;
-        this.startingDate = startingDate;
-        this.endingDate = endingDate;
-        this.startingWaypoint = startingWaypoint;
-        this.endingWaypoint = endingWaypoint;
-        this.status = status;
-        this.deleteState = deleteState;
-    }
+
     public ReservationModel(int reservationId){
         this.reservationId = reservationId;
     }
@@ -115,36 +122,12 @@ public class ReservationModel {
         this.vehicleNo = vehicleNo;
     }
 
-    public String getStartingDate() {
+    public LocalDate getStartingDate() {
         return startingDate;
     }
 
-    public void setStartingDate(String startingDate) {
-        this.startingDate = startingDate;
-    }
-
-    public String getEndingDate() {
+    public LocalDate getEndingDate() {
         return endingDate;
-    }
-
-    public void setEndingDate(String endingDate) {
-        this.endingDate = endingDate;
-    }
-
-    public int getStartingWaypoint() {
-        return startingWaypoint;
-    }
-
-    public void setStartingWaypoint(int startingWaypoint) {
-        this.startingWaypoint = startingWaypoint;
-    }
-
-    public int getEndingWaypoint() {
-        return endingWaypoint;
-    }
-
-    public void setEndingWaypoint(int endingWaypoint) {
-        this.endingWaypoint = endingWaypoint;
     }
 
     public boolean createReservation(){
@@ -181,5 +164,12 @@ public class ReservationModel {
 
     public static ReservationModel getReservation(int reservationId){
         return ReservationDAO.getReservation(reservationId);
+    }
+
+    public static List<PassengerModel> getPassengersByVehicle(String vehicleNo){
+        return ReservationDAO.getPassengersByVehicle(vehicleNo);
+    }
+    public static List<PassengerModel> getPassengersByVehicleWithoutAbsants(String vehicleNo){
+        return ReservationDAO.getPassengersByVehicleWithoutAbsants(vehicleNo);
     }
 }

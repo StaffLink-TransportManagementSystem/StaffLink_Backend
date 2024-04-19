@@ -1,10 +1,12 @@
 package Controller;
 
+import Auth.JwtUtils;
 import Model.PassengerModel;
 import Validation.Passenger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +16,7 @@ import java.io.PrintWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.google.gson.Gson;
+import org.json.JSONObject;
 
 @WebServlet("/passengerRegister")
 public class createPassengerServelet extends HttpServlet{
@@ -22,6 +25,9 @@ public class createPassengerServelet extends HttpServlet{
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
         System.out.println("Hello");
+
+
+
         try {
             Gson gson = new Gson();
 

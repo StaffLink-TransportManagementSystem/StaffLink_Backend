@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 @WebFilter("/*")
 public class CorsFilter implements Filter {
@@ -28,9 +29,15 @@ public class CorsFilter implements Filter {
             httpResponse.setHeader("Access-Control-Allow-Origin", origin);
         }
 //        httpResponse.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5558"); // Replace with your frontend origin
-        httpResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        httpResponse.setHeader("Access-Control-Allow-Headers", "Content-Type");
-        httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
+//        httpResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+//        httpResponse.setHeader("Access-Control-Allow-Headers", "Content-Type");
+//        httpResponse.setHeader("Access-Control-Allow-Headers", "Authorization");
+//        httpResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//        httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
+
+        httpResponse.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE"); // Add the methods you need
+        httpResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // Include the headers you need
+        httpResponse.setHeader("Access-Control-Allow-Credentials", "true"); // Allow credentials (cookies)
 
         // Continue with the request chain
         chain.doFilter(request, response);
