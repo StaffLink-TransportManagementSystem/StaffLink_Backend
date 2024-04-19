@@ -1,8 +1,10 @@
 package Controller;
 
 import Auth.JwtUtils;
-import Model.PassengerPaymentsModel;
-import com.google.gson.Gson;
+import DAO.PassengerDAO;
+import Model.OwnerModel;
+import Model.PassengerModel;
+import Model.VehicleModel;
 import org.json.JSONObject;
 
 import javax.servlet.annotation.WebServlet;
@@ -12,14 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
-@WebServlet("/getPassengerPaymentsByPassenger")
-public class GetPassengerPaymentsByPassenger extends HttpServlet {
+@WebServlet("/adminDashbordInfo")
+public class AdminDashbordInfo extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        System.out.println("getPassengerPaymentsByPassenger");
+
+        System.out.println("get owner");
 
         // Get all cookies from the request
         Cookie[] cookies = request.getCookies();
@@ -57,35 +59,32 @@ public class GetPassengerPaymentsByPassenger extends HttpServlet {
             return;
         }
 
-
-        String passengerEmail = request.getParameter("passengerEmail");
-        System.out.println(passengerEmail);
-
         try {
-            PassengerPaymentsModel passengerPaymentsModel = new PassengerPaymentsModel();
-            List<PassengerPaymentsModel> payments = passengerPaymentsModel.getPaymentsByPassenger(passengerEmail);
+            PassengerModel passengerModel = new PassengerModel();
+            int noOfPassengers =  passengerModel.getNoOfPassengers();
 
-            Gson gson = new Gson();
-            // Object array to json
-            String object = gson.toJson(payments);
+            OwnerModel ownerModel = new OwnerModel();
+            int noOfOwners = ownerModel.getNoOfOwners();
 
-            if (payments != null && payments.size() != 0) {
-                response.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"payments\": " + object + "}");
-                System.out.println("Send payments");
-            } else {
-                response.setStatus(HttpServletResponse.SC_ACCEPTED);
-                out.write("{\"payments\": \"No payments\"}");
-                System.out.println("No payments");
+            VehicleModel vehicleModel = new VehicleModel();
+            int noOfVehicles = vehicleModel.getNoOfVehicles();
+
+            if(noOfPassengers == -1 || noOfOwners == -1 || noOfVehicles == -1){
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                out.write("{\"message\": \"Internal Server Error\"}");
+                System.out.println("Internal Server Error");
+                return;
             }
-            // TODO handle
-
-        } catch (Exception e) {
+            else {
+                response.setStatus(HttpServletResponse.SC_OK);
+                out.write("{\"noOfPassengers\": " + noOfPassengers + ", \"noOfOwners\": " + noOfOwners + ", \"noOfVehicles\": " + noOfVehicles + "}");
+                System.out.println("Send details to admin");
+            }
+        }
+        catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
-        } finally {
-            out.close();
         }
-    }
 
+    }
 }

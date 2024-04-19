@@ -9,8 +9,9 @@ public class Waypoints {
     private int waypointId;
     private String reservationId;
     private int routeNo;
-    private String location;
-    private int orderNo;
+    private String latitude;
+    private String longitude;
+//    private int orderNo;
     private String arrivalTime;
     private String deadlineTime;
     private int deleteState;
@@ -40,20 +41,20 @@ public class Waypoints {
         this.routeNo = routeNo;
     }
 
-    public String getLocation() {
-        return location;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
-    public int getOrderNo() {
-        return orderNo;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setOrderNo(int orderNo) {
-        this.orderNo = orderNo;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     public String getArrivalTime() {
@@ -87,40 +88,37 @@ public class Waypoints {
         this.deleteState = deleteState;
     }
 
-    public void Waypoints(int waypointId, String reservationId, int routeNo, String location, int orderNo, String arrivalTime, String deadlineTime){
-        this.waypointId = waypointId;
-        this.reservationId = reservationId;
-        this.routeNo = routeNo;
-        this.location = location;
-        this.orderNo = orderNo;
-        this.arrivalTime = arrivalTime;
-        this.deadlineTime = deadlineTime;
-    }
+
+
     public void Waypoints(int routeNo){
         this.routeNo = routeNo;
     }
-    public void Waypoints(String reservationId, int routeNo, String location, int orderNo, String arrivalTime, String deadlineTime){
+    public void Waypoints(String reservationId, int routeNo, String latitude, String longitude, String arrivalTime, String deadlineTime){
         this.reservationId = reservationId;
         this.routeNo = routeNo;
-        this.location = location;
-        this.orderNo = orderNo;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.arrivalTime = arrivalTime;
         this.deadlineTime = deadlineTime;
     }
-    public void Waypoints(int waypointId, String reservationId, int routeNo, String location, int orderNo, String arrivalTime, String deadlineTime, int deleteState){
+    public void Waypoints(int waypointId, String reservationId, int routeNo, String latitude, String longitude, String arrivalTime, String deadlineTime){
         this.waypointId = waypointId;
         this.reservationId = reservationId;
         this.routeNo = routeNo;
-        this.location = location;
-        this.orderNo = orderNo;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.arrivalTime = arrivalTime;
+        this.deadlineTime = deadlineTime;
+    }
+    public void Waypoints(int waypointId, String reservationId, int routeNo, String latitude, String longitude, String arrivalTime, String deadlineTime, int deleteState){
+        this.waypointId = waypointId;
+        this.reservationId = reservationId;
+        this.routeNo = routeNo;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.arrivalTime = arrivalTime;
         this.deadlineTime = deadlineTime;
         this.deleteState = deleteState;
-    }
-
-    public void Waypoints(String location, String deadlineTime){
-        this.location = location;
-        this.deadlineTime = deadlineTime;
     }
 
     public boolean addWaypoint(){

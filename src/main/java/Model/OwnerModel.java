@@ -125,4 +125,9 @@ public class OwnerModel {
         OwnerDAO ownerDAO = new OwnerDAO();
         return ownerDAO.viewAllOwners();
     }
+
+    public int getNoOfOwners() {
+        OwnerDAO ownerDAO = new OwnerDAO();
+        return ownerDAO.getNoOfOwners();
+    }
 }

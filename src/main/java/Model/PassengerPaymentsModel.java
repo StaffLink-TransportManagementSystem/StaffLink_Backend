@@ -183,4 +183,15 @@ public class PassengerPaymentsModel {
         PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
         return passengerPaymentsDAO.getPassengerPayments(email);
     }
+
+    public PassengerPaymentsModel getPassengerPaymentByReservationID(int requestID){
+        PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
+        return passengerPaymentsDAO.getPaymentByRequestID(requestID);
+    }
+
+    public boolean makePayment(){
+        PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
+        return passengerPaymentsDAO.makePayment(this);
+    }
+
 }

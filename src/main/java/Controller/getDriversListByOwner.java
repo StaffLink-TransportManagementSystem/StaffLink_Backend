@@ -1,25 +1,34 @@
 package Controller;
 
 import Auth.JwtUtils;
-import Model.PassengerPaymentsModel;
-import com.google.gson.Gson;
-import org.json.JSONObject;
+import DAO.DriverDAO;
+import DAO.VehicleDAO;
+import Model.DriverModel;
+import Model.OwnerModel;
+import Model.PassengerModel;
+import Model.VehicleModel;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import com.google.gson.Gson;
+import org.json.JSONObject;
 
-@WebServlet("/getPassengerPaymentsByPassenger")
-public class GetPassengerPaymentsByPassenger extends HttpServlet {
+@WebServlet("/getDriversByOwner")
+public class getDriversListByOwner  extends HttpServlet{
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        System.out.println("getPassengerPaymentsByPassenger");
+        System.out.println("get driver List");
 
         // Get all cookies from the request
         Cookie[] cookies = request.getCookies();
@@ -58,25 +67,33 @@ public class GetPassengerPaymentsByPassenger extends HttpServlet {
         }
 
 
-        String passengerEmail = request.getParameter("passengerEmail");
-        System.out.println(passengerEmail);
+        String email = request.getParameter("email");
+//        int account_id = Integer.parseInt(request.getParameter("id"));
 
         try {
-            PassengerPaymentsModel passengerPaymentsModel = new PassengerPaymentsModel();
-            List<PassengerPaymentsModel> payments = passengerPaymentsModel.getPaymentsByPassenger(passengerEmail);
-
             Gson gson = new Gson();
-            // Object array to json
-            String object = gson.toJson(payments);
+//            BufferedReader reader = request.getReader();
+//            OwnerModel owner = gson.fromJson(reader, OwnerModel.class);
 
-            if (payments != null && payments.size() != 0) {
+            System.out.println("Owner email: " + email);
+
+            DriverModel driverModel = new DriverModel();
+//            DriverModel driver = driverDAO.getDriversByOwner(owner.getEmail());
+
+            List<DriverModel> driverList = driverModel.getDriversListByOwner(email);
+
+
+            // Object array to json
+            String object = gson.toJson(driverList);
+
+            if (driverList.size() > 0){
                 response.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"payments\": " + object + "}");
-                System.out.println("Send payments");
+                out.write("{\"drivers\": " + object + "}");
+                System.out.println("Send driver");
             } else {
                 response.setStatus(HttpServletResponse.SC_ACCEPTED);
-                out.write("{\"payments\": \"No payments\"}");
-                System.out.println("No payments");
+                out.write("{\"drivers\": \"No driver\"}");
+                System.out.println("No driver");
             }
             // TODO handle
 
@@ -87,5 +104,4 @@ public class GetPassengerPaymentsByPassenger extends HttpServlet {
             out.close();
         }
     }
-
 }

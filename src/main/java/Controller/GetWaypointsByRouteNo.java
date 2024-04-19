@@ -1,7 +1,7 @@
 package Controller;
 
 import Auth.JwtUtils;
-import Model.PassengerPaymentsModel;
+import Model.Waypoints;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
@@ -14,15 +14,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet("/getPassengerPaymentsByPassenger")
-public class GetPassengerPaymentsByPassenger extends HttpServlet {
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        System.out.println("getPassengerPaymentsByPassenger");
+@WebServlet("/getWaypoints")
+public class GetWaypointsByRouteNo extends HttpServlet {
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        System.out.println("Hello getWaypointList");
+        res.setContentType("application/json");
+
+        PrintWriter out = res.getWriter();
 
         // Get all cookies from the request
-        Cookie[] cookies = request.getCookies();
+        Cookie[] cookies = req.getCookies();
         JSONObject jsonObject = new JSONObject();
         int user_id = 0;
         boolean jwtCookieFound = false;
@@ -32,7 +33,7 @@ public class GetPassengerPaymentsByPassenger extends HttpServlet {
                 if ("jwt".equals(cookie.getName())) {
                     JwtUtils jwtUtils = new JwtUtils(cookie.getValue());
                     if (!jwtUtils.verifyJwtAuthentication()) {
-                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                         out.write("{\"message\": \"UnAuthorized\"}");
                         System.out.println("UnAuthorized1");
                         return;
@@ -43,7 +44,7 @@ public class GetPassengerPaymentsByPassenger extends HttpServlet {
                 }
             }
         } else {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             out.write("{\"message\": \"UnAuthorized\"}");
             System.out.println("No cookies found in the request.");
             return;
@@ -51,41 +52,38 @@ public class GetPassengerPaymentsByPassenger extends HttpServlet {
 
         // If "jwt" cookie is not found, respond with unauthorized status
         if (!jwtCookieFound) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             out.write("{\"message\": \"UnAuthorized - JWT cookie not found\"}");
             System.out.println("UnAuthorized - JWT cookie not found");
             return;
         }
 
-
-        String passengerEmail = request.getParameter("passengerEmail");
-        System.out.println(passengerEmail);
-
-        try {
-            PassengerPaymentsModel passengerPaymentsModel = new PassengerPaymentsModel();
-            List<PassengerPaymentsModel> payments = passengerPaymentsModel.getPaymentsByPassenger(passengerEmail);
-
-            Gson gson = new Gson();
-            // Object array to json
-            String object = gson.toJson(payments);
-
-            if (payments != null && payments.size() != 0) {
-                response.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"payments\": " + object + "}");
-                System.out.println("Send payments");
-            } else {
-                response.setStatus(HttpServletResponse.SC_ACCEPTED);
-                out.write("{\"payments\": \"No payments\"}");
-                System.out.println("No payments");
+        try{
+            String route_no = req.getParameter("routeNo");
+            if(route_no == null){
+                res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.write("{\"message\": \"Route number is required\"}");
+                return;
             }
-            // TODO handle
-
-        } catch (Exception e) {
+            // Get waypoints by route number
+            Waypoints waypoints = new Waypoints(Integer.parseInt(route_no));
+            List<Waypoints> waypointList = waypoints.getWaypoints();
+            Gson gson = new Gson();
+            String object = gson.toJson(waypointList);
+            if(waypointList.size() != 0){
+                res.setStatus(HttpServletResponse.SC_OK);
+                out.write("{\"size\": " + waypointList.size() + ",\"waypoints\":" + object + "}");
+                System.out.println("view vehicle list");
+            }
+            else if(waypointList.size() == 0){
+                res.setStatus(HttpServletResponse.SC_ACCEPTED);
+                out.write("{\"size\": \"0\"}");
+                System.out.println("No waypoints");
+            }
+        } catch (Exception e){
             e.printStackTrace();
-            throw new RuntimeException(e);
-        } finally {
-            out.close();
-        }
-    }
 
+        }
+
+    }
 }

@@ -67,7 +67,7 @@ public class GetPassengersByVehicle extends HttpServlet {
             VehicleModel vehicleModel = gson.fromJson(bufferedReader, VehicleModel.class);
             System.out.println(vehicleModel.getVehicleNo());
 
-            List<ReservationModel> reservations = ReservationModel.getPassengersByVehicle(vehicleModel.getVehicleNo());
+            List<PassengerModel> reservations = ReservationModel.getPassengersByVehicle(vehicleModel.getVehicleNo());
             String object = gson.toJson(reservations);
 
             if (reservations.size() != 0) {

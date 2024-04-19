@@ -10,19 +10,19 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
-@WebServlet("/getPassengerPaymentsByPassenger")
-public class GetPassengerPaymentsByPassenger extends HttpServlet {
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        System.out.println("getPassengerPaymentsByPassenger");
+@WebServlet("/updatePassengerPayment")
+public class UpdatePassengerPayment extends HttpServlet {
+    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        res.setContentType("application/json");
+        PrintWriter out = res.getWriter();
+        System.out.println("Update Passenger Payment" );
 
         // Get all cookies from the request
-        Cookie[] cookies = request.getCookies();
+        Cookie[] cookies = req.getCookies();
         JSONObject jsonObject = new JSONObject();
         int user_id = 0;
         boolean jwtCookieFound = false;
@@ -32,7 +32,7 @@ public class GetPassengerPaymentsByPassenger extends HttpServlet {
                 if ("jwt".equals(cookie.getName())) {
                     JwtUtils jwtUtils = new JwtUtils(cookie.getValue());
                     if (!jwtUtils.verifyJwtAuthentication()) {
-                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                         out.write("{\"message\": \"UnAuthorized\"}");
                         System.out.println("UnAuthorized1");
                         return;
@@ -43,7 +43,7 @@ public class GetPassengerPaymentsByPassenger extends HttpServlet {
                 }
             }
         } else {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             out.write("{\"message\": \"UnAuthorized\"}");
             System.out.println("No cookies found in the request.");
             return;
@@ -51,41 +51,28 @@ public class GetPassengerPaymentsByPassenger extends HttpServlet {
 
         // If "jwt" cookie is not found, respond with unauthorized status
         if (!jwtCookieFound) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             out.write("{\"message\": \"UnAuthorized - JWT cookie not found\"}");
             System.out.println("UnAuthorized - JWT cookie not found");
             return;
         }
 
-
-        String passengerEmail = request.getParameter("passengerEmail");
-        System.out.println(passengerEmail);
-
         try {
-            PassengerPaymentsModel passengerPaymentsModel = new PassengerPaymentsModel();
-            List<PassengerPaymentsModel> payments = passengerPaymentsModel.getPaymentsByPassenger(passengerEmail);
-
             Gson gson = new Gson();
-            // Object array to json
-            String object = gson.toJson(payments);
-
-            if (payments != null && payments.size() != 0) {
-                response.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"payments\": " + object + "}");
-                System.out.println("Send payments");
+            BufferedReader reader = req.getReader();
+            PassengerPaymentsModel passengerPaymentsModel = gson.fromJson(reader, PassengerPaymentsModel.class);
+            boolean status = passengerPaymentsModel.makePayment();
+            if (status) {
+                res.setStatus(HttpServletResponse.SC_OK);
+                out.write("{\"message\": \"Payment Successful\"}");
+                System.out.println("Payment Successful");
             } else {
-                response.setStatus(HttpServletResponse.SC_ACCEPTED);
-                out.write("{\"payments\": \"No payments\"}");
-                System.out.println("No payments");
+                res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                out.write("{\"message\": \"Payment Failed\"}");
+                System.out.println("Payment Failed");
             }
-            // TODO handle
-
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
-        } finally {
-            out.close();
         }
     }
-
 }
