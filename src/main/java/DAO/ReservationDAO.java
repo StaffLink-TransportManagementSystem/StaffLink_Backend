@@ -25,10 +25,12 @@ public class ReservationDAO {
                         resultSet.getInt("reservationId"),
                         resultSet.getString("passengerEmail"),
                         resultSet.getString("vehicleNo"),
-                        resultSet.getString("startingDate"),
-                        resultSet.getString("endingDate"),
-                        resultSet.getInt("startingWaypoint"),
-                        resultSet.getInt("endingWaypoint"),
+                        resultSet.getDate("startingDate").toLocalDate(),
+                        resultSet.getDate("endingDate").toLocalDate(),
+                        resultSet.getString("startingLatitude"),
+                        resultSet.getString("startingLongitude"),
+                        resultSet.getString("endingLatitude"),
+                        resultSet.getString("endingLongitude"),
                         resultSet.getString("status")
                 );
             }
@@ -43,15 +45,18 @@ public class ReservationDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
         try {
-            String sql = "INSERT INTO reservations (passengerEmail, vehicleNo, startingDate, endingDate, startingWaypoint, endingWaypoint, status) VALUES (?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO reservations (passengerEmail, vehicleNo, startingDate, endingDate, startingLatitude, startingLongitude, endingLatitude, endingLongitude, status) VALUES (?,?,?,?,?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, reservationModel.getPassengerEmail());
             preparedStatement.setString(2, reservationModel.getVehicleNo());
-            preparedStatement.setString(3, reservationModel.getStartingDate());
-            preparedStatement.setString(4, reservationModel.getEndingDate());
-            preparedStatement.setInt(5, reservationModel.getStartingWaypoint());
-            preparedStatement.setInt(6, reservationModel.getEndingWaypoint());
-            preparedStatement.setString(7, reservationModel.getStatus());
+            preparedStatement.setDate(3, java.sql.Date.valueOf(reservationModel.getStartingDate()));
+            preparedStatement.setDate(4, java.sql.Date.valueOf(reservationModel.getEndingDate()));
+            preparedStatement.setString(5, reservationModel.getStartingLatitude());
+            preparedStatement.setString(6, reservationModel.getStartingLongitude());
+            preparedStatement.setString(7, reservationModel.getEndingLatitude());
+            preparedStatement.setString(8, reservationModel.getEndingLongitude());
+            preparedStatement.setString(9, reservationModel.getStatus());
+
             preparedStatement.executeUpdate();
             success = true;
         } catch (Exception e) {
@@ -98,16 +103,19 @@ public class ReservationDAO {
         System.out.println(reservationModel.getReservationId());
         boolean success = false;
         try {
-            String sql = "UPDATE reservations SET passengerEmail = ?, vehicleNo = ?, startingDate = ?, endingDate = ?, startingWaypoint = ?, endingWaypoint = ?, status=? WHERE reservationId = ? && deleteState = 0";
+            String sql = "UPDATE reservations SET passengerEmail = ?, vehicleNo = ?, startingDate = ?, endingDate = ?, startingLatitude = ?, startingLongitude = ?, endingLatitude = ?, endingLongitude = ?, status = ? WHERE reservationId = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, reservationModel.getPassengerEmail());
             preparedStatement.setString(2, reservationModel.getVehicleNo());
-            preparedStatement.setString(3, reservationModel.getStartingDate());
-            preparedStatement.setString(4, reservationModel.getEndingDate());
-            preparedStatement.setInt(5, reservationModel.getStartingWaypoint());
-            preparedStatement.setInt(6, reservationModel.getEndingWaypoint());
-            preparedStatement.setString(7, reservationModel.getStatus());
-            preparedStatement.setInt(8, reservationModel.getReservationId());
+            preparedStatement.setDate(3, java.sql.Date.valueOf(reservationModel.getStartingDate()));
+            preparedStatement.setDate(4, java.sql.Date.valueOf(reservationModel.getEndingDate()));
+            preparedStatement.setString(5, reservationModel.getStartingLatitude());
+            preparedStatement.setString(6, reservationModel.getStartingLongitude());
+            preparedStatement.setString(7, reservationModel.getEndingLatitude());
+            preparedStatement.setString(8, reservationModel.getEndingLongitude());
+            preparedStatement.setString(9, reservationModel.getStatus());
+            preparedStatement.setInt(10, reservationModel.getReservationId());
+
             preparedStatement.executeUpdate();
             success = true;
         } catch (Exception e) {
@@ -129,10 +137,12 @@ public class ReservationDAO {
                         resultSet.getInt("reservationId"),
                         resultSet.getString("passengerEmail"),
                         resultSet.getString("vehicleNo"),
-                        resultSet.getString("startingDate"),
-                        resultSet.getString("endingDate"),
-                        resultSet.getInt("startingWaypoint"),
-                        resultSet.getInt("endingWaypoint"),
+                        resultSet.getDate("startingDate").toLocalDate(),
+                        resultSet.getDate("endingDate").toLocalDate(),
+                        resultSet.getString("startingLatitude"),
+                        resultSet.getString("startingLongitude"),
+                        resultSet.getString("endingLatitude"),
+                        resultSet.getString("endingLongitude"),
                         resultSet.getString("status")
                 );
                 reservations.add(reservationModel);
@@ -157,10 +167,12 @@ public class ReservationDAO {
                         resultSet.getInt("reservationId"),
                         resultSet.getString("passengerEmail"),
                         resultSet.getString("vehicleNo"),
-                        resultSet.getString("startingDate"),
-                        resultSet.getString("endingDate"),
-                        resultSet.getInt("startingWaypoint"),
-                        resultSet.getInt("endingWaypoint"),
+                        resultSet.getDate("startingDate").toLocalDate(),
+                        resultSet.getDate("endingDate").toLocalDate(),
+                        resultSet.getString("startingLatitude"),
+                        resultSet.getString("startingLongitude"),
+                        resultSet.getString("endingLatitude"),
+                        resultSet.getString("endingLongitude"),
                         resultSet.getString("status")
                 );
                 reservations.add(reservationModel);
@@ -185,10 +197,12 @@ public class ReservationDAO {
                         resultSet.getInt("reservationId"),
                         resultSet.getString("passengerEmail"),
                         resultSet.getString("vehicleNo"),
-                        resultSet.getString("startingDate"),
-                        resultSet.getString("endingDate"),
-                        resultSet.getInt("startingWaypoint"),
-                        resultSet.getInt("endingWaypoint"),
+                        resultSet.getDate("startingDate").toLocalDate(),
+                        resultSet.getDate("endingDate").toLocalDate(),
+                        resultSet.getString("startingLatitude"),
+                        resultSet.getString("startingLongitude"),
+                        resultSet.getString("endingLatitude"),
+                        resultSet.getString("endingLongitude"),
                         resultSet.getString("status")
                 );
                 reservations.add(reservationModel);
@@ -213,10 +227,12 @@ public class ReservationDAO {
                         resultSet.getInt("reservationId"),
                         resultSet.getString("passengerEmail"),
                         resultSet.getString("vehicleNo"),
-                        resultSet.getString("startingDate"),
-                        resultSet.getString("endingDate"),
-                        resultSet.getInt("startingWaypoint"),
-                        resultSet.getInt("endingWaypoint"),
+                        resultSet.getDate("startingDate").toLocalDate(),
+                        resultSet.getDate("endingDate").toLocalDate(),
+                        resultSet.getString("startingLatitude"),
+                        resultSet.getString("startingLongitude"),
+                        resultSet.getString("endingLatitude"),
+                        resultSet.getString("endingLongitude"),
                         resultSet.getString("status")
                 );
                 reservations.add(reservationModel);
