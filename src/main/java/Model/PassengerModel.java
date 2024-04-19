@@ -194,4 +194,14 @@ public class PassengerModel {
         return passengers;
     }
 
+    public int getNoOfPassengers(){
+        PassengerDAO passengerDAO = new PassengerDAO();
+        int noOfPassengers = passengerDAO.getNoOfPassengers();
+        return noOfPassengers;
+    }
+    public static List<PassengerModel> getOngingPassengersByTripId(int tripId){
+        PassengerDAO passengerDAO = new PassengerDAO();
+        List<PassengerModel> passengers = passengerDAO.getOngingPassengersByTripId(tripId);
+        return passengers;
+    }
 }

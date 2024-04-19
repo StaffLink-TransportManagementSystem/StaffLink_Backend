@@ -1,7 +1,9 @@
 package Controller;
 
 import Auth.JwtUtils;
-import Model.PassengerPaymentsModel;
+import Model.PassengerModel;
+import Model.ReservationModel;
+import Model.VehicleModel;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
@@ -12,14 +14,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/getPassengerPaymentsByPassenger")
-public class GetPassengerPaymentsByPassenger extends HttpServlet {
+@WebServlet("/getPassengersByDriver")
+public class GetPassengersByDriver extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("Get Passengers By Driver" );
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        System.out.println("getPassengerPaymentsByPassenger");
 
         // Get all cookies from the request
         Cookie[] cookies = request.getCookies();
@@ -56,36 +59,52 @@ public class GetPassengerPaymentsByPassenger extends HttpServlet {
             System.out.println("UnAuthorized - JWT cookie not found");
             return;
         }
-
-
-        String passengerEmail = request.getParameter("passengerEmail");
-        System.out.println(passengerEmail);
-
         try {
-            PassengerPaymentsModel passengerPaymentsModel = new PassengerPaymentsModel();
-            List<PassengerPaymentsModel> payments = passengerPaymentsModel.getPaymentsByPassenger(passengerEmail);
-
-            Gson gson = new Gson();
-            // Object array to json
-            String object = gson.toJson(payments);
-
-            if (payments != null && payments.size() != 0) {
-                response.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"payments\": " + object + "}");
-                System.out.println("Send payments");
-            } else {
-                response.setStatus(HttpServletResponse.SC_ACCEPTED);
-                out.write("{\"payments\": \"No payments\"}");
-                System.out.println("No payments");
+            String email = request.getParameter("email");
+            if (email == null) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.write("{\"message\": \"Bad Request\"}");
+                System.out.println("Bad Request");
+                return;
             }
-            // TODO handle
+            List<VehicleModel> vehicleModelList = VehicleModel.getVehiclesByDriver(email);
 
-        } catch (Exception e) {
+            if (vehicleModelList == null) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                out.write("{\"message\": \"Internal Server Error\"}");
+                System.out.println("Internal Server Error");
+                return;
+            }
+            else {
+                List<PassengerModel> reservations = new ArrayList<>();
+
+                for (VehicleModel vehicleModel : vehicleModelList) {
+                    List<PassengerModel> reservationModelList = ReservationModel.getPassengersByVehicle(vehicleModel.getVehicleNo());
+                    reservations.addAll(reservationModelList);
+                }
+                if (reservations.isEmpty()) {
+                    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    out.write("{\"message\": \"No reservations found\"}");
+                    System.out.println("No reservations found");
+                    return;
+                }
+                else if (reservations.size() > 0) {
+                    Gson gson = new Gson();
+                    String reservationsObject = gson.toJson(reservations);
+
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    out.write("{\"reservations\": " + reservationsObject + "}");
+                    System.out.println("Send reservations");
+                }
+
+            }
+        }
+        catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
-        } finally {
+        }
+        finally {
             out.close();
         }
     }
-
 }

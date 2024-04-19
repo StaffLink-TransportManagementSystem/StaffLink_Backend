@@ -17,15 +17,17 @@ public class RouteDAO {
         boolean success = false;
 
         try {
-            String sql = "INSERT INTO route (routeNo,vehicleNo,style,startingLocation, endingLocation, startingTime, endingTime ) VALUES (?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO routes (routeNo,vehicleNo,style,startingLatitude,startingLongitude,endingLatitude,endingLongitude, startingTime, endingTime ) VALUES (?,?,?,?,?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, route.getRouteNo());
             preparedStatement.setString(2, route.getVehicleNo());
             preparedStatement.setString(3, route.getStyle());
-            preparedStatement.setString(4, route.getStaringLocation());
-            preparedStatement.setString(5, route.getEndingLocation());
-            preparedStatement.setString(6, route.getStartingTime());
-            preparedStatement.setString(7, route.getEndingTime());
+            preparedStatement.setString(4, route.getStartingLatitude());
+            preparedStatement.setString(5, route.getStartingLongitude());
+            preparedStatement.setString(6, route.getEndingLatitude());
+            preparedStatement.setString(7, route.getEndingLongitude());
+            preparedStatement.setString(8, route.getStartingTime());
+            preparedStatement.setString(9, route.getEndingTime());
 
             preparedStatement.executeUpdate();
             success = true;
@@ -43,7 +45,7 @@ public class RouteDAO {
         boolean success = false;
 
         try {
-            String sql = "UPDATE route SET deleteState = 1 WHERE vehicleNo = ? AND style = ?";
+            String sql = "UPDATE routes SET deleteState = 1 WHERE vehicleNo = ? AND style = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, route.getVehicleNo());
             preparedStatement.setString(2, route.getStyle());
@@ -62,7 +64,7 @@ public class RouteDAO {
         boolean success = false;
 
         try {
-            String sql = "DELETE FROM route WHERE vehicleNo = ? AND style = ?";
+            String sql = "DELETE FROM routes WHERE vehicleNo = ? AND style = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, route.getVehicleNo());
             preparedStatement.setString(2, route.getStyle());
@@ -80,14 +82,16 @@ public class RouteDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
         try {
-            String sql = "UPDATE route SET startingLocation = ?, endingLocation = ?, startingTime = ?, endingTime = ? WHERE vehicleNo = ? AND style = ? AND deleteState = 0";
+            String sql = "UPDATE routes SET startingLatitude=?,startingLongitude=?,endingLatitude=?,endingLongitude=?, startingTime=?, endingTime=? WHERE vehicleNo = ? AND style = ? AND deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, route.getStaringLocation());
-            preparedStatement.setString(2, route.getEndingLocation());
-            preparedStatement.setString(3, route.getStartingTime());
-            preparedStatement.setString(4, route.getEndingTime());
-            preparedStatement.setString(5, route.getVehicleNo());
-            preparedStatement.setString(6, route.getStyle());
+            preparedStatement.setString(1, route.getStartingLatitude());
+            preparedStatement.setString(2, route.getStartingLongitude());
+            preparedStatement.setString(3, route.getEndingLatitude());
+            preparedStatement.setString(4, route.getEndingLongitude());
+            preparedStatement.setString(5, route.getStartingTime());
+            preparedStatement.setString(6, route.getEndingTime());
+            preparedStatement.setString(7, route.getVehicleNo());
+            preparedStatement.setString(8, route.getStyle());
             preparedStatement.executeUpdate();
             success = true;
         } catch (Exception e) {
@@ -100,17 +104,20 @@ public class RouteDAO {
         System.out.println("Inside getRoute");
         Connection connection = DBConnection.getInstance().getConnection();
         try {
-            String sql = "SELECT * FROM route WHERE vehicleNo = ? AND style = ? AND deleteState = 0";
+            String sql = "SELECT * FROM routes WHERE vehicleNo = ? AND style = ? AND deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, route.getVehicleNo());
             preparedStatement.setString(2, route.getStyle());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 route.setRouteNo(resultSet.getInt("routeNo"));
-                route.setStaringLocation(resultSet.getString("startingLocation"));
-                route.setEndingLocation(resultSet.getString("endingLocation"));
+                route.setStartingLatitude(resultSet.getString("startingLatitude"));
+                route.setStartingLongitude(resultSet.getString("startingLongitude"));
+                route.setEndingLatitude(resultSet.getString("endingLatitude"));
+                route.setEndingLongitude(resultSet.getString("endingLongitude"));
                 route.setStartingTime(resultSet.getString("startingTime"));
                 route.setEndingTime(resultSet.getString("endingTime"));
+
 
             }
         } catch (Exception e) {
@@ -124,7 +131,7 @@ public class RouteDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         ArrayList<RouteModel> routes = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM route WHERE deleteState = 0";
+            String sql = "SELECT * FROM routes WHERE deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -132,15 +139,44 @@ public class RouteDAO {
                 route.setRouteNo(resultSet.getInt("routeNo"));
                 route.setVehicleNo(resultSet.getString("vehicleNo"));
                 route.setStyle(resultSet.getString("style"));
-                route.setStaringLocation(resultSet.getString("startingLocation"));
-                route.setEndingLocation(resultSet.getString("endingLocation"));
+                route.setStartingLatitude(resultSet.getString("startingLatitude"));
+                route.setStartingLongitude(resultSet.getString("startingLongitude"));
+                route.setEndingLatitude(resultSet.getString("endingLatitude"));
+                route.setEndingLongitude(resultSet.getString("endingLongitude"));
                 route.setStartingTime(resultSet.getString("startingTime"));
                 route.setEndingTime(resultSet.getString("endingTime"));
+
                 routes.add(route);
             }
         } catch (Exception e) {
             System.out.println(e);
         }
         return routes;
+    }
+
+    public static RouteModel getRouteByVehicleNo(String vehicleNo) {
+        System.out.println("Inside getRouteByVehicleNo");
+        Connection connection = DBConnection.getInstance().getConnection();
+        RouteModel route = new RouteModel();
+        try {
+            String sql = "SELECT * FROM routes WHERE vehicleNo = ? AND deleteState = 0";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, vehicleNo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                route.setRouteNo(resultSet.getInt("routeNo"));
+                route.setVehicleNo(resultSet.getString("vehicleNo"));
+                route.setStyle(resultSet.getString("style"));
+                route.setStartingLatitude(resultSet.getString("startingLatitude"));
+                route.setStartingLongitude(resultSet.getString("startingLongitude"));
+                route.setEndingLatitude(resultSet.getString("endingLatitude"));
+                route.setEndingLongitude(resultSet.getString("endingLongitude"));
+                route.setStartingTime(resultSet.getString("startingTime"));
+                route.setEndingTime(resultSet.getString("endingTime"));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return route;
     }
 }

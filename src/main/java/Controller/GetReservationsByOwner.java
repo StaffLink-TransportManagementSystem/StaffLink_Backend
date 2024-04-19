@@ -1,7 +1,9 @@
 package Controller;
 
 import Auth.JwtUtils;
+import DAO.PassengerDAO;
 import DAO.PassengerPaymentsDAO;
+import Model.PassengerModel;
 import Model.PassengerPaymentsModel;
 import Model.ReservationModel;
 import com.google.gson.Gson;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/getReservationsByOwner")
@@ -67,13 +70,28 @@ public class GetReservationsByOwner extends HttpServlet {
             ReservationModel reservationModel = new ReservationModel();
             List<ReservationModel> reservations = reservationModel.getReservationsByOwner(ownerEmail);
 
+            List<PassengerModel> passengers = new ArrayList<>();
+            List<PassengerPaymentsModel> passengerPayments = new ArrayList<>();
+
+            for (ReservationModel reservation : reservations) {
+                PassengerDAO passengerDAO = new PassengerDAO();
+                PassengerModel passenger = passengerDAO.getPassenger(reservation.getPassengerEmail());
+                PassengerPaymentsModel passengerPayment = new PassengerPaymentsModel();
+                passengerPayment = passengerPayment.getPassengerPaymentByReservationID(reservation.getReservationId());
+
+                passengers.add(passenger);
+                passengerPayments.add(passengerPayment);
+            }
+
             Gson gson = new Gson();
             // Object array to json
             String object = gson.toJson(reservations);
+            String object1 = gson.toJson(passengers);
+            String object2 = gson.toJson(passengerPayments);
 
             if (reservations.size() != 0) {
                 response.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"reservations\": " + object + "}");
+                out.write("{\"reservations\": " + object + ", \"passengers\": " + object1 + ", \"payments\": " + object2 + "}");
                 System.out.println("Send reservations");
             } else {
                 response.setStatus(HttpServletResponse.SC_ACCEPTED);

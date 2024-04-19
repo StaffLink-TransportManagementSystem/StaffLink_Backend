@@ -1,10 +1,12 @@
 package Controller;
 
-
 import Auth.JwtUtils;
-import Model.DriverModel;
+import Model.OngoingTripModel;
+import Model.TripPassengersModel;
+import Model.VehicleModel;
+import com.google.gson.Gson;
+import org.json.JSONObject;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -13,19 +15,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import Model.loginModel;
-import com.google.gson.Gson;
-import org.json.JSONObject;
-
-@WebServlet("/driverEdit")
-public class editDriver extends HttpServlet{
+@WebServlet("/passengerPicked")
+public class PassengerPickedSevelet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        System.out.println("Hello Edit" );
+        System.out.println("In passengerPicked");
 
         // Get all cookies from the request
         Cookie[] cookies = req.getCookies();
@@ -63,35 +59,46 @@ public class editDriver extends HttpServlet{
             return;
         }
 
+        // Get the payload from the JWT cookie
+        String email = jsonObject.getString("email");
+        String role = jsonObject.getString("role");
+
+        if (!role.equals("driver")) {
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            out.write("{\"message\": \"UnAuthorized - Not a driver\"}");
+            System.out.println("UnAuthorized - Not a driver");
+            return;
+        }
+
         try {
             Gson gson = new Gson();
-
-            // json data to user object
             BufferedReader bufferedReader = req.getReader();
-            DriverModel editDriver = gson.fromJson(bufferedReader, DriverModel.class);
+            TripPassengersModel tripPassenger = gson.fromJson(bufferedReader, TripPassengersModel.class);
 
-            System.out.println("NIC:"+editDriver.getNIC());
-            System.out.println("email: " + editDriver.getEmail());
-            System.out.println("name: " + editDriver.getName());
-            System.out.println("age: " + editDriver.getAge());
-            System.out.println("contact: " + editDriver.getContact());
+            // Get the vehicle number
+            String vehicleNo = VehicleModel.getVehicleByDriver(tripPassenger.getDriverEmail()).getVehicleNo();
 
-            boolean driverUpdate = editDriver.updateDriver();
-            System.out.println(editDriver.getId());
-            System.out.println(editDriver.getEmail());
-            System.out.println(editDriver.getPassword());
-            if(driverUpdate) {
+            // Get the trip id
+            int tripId = OngoingTripModel.getOngoingTripByVehicleNo(vehicleNo, tripPassenger.getDriverEmail()).getId();
+
+            // Get the passenger email
+            String passengerEmail = tripPassenger.getPassengerEmail();
+
+            // Update the status of the passenger
+            TripPassengersModel tripPassengerModel = new TripPassengersModel(tripId, passengerEmail, "picked");
+
+            if (tripPassengerModel.updatePassenger()) {
                 res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"message\": \"Update successfully\"}");
-                System.out.println("Update successful");
-            }else{
-                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.write("{\"message\": \"Update unsuccessfully\"}");
-                System.out.println("Update incorrect");
+                out.write("{\"message\": \"Passenger picked successfully\"}");
+                System.out.println("Passenger picked successfully");
+            } else {
+                res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                out.write("{\"message\": \"Internal Server Error\"}");
+                System.out.println("Internal Server Error");
             }
-
         }
         catch (Exception e) {
+            System.out.println("Error"+e);
             e.printStackTrace();
             throw new RuntimeException(e);
         } finally {

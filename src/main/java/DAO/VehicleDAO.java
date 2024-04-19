@@ -355,4 +355,135 @@ public class VehicleDAO {
         }
     }
 
+    public static int getNoOfVehicles(){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        int noOfVehicles = 0;
+        try{
+            con = connection;
+            String sql = "SELECT COUNT(*) FROM vehicles WHERE deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                noOfVehicles = resultSet.getInt(1);
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return noOfVehicles;
+        }
+    }
+
+    public static List<VehicleModel> getVehiclesByType(String type){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        List<VehicleModel> vehicles = new ArrayList<>();
+        try{
+            con = connection;
+            String sql = "SELECT * FROM vehicles WHERE type = ? AND deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1,type);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                VehicleModel vehicle = new VehicleModel();
+                vehicle.setId(resultSet.getInt("id"));
+                vehicle.setVehicleNo(resultSet.getString("vehicleNo"));
+                vehicle.setOwnerEmail(resultSet.getString("ownerEmail"));
+                vehicle.setVehicleBrand(resultSet.getString("vehicleBrand"));
+                vehicle.setRegNo(resultSet.getString("regNo"));
+                vehicle.setDriverEmail(resultSet.getString("driverEmail"));
+                vehicle.setModel(resultSet.getString("model"));
+                vehicle.setType(resultSet.getString("type"));
+                vehicle.setSeatsCount(resultSet.getInt("seatsCount"));
+                vehicle.setStartingPoint(resultSet.getString("startingPoint"));
+                vehicle.setEndingPoint(resultSet.getString("endingPoint"));
+                vehicle.setTrips(resultSet.getString("trips"));
+                vehicle.setVarifiedState(resultSet.getString("verifiedState"));
+                vehicles.add(vehicle);
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return vehicles;
+        }
+    }
+
+    public static VehicleModel getVehicleByDriverEmail(String driverEmail) {
+        Connection connection = DBConnection.getInstance().getConnection();
+        System.out.println("Inside CV");
+        VehicleModel vehicle = new VehicleModel();
+
+        try {
+            String sql = "SELECT * FROM vehicles WHERE driverEmail = ? && deleteState = 0";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, driverEmail);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                vehicle.setId(resultSet.getInt("id"));
+                vehicle.setVehicleNo(resultSet.getString("vehicleNo"));
+                vehicle.setOwnerEmail(resultSet.getString("ownerEmail"));
+                vehicle.setVehicleBrand(resultSet.getString("vehicleBrand"));
+                vehicle.setRegNo(resultSet.getString("regNo"));
+                vehicle.setDriverEmail(resultSet.getString("driverEmail"));
+                vehicle.setModel(resultSet.getString("model"));
+                vehicle.setType(resultSet.getString("type"));
+                vehicle.setSeatsCount(resultSet.getInt("seatsCount"));
+                vehicle.setStartingPoint(resultSet.getString("startingPoint"));
+                vehicle.setEndingPoint(resultSet.getString("endingPoint"));
+                vehicle.setTrips(resultSet.getString("trips"));
+                vehicle.setVarifiedState(resultSet.getString("verifiedState"));
+                vehicle.setDeleteState(resultSet.getInt("deleteState"));
+            }
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return vehicle;
+        }
+    }
+
+    public static VehicleModel getVehicleByDriver(String driverEmail) {
+        Connection connection = DBConnection.getInstance().getConnection();
+        System.out.println("Inside CV");
+        VehicleModel vehicle = new VehicleModel();
+
+        try {
+            String sql = "SELECT * FROM vehicles WHERE driverEmail = ? && deleteState = 0";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, driverEmail);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                vehicle.setId(resultSet.getInt("id"));
+                vehicle.setVehicleNo(resultSet.getString("vehicleNo"));
+                vehicle.setOwnerEmail(resultSet.getString("ownerEmail"));
+                vehicle.setVehicleBrand(resultSet.getString("vehicleBrand"));
+                vehicle.setRegNo(resultSet.getString("regNo"));
+                vehicle.setDriverEmail(resultSet.getString("driverEmail"));
+                vehicle.setModel(resultSet.getString("model"));
+                vehicle.setType(resultSet.getString("type"));
+                vehicle.setSeatsCount(resultSet.getInt("seatsCount"));
+                vehicle.setStartingPoint(resultSet.getString("startingPoint"));
+                vehicle.setEndingPoint(resultSet.getString("endingPoint"));
+                vehicle.setTrips(resultSet.getString("trips"));
+                vehicle.setVarifiedState(resultSet.getString("verifiedState"));
+                vehicle.setDeleteState(resultSet.getInt("deleteState"));
+            }
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return vehicle;
+        }
+    }
+
 }

@@ -1,7 +1,7 @@
 package Controller;
 
 import Auth.JwtUtils;
-import Model.PassengerPaymentsModel;
+import Model.PaymentCollectionModel;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
@@ -14,12 +14,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet("/getPassengerPaymentsByPassenger")
-public class GetPassengerPaymentsByPassenger extends HttpServlet {
+@WebServlet("/getPaymentCollection")
+public class GetPaymentCollection extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("Get Payment Collection" );
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        System.out.println("getPassengerPaymentsByPassenger");
 
         // Get all cookies from the request
         Cookie[] cookies = request.getCookies();
@@ -56,36 +56,45 @@ public class GetPassengerPaymentsByPassenger extends HttpServlet {
             System.out.println("UnAuthorized - JWT cookie not found");
             return;
         }
-
-
-        String passengerEmail = request.getParameter("passengerEmail");
-        System.out.println(passengerEmail);
-
         try {
-            PassengerPaymentsModel passengerPaymentsModel = new PassengerPaymentsModel();
-            List<PassengerPaymentsModel> payments = passengerPaymentsModel.getPaymentsByPassenger(passengerEmail);
-
-            Gson gson = new Gson();
-            // Object array to json
-            String object = gson.toJson(payments);
-
-            if (payments != null && payments.size() != 0) {
-                response.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"payments\": " + object + "}");
-                System.out.println("Send payments");
-            } else {
-                response.setStatus(HttpServletResponse.SC_ACCEPTED);
-                out.write("{\"payments\": \"No payments\"}");
-                System.out.println("No payments");
+            String email = request.getParameter("email");
+            if (email == null) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.write("{\"message\": \"Bad Request\"}");
+                System.out.println("Bad Request");
+                return;
             }
-            // TODO handle
+            // Get the payment collection for the owner
+            PaymentCollectionModel paymentCollectionModel = new PaymentCollectionModel();
+            List<PaymentCollectionModel> paymentCollection = paymentCollectionModel.getPaymentCollection(email);
 
-        } catch (Exception e) {
+            if(paymentCollection.isEmpty()){
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                out.write("{\"message\": \"No payment collection found\"}");
+                System.out.println("No payment collection found");
+                return;
+            }
+            else if(paymentCollection.size()>0){
+                Gson gson = new Gson();
+                String paymentCollectionObject = gson.toJson(paymentCollection);
+
+                response.setStatus(HttpServletResponse.SC_OK);
+                out.write("{\"paymentCollection\": " + paymentCollectionObject + "}");
+                System.out.println("Payment Collection sent");
+
+            }
+            else {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                out.write("{\"message\": \"Internal Server Error\"}");
+                System.out.println("Internal Server Error");
+            }
+        }
+        catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
-        } finally {
+        }
+        finally {
             out.close();
         }
     }
-
 }
