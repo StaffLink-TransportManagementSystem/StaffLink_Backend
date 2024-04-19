@@ -328,4 +328,38 @@ public class PassengerDAO {
         }
     }
 
+    public static List<PassengerModel> getOngingPassengersByTripId(int tripId){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        List<PassengerModel> passengers = new ArrayList<>();
+        System.out.println("Inside getOngingPassengersByTripId");
+        System.out.println("TripId: "+tripId);
+
+        try{
+            con = connection;
+            String sql = "SELECT * FROM passengers WHERE email = (SELECT passengerEmail from trippassengers WHERE tripId=? AND deleteState=0) AND deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1,tripId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                PassengerModel passenger = new PassengerModel();
+                passenger.setId(resultSet.getInt("id"));
+                passenger.setName(resultSet.getString("name"));
+                passenger.setEmail(resultSet.getString("email"));
+                passenger.setNIC(resultSet.getString("NIC"));
+                passenger.setContactNo(resultSet.getString("contact"));
+                passengers.add(passenger);
+            }
+            System.out.println("Passengers: "+passengers);
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            System.out.println("Error"+e);
+            throw new RuntimeException(e);
+        } finally {
+            return passengers;
+        }
+    }
+
 }

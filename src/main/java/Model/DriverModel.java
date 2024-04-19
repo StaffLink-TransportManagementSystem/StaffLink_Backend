@@ -189,4 +189,8 @@ public class DriverModel {
         return driverDAO.getDriversByOwner(email);
     }
 
+    public static DriverModel getDriverByEmail(String email){
+        DriverDAO driverDAO = new DriverDAO();
+        return driverDAO.getDriver(email);
+    }
 }

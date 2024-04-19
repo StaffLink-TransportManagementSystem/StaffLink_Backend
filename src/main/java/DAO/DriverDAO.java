@@ -108,9 +108,9 @@ public class DriverDAO {
             preparedStatement.setString(3,driver.getNIC());
             preparedStatement.setInt(4,driver.getAge());
             preparedStatement.setString(5,driver.getContact());
-//            preparedStatement.setString(6,driver.getPassword());
-            preparedStatement.setString(6,driver.getEmail());
-            preparedStatement.setString(7,driver.getOnTrip());
+            preparedStatement.setString(6,driver.getOnTrip());
+            preparedStatement.setString(7,driver.getEmail());
+
             int temp = preparedStatement.executeUpdate();
             System.out.println(temp);
 //            ResultSet resultSet = preparedStatement.getGeneratedKeys();

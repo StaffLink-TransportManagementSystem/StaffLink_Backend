@@ -186,4 +186,7 @@ public class ReservationModel {
     public static List<PassengerModel> getPassengersByVehicle(String vehicleNo){
         return ReservationDAO.getPassengersByVehicle(vehicleNo);
     }
+    public static List<PassengerModel> getPassengersByVehicleWithoutAbsants(String vehicleNo){
+        return ReservationDAO.getPassengersByVehicleWithoutAbsants(vehicleNo);
+    }
 }

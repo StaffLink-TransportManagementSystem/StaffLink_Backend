@@ -2,6 +2,8 @@ package Model;
 
 import DAO.TripPassengersDAO;
 
+import java.util.List;
+
 public class TripPassengersModel {
     private int id;
     private int tripId;
@@ -71,6 +73,11 @@ public class TripPassengersModel {
     public boolean updatePassenger() {
         TripPassengersDAO tripPassengersDAO = new TripPassengersDAO();
         return tripPassengersDAO.updatePassenger(this);
+    }
+
+    public static List<TripPassengersModel> getTripPassengersByTripId(int tripId) {
+        TripPassengersDAO tripPassengersDAO = new TripPassengersDAO();
+        return tripPassengersDAO.getTripPassengersByTripId(tripId);
     }
 
 }

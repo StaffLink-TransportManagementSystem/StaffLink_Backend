@@ -98,6 +98,7 @@ public class PassengerPickedSevelet extends HttpServlet {
             }
         }
         catch (Exception e) {
+            System.out.println("Error"+e);
             e.printStackTrace();
             throw new RuntimeException(e);
         } finally {

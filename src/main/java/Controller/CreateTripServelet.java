@@ -62,63 +62,102 @@ public class CreateTripServelet extends HttpServlet {
         try {
 
             String driverEmail = req.getParameter("email");
-            System.out.println(driverEmail);
-            VehicleModel vehicleModel = VehicleModel.getVehicleByDriver(driverEmail);
 
-            if (vehicleModel == null) {
-                res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                out.write("{\"message\": \"Internal Server Error\"}");
-                System.out.println("Internal Server Error - Vehicle not found");
+            //check if the driver is already on a trip
+            DriverModel driverModel = DriverModel.getDriverByEmail(driverEmail);
+            System.out.println("ontrip"+driverModel.getOnTrip());
+            System.out.println("name"+driverModel.getName());
+
+
+            if(driverModel.getOnTrip()!=null && driverModel.getOnTrip().equals("ontrip")){
+                res.setStatus(HttpServletResponse.SC_ACCEPTED);
+                out.write("{\"message\": \"Driver is already on a trip\"}");
+                System.out.println("Driver is already on a trip");
                 return;
-            } else {
-                List<PassengerModel> reservations = new ArrayList<>();
-
-                RouteModel routeModel = RouteModel.getRouteByVehicleNo(vehicleModel.getVehicleNo());
-                List<PassengerModel> reservationModelList = ReservationModel.getPassengersByVehicle(vehicleModel.getVehicleNo());
-                reservations.addAll(reservationModelList);
-
-                if (reservations.isEmpty()) {
-                    res.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                    out.write("{\"message\": \"No reservations found\"}");
-                    System.out.println("No reservations found");
+            }
+            else if(driverModel.getOnTrip()==null || driverModel.getOnTrip().equals("notontrip")){
+                System.out.println(driverEmail);
+                driverModel.setOnTrip("ontrip");
+                boolean driverUpdate = driverModel.updateDriver();
+                if(!driverUpdate){
+                    res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    out.write("{\"message\": \"Internal Server Error\"}");
+                    System.out.println("Internal Server Error - Driver not updated");
                     return;
-                } else if (reservations.size() > 0) {
-                    Gson gson = new Gson();
-                    String reservationsObject = gson.toJson(reservations);
+                }
+                else if(driverUpdate) {
 
-                    OngoingTripModel ongoingTripModel = new OngoingTripModel();
-                    ongoingTripModel.setDriverEmail(driverEmail);
-                    ongoingTripModel.setVehicleNo(vehicleModel.getVehicleNo());
-                    ongoingTripModel.setRouteNo(routeModel.getRouteNo());
-                    ongoingTripModel.setStatus("ongoing");
-                    boolean ongoingTripCreated = ongoingTripModel.createOngoingTrip();
-                    OngoingTripModel ongoingTrip = OngoingTripModel.getOngoingTripByVehicleNo(vehicleModel.getVehicleNo(), driverEmail);
+                    System.out.println(driverEmail);
+                    VehicleModel vehicleModel = VehicleModel.getVehicleByDriver(driverEmail);
 
-                    if (!ongoingTripCreated) {
+                    if (vehicleModel == null) {
                         res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                         out.write("{\"message\": \"Internal Server Error\"}");
-                        System.out.println("Internal Server Error - Ongoing Trip not created");
+                        System.out.println("Internal Server Error - Vehicle not found");
                         return;
-                    }
-                    System.out.println(ongoingTrip.getId());
+                    } else {
+                        List<PassengerModel> reservations = new ArrayList<>();
 
-                    for (PassengerModel reservation : reservations) {
-                        TripPassengersModel tripPassengersModel = new TripPassengersModel();
-                        tripPassengersModel.setTripId(ongoingTrip.getId());
-                        tripPassengersModel.setPassengerEmail(reservation.getEmail());
-                        tripPassengersModel.setStatus("notpicked");
-                        boolean passengerCreate = tripPassengersModel.createTripPassengers();
-                        if (!passengerCreate) {
-                            res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                            out.write("{\"message\": \"Internal Server Error\"}");
-                            System.out.println("Internal Server Error - TripPassenger not created");
+                        RouteModel routeModel = RouteModel.getRouteByVehicleNo(vehicleModel.getVehicleNo());
+                        List<PassengerModel> reservationModelList = ReservationModel.getPassengersByVehicleWithoutAbsants(vehicleModel.getVehicleNo());
+                        reservations.addAll(reservationModelList);
+
+                        if (reservations.isEmpty()) {
+                            res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                            out.write("{\"message\": \"No reservations found\"}");
+                            System.out.println("No reservations found");
                             return;
+                        } else if (reservations.size() > 0) {
+                            Gson gson = new Gson();
+                            String reservationsObject = gson.toJson(reservations);
+
+                            OngoingTripModel ongoingTripModel = new OngoingTripModel();
+                            ongoingTripModel.setDriverEmail(driverEmail);
+                            ongoingTripModel.setVehicleNo(vehicleModel.getVehicleNo());
+                            ongoingTripModel.setRouteNo(routeModel.getRouteNo());
+                            ongoingTripModel.setStatus("ongoing");
+                            boolean ongoingTripCreated = ongoingTripModel.createOngoingTrip();
+                            OngoingTripModel ongoingTrip = OngoingTripModel.getOngoingTripByVehicleNo(vehicleModel.getVehicleNo(), driverEmail);
+
+                            if (!ongoingTripCreated) {
+                                res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                                out.write("{\"message\": \"Internal Server Error\"}");
+                                System.out.println("Internal Server Error - Ongoing Trip not created");
+                                return;
+                            }
+                            System.out.println(ongoingTrip.getId());
+
+                            for (PassengerModel reservation : reservations) {
+                                TripPassengersModel tripPassengersModel = new TripPassengersModel();
+                                tripPassengersModel.setTripId(ongoingTrip.getId());
+                                tripPassengersModel.setPassengerEmail(reservation.getEmail());
+                                tripPassengersModel.setStatus("notpicked");
+                                boolean passengerCreate = tripPassengersModel.createTripPassengers();
+                                if (!passengerCreate) {
+                                    res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                                    out.write("{\"message\": \"Internal Server Error\"}");
+                                    System.out.println("Internal Server Error - TripPassenger not created");
+                                    return;
+                                }
+                            }
+
+                            if (reservations.size() == 0) {
+                                res.setStatus(HttpServletResponse.SC_ACCEPTED);
+                                out.write("{\"message\": \"No reservations found\"}");
+                                System.out.println("No reservations found");
+                                return;
+                            }
+                            if (reservations.size() != 0) {
+                                res.setStatus(HttpServletResponse.SC_OK);
+                                out.write("{\"message\": \"Trip Created\"}");
+                                System.out.println("Send reservations");
+                            }
+                            //
+                            //                    res.setStatus(HttpServletResponse.SC_OK);
+                            //                    out.write("{\"message\": \"Trip Created\"}");
+                            //                    System.out.println("Send reservations");
                         }
                     }
-
-                    res.setStatus(HttpServletResponse.SC_OK);
-                    out.write("{\"reservations\": " + reservationsObject + "}");
-                    System.out.println("Send reservations");
                 }
 
             }

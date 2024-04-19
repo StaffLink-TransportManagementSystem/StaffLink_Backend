@@ -250,4 +250,29 @@ public class ReservationDAO {
         }
         return reservations;
     }
+
+    public static List<PassengerModel> getPassengersByVehicleWithoutAbsants(String vehicleNo){
+        System.out.println("Inside getPassengersByVehicleDAO");
+        Connection connection = DBConnection.getInstance().getConnection();
+        List<PassengerModel> reservations = new ArrayList<PassengerModel>();
+        try {
+            String sql = "SELECT * FROM passengers WHERE email=(SELECT passengerEmail from reservations where vehicleNo=?) && deleteState = 0 && email NOT IN (SELECT passengerEmail from absents where vehicleNo=?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, vehicleNo);
+            preparedStatement.setString(2, vehicleNo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                PassengerModel reservationModel = new PassengerModel();
+                reservationModel.setId(resultSet.getInt("id"));
+                reservationModel.setEmail(resultSet.getString("email"));
+                reservationModel.setName(resultSet.getString("name"));
+                reservationModel.setNIC(resultSet.getString("NIC"));
+                reservationModel.setContactNo(resultSet.getString("contact"));
+                reservations.add(reservationModel);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return reservations;
+    }
 }
