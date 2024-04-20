@@ -57,7 +57,7 @@ public class checkOnTripServelet extends HttpServlet {
             DriverDAO driverDAO = new DriverDAO();
             driverModel = driverDAO.getDriver(email);
 
-            if (driverModel.getOnTrip().equals("onTrip")) {
+            if (driverModel.getOnTrip().equals("ontrip")) {
                 res.setStatus(HttpServletResponse.SC_OK);
                 out.write("{\"message\": \"On Trip\"}");
                 System.out.println("On Trip");
