@@ -1,6 +1,7 @@
 package DAO;
 
 import Database.DBConnection;
+import Model.OngoingTripModel;
 import Model.TripPassengersModel;
 
 import java.sql.Connection;
@@ -142,6 +143,31 @@ public class TripPassengersDAO {
 
         try {
             String sql = "SELECT * FROM trippassengers WHERE tripId = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, tripId);
+            preparedStatement.executeQuery();
+            while (preparedStatement.getResultSet().next()) {
+                TripPassengersModel tripPassenger = new TripPassengersModel();
+                tripPassenger.setId(preparedStatement.getResultSet().getInt("id"));
+                tripPassenger.setTripId(preparedStatement.getResultSet().getInt("tripId"));
+                tripPassenger.setPassengerEmail(preparedStatement.getResultSet().getString("passengerEmail"));
+                tripPassenger.setStatus(preparedStatement.getResultSet().getString("status"));
+                tripPassengers.add(tripPassenger);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return tripPassengers;
+    }
+
+    public static List<TripPassengersModel> getNotPickedTripPassengersByTripId(int tripId) {
+        System.out.println("Inside getNotPickedTripPassengersByTripId");
+        Connection connection = DBConnection.getInstance().getConnection();
+        List<TripPassengersModel> tripPassengers = new ArrayList<>();
+
+        try {
+            String sql = "SELECT * FROM trippassengers WHERE tripId = ? AND status = 'notpicked'";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, tripId);
             preparedStatement.executeQuery();

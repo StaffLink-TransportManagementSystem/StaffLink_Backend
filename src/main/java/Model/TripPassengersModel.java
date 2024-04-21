@@ -80,4 +80,9 @@ public class TripPassengersModel {
         return tripPassengersDAO.getTripPassengersByTripId(tripId);
     }
 
+    public static List<TripPassengersModel> getNotPickedTripPassengersByTripId(int tripId) {
+        TripPassengersDAO tripPassengersDAO = new TripPassengersDAO();
+        return tripPassengersDAO.getNotPickedTripPassengersByTripId(tripId);
+    }
+
 }
