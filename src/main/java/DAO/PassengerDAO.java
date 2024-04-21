@@ -183,6 +183,7 @@ public class PassengerDAO {
                 passenger.setEmail(resultSet.getString("email"));
                 passenger.setNIC(resultSet.getString("NIC"));
                 passenger.setPassword(resultSet.getString("password"));
+                passenger.setContactNo(resultSet.getString("contact"));
                 passengers.add(passenger);
 
             }
