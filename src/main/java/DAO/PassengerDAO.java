@@ -1,6 +1,7 @@
 package DAO;
 
 import Database.DBConnection;
+import Model.OwnerModel;
 import Model.PassengerModel;
 import Model.VehicleModel;
 
@@ -182,6 +183,7 @@ public class PassengerDAO {
                 passenger.setEmail(resultSet.getString("email"));
                 passenger.setNIC(resultSet.getString("NIC"));
                 passenger.setPassword(resultSet.getString("password"));
+                passenger.setCreatedDate(resultSet.getString("created_at"));
                 passengers.add(passenger);
 
             }
@@ -268,6 +270,34 @@ public class PassengerDAO {
             throw new RuntimeException(e);
         } finally {
             return success;
+        }
+    }
+
+
+    public static List<PassengerModel> getPassengerCount(String fromDate, String toDate) {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        List<PassengerModel> passengers = new ArrayList<>();
+//        int count = 0;
+
+        try {
+            con = connection;
+            String sql = "SELECT id FROM passengers WHERE DATE(created_at) >= ? AND DATE(created_at) <= ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, fromDate);
+            preparedStatement.setString(2, toDate);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                PassengerModel passenger = new PassengerModel();
+                passenger.setId(resultSet.getInt("id"));
+                passengers.add(passenger);
+            }
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return passengers;
         }
     }
 
