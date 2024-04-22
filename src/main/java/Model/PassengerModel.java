@@ -21,6 +21,9 @@ public class PassengerModel {
     private Boolean upAndDown; //up and down passenger or not
     private String password;
     private int deleteState;
+    private String created_at;
+    private String fromDate;
+    private String toDate;
     public PassengerModel() {
     }
 
@@ -121,6 +124,9 @@ public class PassengerModel {
     public void setPassword(String password) {
         this.password = password;
     }
+    public void setCreatedDate(String created_at) {this.created_at = created_at;}
+    public String setFromDate(String fromDate){return fromDate;}
+    public String setToDate(String toDate){return toDate;}
 
     public int getDeleteState() {
         return deleteState;
@@ -169,6 +175,8 @@ public class PassengerModel {
     public String getPassword() {
         return password;
     }
+    public String getFromDate() {return fromDate;}
+    public String getToDate() {return toDate;}
 
     public boolean createPassenger(){
         PassengerDAO passengerDAO = new PassengerDAO();
@@ -204,4 +212,10 @@ public class PassengerModel {
         List<PassengerModel> passengers = passengerDAO.getOngingPassengersByTripId(tripId);
         return passengers;
     }
+
+    public static List<PassengerModel> getTotalPassengers(String fromDate, String toDate){
+        PassengerDAO passengerDAO = new PassengerDAO();
+        return passengerDAO.getPassengerCount(fromDate, toDate);
+    }
+
 }
