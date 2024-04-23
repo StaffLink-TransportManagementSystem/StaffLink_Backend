@@ -84,8 +84,6 @@ public class allVehicle extends HttpServlet {
             // TODO handle
         }
     }
-
-
 }
 //package org.ucsc.ecoswapperbackend.controllers;
 //

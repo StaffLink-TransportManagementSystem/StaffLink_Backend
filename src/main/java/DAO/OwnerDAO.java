@@ -205,6 +205,7 @@ public class OwnerDAO {
         }
     }
 
+
     public static int getNoOfOwners(){
         Connection connection = DBConnection.getInstance().getConnection();
         Connection con = null;
