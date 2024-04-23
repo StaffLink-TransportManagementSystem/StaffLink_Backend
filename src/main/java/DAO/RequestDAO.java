@@ -58,7 +58,22 @@ public class RequestDAO {
         boolean success = false;
         try{
             System.out.println("try");
-            String sql = "INSERT INTO requests (vehicleNo,passengerEmail, price, startingLatitute, startingLongitude, endingLatitute, endingLongitude, startingDate, endingDate, onTime, offTime, type, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            System.out.println("request.getVehicleNo() - "+request.getVehicleNo());
+            System.out.println("request.getPassengerEmail() - "+request.getPassengerEmail());
+            System.out.println("request.getPrice() - "+request.getPrice());
+            System.out.println("request.getStartingLatitute() - "+request.getStartingLatitute());
+            System.out.println("request.getStartingLongitude() - "+request.getStartingLongitude());
+            System.out.println("request.getEndingLatitute() - "+request.getEndingLatitute());
+            System.out.println("request.getEndingLongitude() - "+request.getEndingLongitude());
+            System.out.println("request.getStartingDate() - "+request.getStartingDate());
+            System.out.println("request.getEndingDate() - "+request.getEndingDate());
+            System.out.println("request.getOnTime() - "+request.getOnTime());
+            System.out.println("request.getOffTime() - "+request.getOffTime());
+            System.out.println("request.getType() - "+request.getType());
+            System.out.println("request.getStatus() - "+request.getStatus());
+            System.out.println("request.getDistance() - "+request.getDistance());
+
+            String sql = "INSERT INTO requests (vehicleNo,passengerEmail, price, startingLatitute, startingLongitude, endingLatitute, endingLongitude, startingDate, endingDate, onTime, offTime, type, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 //            System.out.println("try");
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, request.getVehicleNo());
@@ -74,6 +89,7 @@ public class RequestDAO {
             preparedStatement.setString(11, request.getOffTime());
             preparedStatement.setString(12, request.getType());
             preparedStatement.setString(13, request.getStatus());
+
 
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();

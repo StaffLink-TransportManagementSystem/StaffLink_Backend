@@ -46,7 +46,7 @@ public class loginDriver extends HttpServlet{
                     payload.put("email", driverModel.getEmail());
                     payload.put("id", driverModel.getEmail());
                     payload.put("role", "driver");
-                    payload.put("OnTrip", driverModel.getOnTrip());
+                    payload.put("onTrip", driverModel.getOnTrip());
 
                     JwtUtils jwtUtils = new JwtUtils(payload);
                     String token = jwtUtils.generateJwt();

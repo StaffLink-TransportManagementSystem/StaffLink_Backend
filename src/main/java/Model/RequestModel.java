@@ -20,6 +20,7 @@ public class RequestModel {
     private String type;
     private String status; //pending, accepted, rejected
     private int deleteState;
+    private float distance;
     public RequestModel() {
     }
 
@@ -54,6 +55,24 @@ public class RequestModel {
         this.type = type;
         this.status = status;
         this.id = id;
+    }
+
+    public RequestModel(String vehicleNo, String passengerEmail, float price, String startingLatitute, String startingLongitude, String endingLatitute, String endingLongitude, String startingDate, String endingDate, String onTime, String offTime, String type, String status, int id, float distance) {
+        this.vehicleNo = vehicleNo;
+        this.passengerEmail = passengerEmail;
+        this.price = price;
+        this.startingLatitute = startingLatitute;
+        this.startingLongitude = startingLongitude;
+        this.endingLatitute = endingLatitute;
+        this.endingLongitude = endingLongitude;
+        this.startingDate = startingDate;
+        this.endingDate = endingDate;
+        this.onTime = onTime;
+        this.offTime = offTime;
+        this.type = type;
+        this.status = status;
+        this.id = id;
+        this.distance = distance;
     }
 
 
@@ -100,6 +119,14 @@ public class RequestModel {
 
     public void setEndingLongitude(String endingLongitude) {
         this.endingLongitude = endingLongitude;
+    }
+
+    public float getDistance() {
+        return distance;
+    }
+
+    public void setDistance(float distance) {
+        this.distance = distance;
     }
 
     public void setType(String type) {
