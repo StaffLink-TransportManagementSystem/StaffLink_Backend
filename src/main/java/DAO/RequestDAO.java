@@ -301,4 +301,29 @@ public class RequestDAO {
             return success;
         }
     }
+
+    public static boolean updateApprovalStatus(RequestModel request) {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+
+        try {
+            con = connection;
+            String sql = "UPDATE requests SET status = ? WHERE id = ? AND deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, request.getStatus());
+            preparedStatement.setInt(2, request.getId());
+
+            int temp = preparedStatement.executeUpdate();
+
+            if (temp == 1) {
+                success = true;
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return success;
+        }
+        }
 }

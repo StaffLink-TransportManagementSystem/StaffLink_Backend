@@ -222,4 +222,10 @@ public class RequestModel {
         return request;
     }
 
+    public boolean updateApprovalStatus(){
+        RequestDAO requestDAO = new RequestDAO();
+        boolean status = requestDAO.updateApprovalStatus(this);
+        return  status;
+    }
+
 }

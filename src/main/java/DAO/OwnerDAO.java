@@ -206,6 +206,29 @@ public class OwnerDAO {
     }
 
 
+    public static int getNoOfOwners(){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        int noOfOwners = 0;
+        try{
+            con = connection;
+            String sql = "SELECT COUNT(*) FROM owners WHERE deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                noOfOwners = resultSet.getInt(1);
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return noOfOwners;
+        }
+    }
+
+
     public static List<OwnerModel> getOwnerCount(String fromDate, String toDate) {
         Connection connection = DBConnection.getInstance().getConnection();
         Connection con = null;

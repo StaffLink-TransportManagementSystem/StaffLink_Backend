@@ -25,6 +25,8 @@ public class getOwnerServelet  extends HttpServlet{
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
 
+        System.out.println("get owner");
+
         // Get all cookies from the request
         Cookie[] cookies = request.getCookies();
         JSONObject jsonObject = new JSONObject();

@@ -54,6 +54,9 @@ public class Passenger {
     }
     private static boolean NICExists(String NIC) {
         PassengerDAO passengerDAO = new PassengerDAO();
+        if(NIC == null) {
+            return false;
+        }
         if(passengerDAO.checkPassengerNIC(NIC)) {
             System.out.println("NIC exists");
             return true;
@@ -77,10 +80,11 @@ public class Passenger {
         }
     }
     private static boolean validatePassword(String password) {
-        String PASSWORD_REGEX ="^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
-        Pattern pattern = Pattern.compile(PASSWORD_REGEX);
+//        String PASSWORD_REGEX ="^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+//        Pattern pattern = Pattern.compile(PASSWORD_REGEX);
 
-        if ((password != null) && (pattern.matcher(password).matches())) {
+//        if ((password != null) && (pattern.matcher(password).matches())) {
+        if ((password != null) && (password.length() >= 6)) {
             System.out.println("Password validation success");
             return true;
         }

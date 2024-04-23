@@ -126,9 +126,9 @@ public class PassengerModel {
     public void setPassword(String password) {
         this.password = password;
     }
-    public void setCreatedDate(String created_at) {
-        this.created_at = created_at;
-    }
+
+    public void setCreatedDate(String created_at) {this.created_at = created_at;}
+
     public String setFromDate(String fromDate){return fromDate;}
     public String setToDate(String toDate){return toDate;}
 
@@ -179,12 +179,9 @@ public class PassengerModel {
     public String getPassword() {
         return password;
     }
-    public String getFromDate() {
-        return fromDate;
-    }
-    public String getToDate() {
-        return toDate;
-    }
+
+    public String getFromDate() {return fromDate;}
+    public String getToDate() {return toDate;}
 
 
     public boolean createPassenger(){
@@ -210,6 +207,19 @@ public class PassengerModel {
         List<PassengerModel> passengers = passengerDAO.findPassenger(email);
         return passengers;
     }
+
+
+    public int getNoOfPassengers(){
+        PassengerDAO passengerDAO = new PassengerDAO();
+        int noOfPassengers = passengerDAO.getNoOfPassengers();
+        return noOfPassengers;
+    }
+    public static List<PassengerModel> getOngingPassengersByTripId(int tripId){
+        PassengerDAO passengerDAO = new PassengerDAO();
+        List<PassengerModel> passengers = passengerDAO.getOngingPassengersByTripId(tripId);
+        return passengers;
+    }
+
 
     public static List<PassengerModel> getTotalPassengers(String fromDate, String toDate){
         PassengerDAO passengerDAO = new PassengerDAO();

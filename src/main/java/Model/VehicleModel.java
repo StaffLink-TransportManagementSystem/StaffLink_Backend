@@ -324,16 +324,12 @@ public class VehicleModel {
     public void setVarifiedState(String varifiedState) {
         this.varifiedState = varifiedState;
     }
-    public void setCreatedDate(String created_at) {
-        this.created_at = created_at;
-    }
-    public String getFromDate() {
-        return fromDate;
-    }
+
+    public void setCreatedDate(String created_at) {this.created_at = created_at;}
+    public String getFromDate() {return fromDate;}
     public String setFromDate(String fromDate){return fromDate;}
-    public String getToDate() {
-        return toDate;
-    }
+    public String getToDate() {return toDate;}
+
     public String setToDate(String toDate){return toDate;}
 
     public boolean createVehicle(){
@@ -380,12 +376,29 @@ public class VehicleModel {
         return vehicleDAO.getVehiclesByDriver(email);
     }
 
+    public static int getNoOfVehicles(){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.getNoOfVehicles();
+    }
+
+    public static List<VehicleModel> getVehiclesByType(String type){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.getVehiclesByType(type);
+    }
+
+    public static VehicleModel getVehicleByDriverEmail(String email){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.getVehicleByDriverEmail(email);
+    }
+    public static VehicleModel getVehicleByDriver(String email){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.getVehicleByDriver(email);
+    }
+
     public static List<VehicleModel> getTotalVehicles(String fromDate, String toDate){
         VehicleDAO vehicleDAO = new VehicleDAO();
         return vehicleDAO.getVehicleCount(fromDate, toDate);
     }
-
-
 
 
 }

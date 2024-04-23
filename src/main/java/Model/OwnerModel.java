@@ -112,16 +112,12 @@ public class OwnerModel {
     public String getPassword() {
         return password;
     }
-    public void setCreatedDate(String created_at) {
-        this.created_at = created_at;
-    }
-    public String getFromDate() {
-        return fromDate;
-    }
+
+    public void setCreatedDate(String created_at) {this.created_at = created_at;}
+    public String getFromDate() {return fromDate;}
     public String setFromDate(String fromDate){return fromDate;}
-    public String getToDate() {
-        return toDate;
-    }
+    public String getToDate() {return toDate;}
+
     public String setToDate(String toDate){return toDate;}
 
     public boolean createOwner(){
@@ -139,6 +135,13 @@ public class OwnerModel {
         OwnerDAO ownerDAO = new OwnerDAO();
         return ownerDAO.viewAllOwners();
     }
+
+
+    public int getNoOfOwners() {
+        OwnerDAO ownerDAO = new OwnerDAO();
+        return ownerDAO.getNoOfOwners();
+    }
+
 
     public static List<OwnerModel> getTotalOwners(String fromDate, String toDate){
         OwnerDAO ownerDAO = new OwnerDAO();
