@@ -9,9 +9,11 @@ public class RequestModel {
     private String vehicleNo;
     private String passengerEmail;
     private float price;
-    private String startingLatitute;
+
+    private String startingLatitude;
     private String startingLongitude;
-    private String endingLatitute;
+    private String endingLatitude;
+
     private String endingLongitude;
     private String startingDate;
     private String endingDate;
@@ -28,9 +30,11 @@ public class RequestModel {
         this.vehicleNo = vehicleNo;
         this.passengerEmail = passengerEmail;
         this.price = price;
-        this.startingLatitute = startingLatitute;
+
+        this.startingLatitude = startingLatitute;
         this.startingLongitude = startingLongitude;
-        this.endingLatitute = endingLatitute;
+        this.endingLatitude = endingLatitute;
+
         this.endingLongitude = endingLongitude;
         this.startingDate = startingDate;
         this.endingDate = endingDate;
@@ -44,9 +48,11 @@ public class RequestModel {
         this.vehicleNo = vehicleNo;
         this.passengerEmail = passengerEmail;
         this.price = price;
-        this.startingLatitute = startingLatitute;
+
+        this.startingLatitude = startingLatitute;
         this.startingLongitude = startingLongitude;
-        this.endingLatitute = endingLatitute;
+        this.endingLatitude = endingLatitute;
+
         this.endingLongitude = endingLongitude;
         this.startingDate = startingDate;
         this.endingDate = endingDate;
@@ -61,9 +67,11 @@ public class RequestModel {
         this.vehicleNo = vehicleNo;
         this.passengerEmail = passengerEmail;
         this.price = price;
-        this.startingLatitute = startingLatitute;
+
+        this.startingLatitude = startingLatitute;
         this.startingLongitude = startingLongitude;
-        this.endingLatitute = endingLatitute;
+        this.endingLatitude = endingLatitute;
+
         this.endingLongitude = endingLongitude;
         this.startingDate = startingDate;
         this.endingDate = endingDate;
@@ -89,12 +97,13 @@ public class RequestModel {
         this.price = price;
     }
 
-    public String getStartingLatitute() {
-        return startingLatitute;
+    public String getStartingLatitude() {
+        return startingLatitude;
     }
 
-    public void setStartingLatitute(String startingLatitute) {
-        this.startingLatitute = startingLatitute;
+    public void setStartingLatitude(String startingLatitude) {
+        this.startingLatitude = startingLatitude;
+
     }
 
     public String getStartingLongitude() {
@@ -105,12 +114,14 @@ public class RequestModel {
         this.startingLongitude = startingLongitude;
     }
 
-    public String getEndingLatitute() {
-        return endingLatitute;
+
+    public String getEndingLatitude() {
+        return endingLatitude;
     }
 
-    public void setEndingLatitute(String endingLatitute) {
-        this.endingLatitute = endingLatitute;
+    public void setEndingLatitude(String endingLatitude) {
+        this.endingLatitude = endingLatitude;
+
     }
 
     public String getEndingLongitude() {
@@ -215,7 +226,7 @@ public class RequestModel {
 
     public boolean deleteRequest(){
         RequestDAO requestDAO = new RequestDAO();
-        boolean status = requestDAO.deleteRequest(this.vehicleNo,this.passengerEmail);
+        boolean status = requestDAO.deleteRequest(this.id);
         return  status;
     }
 

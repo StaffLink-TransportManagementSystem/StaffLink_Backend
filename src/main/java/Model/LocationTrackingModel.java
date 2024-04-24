@@ -90,4 +90,11 @@ public class LocationTrackingModel {
         boolean status = locationTrackingDAO.createLocationTracking(this);
         return status;
     }
+
+    public LocationTrackingModel getLocationTrackingByTripId(int tripId) {
+        LocationTrackingDAO locationTrackingDAO = new LocationTrackingDAO();
+        LocationTrackingModel locationTrackingModel = locationTrackingDAO.getLocationTrackingByTripId(tripId);
+        return locationTrackingModel;
+    }
+
 }

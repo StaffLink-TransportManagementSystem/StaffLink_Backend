@@ -395,9 +395,10 @@ public class VehicleModel {
         return vehicleDAO.getVehicleByDriver(email);
     }
 
-    public static List<VehicleModel> getTotalVehicles(String fromDate, String toDate){
+
+    public static VehicleModel getVehicleByVehicleNo(String vehicleNo){
         VehicleDAO vehicleDAO = new VehicleDAO();
-        return vehicleDAO.getVehicleCount(fromDate, toDate);
+        return vehicleDAO.getVehicle(vehicleNo);
     }
 
 

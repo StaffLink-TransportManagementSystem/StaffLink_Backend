@@ -26,9 +26,11 @@ public class RequestDAO {
                 request.setVehicleNo(resultSet.getString("vehicleNo"));
                 request.setPassengerEmail(resultSet.getString("passengerEmail"));
                 request.setPrice(resultSet.getFloat("price"));
-                request.setStartingLatitute(resultSet.getString("startingLatitute"));
+
+                request.setStartingLatitude(resultSet.getString("startingLatitute"));
                 request.setStartingLongitude(resultSet.getString("startingLongitude"));
-                request.setEndingLatitute(resultSet.getString("endingLatitute"));
+                request.setEndingLatitude(resultSet.getString("endingLatitute"));
+
                 request.setEndingLongitude(resultSet.getString("endingLongitude"));
                 request.setStartingDate(resultSet.getString("startingDate"));
                 request.setEndingDate(resultSet.getString("endingDate"));
@@ -61,9 +63,11 @@ public class RequestDAO {
             System.out.println("request.getVehicleNo() - "+request.getVehicleNo());
             System.out.println("request.getPassengerEmail() - "+request.getPassengerEmail());
             System.out.println("request.getPrice() - "+request.getPrice());
-            System.out.println("request.getStartingLatitute() - "+request.getStartingLatitute());
+
+            System.out.println("request.getStartingLatitute() - "+request.getStartingLatitude());
             System.out.println("request.getStartingLongitude() - "+request.getStartingLongitude());
-            System.out.println("request.getEndingLatitute() - "+request.getEndingLatitute());
+            System.out.println("request.getEndingLatitute() - "+request.getEndingLatitude());
+
             System.out.println("request.getEndingLongitude() - "+request.getEndingLongitude());
             System.out.println("request.getStartingDate() - "+request.getStartingDate());
             System.out.println("request.getEndingDate() - "+request.getEndingDate());
@@ -79,9 +83,11 @@ public class RequestDAO {
             preparedStatement.setString(1, request.getVehicleNo());
             preparedStatement.setString(2, request.getPassengerEmail());
             preparedStatement.setFloat(3, request.getPrice());
-            preparedStatement.setString(4, request.getStartingLatitute());
+
+            preparedStatement.setString(4, request.getStartingLatitude());
             preparedStatement.setString(5, request.getStartingLongitude());
-            preparedStatement.setString(6, request.getEndingLatitute());
+            preparedStatement.setString(6, request.getEndingLatitude());
+
             preparedStatement.setString(7, request.getEndingLongitude());
             preparedStatement.setString(8, request.getStartingDate());
             preparedStatement.setString(9, request.getEndingDate());
@@ -128,9 +134,11 @@ public class RequestDAO {
             preparedStatement.setString(1, request.getVehicleNo());
             preparedStatement.setString(2, request.getPassengerEmail());
             preparedStatement.setFloat(3, request.getPrice());
-            preparedStatement.setString(4, request.getStartingLatitute());
+
+            preparedStatement.setString(4, request.getStartingLatitude());
             preparedStatement.setString(5, request.getStartingLongitude());
-            preparedStatement.setString(6, request.getEndingLatitute());
+            preparedStatement.setString(6, request.getEndingLatitude());
+
             preparedStatement.setString(7, request.getEndingLongitude());
             preparedStatement.setString(8, request.getStartingDate());
             preparedStatement.setString(9, request.getEndingDate());
@@ -165,16 +173,15 @@ public class RequestDAO {
         return success;
     }
 
-    public static boolean deleteRequest(String VehicleNo,String passengerEmail){
+    public static boolean deleteRequest(int id){
         Connection connection = DBConnection.getInstance().getConnection();
         Connection con = null;
         boolean success = false;
         try{
             con = connection;
-            String sql = "UPDATE requests SET deleteState = 1 WHERE vehicleNo = ? AND passengerEmail = ?";
+            String sql = "UPDATE requests SET deleteState = 1 WHERE id = ?";;
             PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setString(1,VehicleNo);
-            preparedStatement.setString(2,passengerEmail);
+            preparedStatement.setInt(1,id);
             int x = preparedStatement.executeUpdate();
 //            ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if(x != 0){
@@ -241,9 +248,11 @@ public class RequestDAO {
                 request.setVehicleNo(resultSet.getString("vehicleNo"));
                 request.setPassengerEmail(resultSet.getString("passengerEmail"));
                 request.setPrice(resultSet.getFloat("price"));
-                request.setStartingLatitute(resultSet.getString("startingLatitute"));
+
+                request.setStartingLatitude(resultSet.getString("startingLatitute"));
                 request.setStartingLongitude(resultSet.getString("startingLongitude"));
-                request.setEndingLatitute(resultSet.getString("endingLatitute"));
+                request.setEndingLatitude(resultSet.getString("endingLatitute"));
+
                 request.setEndingLongitude(resultSet.getString("endingLongitude"));
                 request.setStartingDate(resultSet.getString("startingDate"));
                 request.setEndingDate(resultSet.getString("endingDate"));
@@ -282,9 +291,11 @@ public class RequestDAO {
                 request.setVehicleNo(resultSet.getString("vehicleNo"));
                 request.setPassengerEmail(resultSet.getString("passengerEmail"));
                 request.setPrice(resultSet.getFloat("price"));
-                request.setStartingLatitute(resultSet.getString("startingLatitute"));
+
+                request.setStartingLatitude(resultSet.getString("startingLatitute"));
                 request.setStartingLongitude(resultSet.getString("startingLongitude"));
-                request.setEndingLatitute(resultSet.getString("endingLatitute"));
+                request.setEndingLatitude(resultSet.getString("endingLatitute"));
+
                 request.setEndingLongitude(resultSet.getString("endingLongitude"));
                 request.setStartingDate(resultSet.getString("startingDate"));
                 request.setEndingDate(resultSet.getString("endingDate"));
@@ -352,5 +363,5 @@ public class RequestDAO {
         } finally {
             return success;
         }
-        }
+    }
 }

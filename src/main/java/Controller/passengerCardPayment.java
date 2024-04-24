@@ -4,6 +4,7 @@ import Auth.JwtUtils;
 import DAO.RequestDAO;
 import Model.PassengerPaymentsModel;
 import Model.RequestModel;
+import Model.ReservationModel;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
@@ -15,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @WebServlet("/passengerCardPayment")
 public class passengerCardPayment extends HttpServlet {
@@ -74,14 +77,28 @@ public class passengerCardPayment extends HttpServlet {
 //            boolean passengerPaymentStatus = true;
             boolean passengerPaymentStatus = passengerPayment.createPayment();
 
+            ReservationModel reservation = new ReservationModel();
+            reservation.setPassengerEmail(request.getPassengerEmail());
+            reservation.setVehicleNo(request.getVehicleNo());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+            reservation.setStartingDate(LocalDate.parse(request.getStartingDate(), formatter));
+            reservation.setEndingDate(LocalDate.parse(request.getEndingDate(), formatter));
+            reservation.setStartingLatitude(request.getStartingLatitude());
+            reservation.setStartingLongitude(request.getStartingLongitude());
+            reservation.setEndingLatitude(request.getEndingLatitude());
+            reservation.setEndingLongitude(request.getEndingLongitude());
+            reservation.setStatus("Paid");
+
+            boolean reservationStatus = reservation.createReservation();
+
             // All validations are passed then register
-            if(requestStatus && passengerPaymentStatus){
+            if(requestStatus && passengerPaymentStatus && reservationStatus){
                 res.setStatus(HttpServletResponse.SC_OK);
                 out.write("{\"message\": \"Payment successfully\"}");
                 System.out.println("Payment successful");
             }else{
                 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    out.write("{\"message\": \"Payment unsuccessfully\"}");
+                out.write("{\"message\": \"Payment unsuccessfully\"}");
                 System.out.println("Payment incorrect");
             }
         }

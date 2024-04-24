@@ -84,4 +84,33 @@ public class LocationTrackingDAO {
             return success;
         }
     }
+
+    public LocationTrackingModel getLocationTrackingByTripId(int tripId){
+        System.out.println("Location tracking getting...");
+        Connection connection = DBConnection.getInstance().getConnection();
+        LocationTrackingModel locationTrackingModel = new LocationTrackingModel();
+
+        try{
+            String sql = "SELECT * FROM locationtracking WHERE tripId = ? ORDER BY trackId DESC LIMIT 1;";
+            java.sql.PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, tripId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                locationTrackingModel.setTrackId(resultSet.getInt("trackId"));
+                locationTrackingModel.setLatitude(resultSet.getString("latitude"));
+                locationTrackingModel.setLongitude(resultSet.getString("longitude"));
+                locationTrackingModel.setTime(resultSet.getString("time"));
+                locationTrackingModel.setTripId(resultSet.getInt("tripId"));
+            }
+            resultSet.close();
+            preparedStatement.close();
+
+        }
+        catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        finally{
+            return locationTrackingModel;
+        }
+    }
 }
