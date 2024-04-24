@@ -130,4 +130,10 @@ public class AbsentModel {
         List<AbsentModel> absents = absentDAO.getAbsentList(vehicleNo);
         return absents;
     }
+
+    public List<AbsentModel> getAbsentsByPassenger(String passengerEmail){
+        AbsentDAO absentDAO = new AbsentDAO();
+        List<AbsentModel> absents = absentDAO.getAbsentsByPassenger(passengerEmail);
+        return absents;
+    }
 }
