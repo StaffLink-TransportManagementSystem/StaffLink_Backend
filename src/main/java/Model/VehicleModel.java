@@ -324,12 +324,10 @@ public class VehicleModel {
     public void setVarifiedState(String varifiedState) {
         this.varifiedState = varifiedState;
     }
-
     public void setCreatedDate(String created_at) {this.created_at = created_at;}
     public String getFromDate() {return fromDate;}
     public String setFromDate(String fromDate){return fromDate;}
     public String getToDate() {return toDate;}
-
     public String setToDate(String toDate){return toDate;}
 
     public boolean createVehicle(){
@@ -400,6 +398,5 @@ public class VehicleModel {
         VehicleDAO vehicleDAO = new VehicleDAO();
         return vehicleDAO.getVehicle(vehicleNo);
     }
-
 
 }

@@ -1,7 +1,6 @@
 package Model;
 
 import DAO.DriverDAO;
-import DAO.OwnerDAO;
 import DAO.VehicleDAO;
 
 import java.sql.Time;
@@ -133,9 +132,7 @@ public class DriverModel {
     public void setContact(String contact) {
         this.contact = contact;
     }
-
     public void setCreatedDate(String created_at) {this.created_at = created_at;}
-
     public String setFromDate(String fromDate){return fromDate;}
     public String setToDate(String toDate){return toDate;}
 
@@ -173,13 +170,11 @@ public class DriverModel {
     public String getOwnerEmail() {
         return ownerEmail;
     }
-
     public String getOnTrip() {
         return onTrip;
     }
     public String getFromDate() {return fromDate;}
     public String getToDate() {return toDate;}
-
 
     public boolean createDriver(){
         DriverDAO driverDAO = new DriverDAO();
@@ -197,7 +192,6 @@ public class DriverModel {
         return driverDAO.viewAllDrivers();
     }
 
-
     public static List<DriverModel> getDriversListByOwner(String email){
         DriverDAO driverDAO = new DriverDAO();
         return driverDAO.getDriversByOwner(email);
@@ -212,5 +206,4 @@ public class DriverModel {
         DriverDAO driverDAO = new DriverDAO();
         return driverDAO.getDriverCount(fromDate, toDate);
     }
-
 }

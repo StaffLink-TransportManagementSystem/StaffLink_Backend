@@ -1,7 +1,6 @@
 package DAO;
 
 import Database.DBConnection;
-import Model.OwnerModel;
 import Model.PassengerModel;
 import Model.VehicleModel;
 
@@ -307,7 +306,6 @@ public class PassengerDAO {
             return success;
         }
     }
-
 
     public static int getNoOfPassengers(){
         Connection connection = DBConnection.getInstance().getConnection();
