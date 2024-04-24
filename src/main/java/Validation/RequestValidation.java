@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-    public class RequestValidation {
+public class RequestValidation {
     public boolean validateVehicleNo(String vehicleNo) {
 //        String vehicleNoRegex = "^[A-Za-z]{3}-\\\\d{4}$|^[A-Za-z]{2}-\\\\d{4}$";
         if(vehicleNo == null) {
@@ -176,7 +176,7 @@ import java.util.regex.Pattern;
         }
     }
     public boolean validateRequestOnInsert(RequestModel requestModel) {
-        if(validateVehicleNo(requestModel.getVehicleNo()) && validationPassengerEmail(requestModel.getPassengerEmail()) && validatePrice(requestModel.getPrice()) && validateStartingPoint(requestModel.getStartingPoint()) && validateEndingPoint(requestModel.getEndingPoint()) && startingPointAndEndingPointAreSame(requestModel.getStartingPoint(), requestModel.getEndingPoint()) && validateStartingDate(requestModel.getStartingDate()) && validateEndingDate(requestModel.getEndingDate(), requestModel.getStartingDate()) && onTime(requestModel.getOnTime()) && offTime(requestModel.getOffTime()) && validateStatus(requestModel.getStatus())) {
+        if(validateVehicleNo(requestModel.getVehicleNo()) && validationPassengerEmail(requestModel.getPassengerEmail()) && validatePrice(requestModel.getPrice()) && validateStartingPoint(requestModel.getStartingLatitude()) && validateStartingPoint(requestModel.getStartingLongitude()) && validateEndingPoint(requestModel.getEndingLatitude()) && validateEndingPoint(requestModel.getEndingLongitude()) && startingPointAndEndingPointAreSame(requestModel.getStartingLatitude(), requestModel.getEndingLatitude()) && startingPointAndEndingPointAreSame(requestModel.getStartingLongitude(), requestModel.getEndingLongitude()) && validateStartingDate(requestModel.getStartingDate()) && validateEndingDate(requestModel.getEndingDate(), requestModel.getStartingDate()) && onTime(requestModel.getOnTime()) && offTime(requestModel.getOffTime()) && validateStatus(requestModel.getStatus())) {
             return true;
         } else {
             return false;
@@ -200,11 +200,17 @@ import java.util.regex.Pattern;
             if(requestModel.getPrice() == 0){
                 requestModel.setPrice(currentRequest.getPrice());
             }
-            if(requestModel.getStartingPoint() == null){
-                requestModel.setStartingPoint(currentRequest.getStartingPoint());
+            if(requestModel.getStartingLatitude() == null){
+                requestModel.setStartingLatitude(currentRequest.getStartingLatitude());
             }
-            if(requestModel.getEndingPoint() == null){
-                requestModel.setEndingPoint(currentRequest.getEndingPoint());
+            if(requestModel.getStartingLongitude() == null){
+                requestModel.setStartingLongitude(currentRequest.getStartingLongitude());
+            }
+            if(requestModel.getEndingLatitude() == null){
+                requestModel.setEndingLatitude(currentRequest.getEndingLatitude());
+            }
+            if(requestModel.getEndingLongitude() == null){
+                requestModel.setEndingLongitude(currentRequest.getEndingLongitude());
             }
             if(requestModel.getStartingDate() == null){
                 requestModel.setStartingDate(currentRequest.getStartingDate());
@@ -226,11 +232,17 @@ import java.util.regex.Pattern;
         if(valid && requestModel.getPrice() != 0) {
             valid = validatePrice(requestModel.getPrice());
         }
-        if(valid && requestModel.getStartingPoint() != null) {
-            valid = validateStartingPoint(requestModel.getStartingPoint());
+        if(valid && requestModel.getStartingLatitude() != null) {
+            valid = validateStartingPoint(requestModel.getStartingLatitude());
         }
-        if(valid && requestModel.getEndingPoint() != null) {
-            valid = validateEndingPoint(requestModel.getEndingPoint());
+        if(valid && requestModel.getEndingLatitude() != null) {
+            valid = validateEndingPoint(requestModel.getEndingLatitude());
+        }
+        if(valid && requestModel.getStartingLongitude() != null) {
+            valid = validateStartingPoint(requestModel.getStartingLongitude());
+        }
+        if(valid && requestModel.getEndingLongitude() != null) {
+            valid = validateEndingPoint(requestModel.getEndingLongitude());
         }
         if(valid && requestModel.getStartingDate() != null) {
             valid = validateStartingDate(requestModel.getStartingDate());
@@ -257,11 +269,17 @@ import java.util.regex.Pattern;
         if(requestModel.getPrice() == 0){
             requestModel.setPrice(currentRequest.getPrice());
         }
-        if(requestModel.getStartingPoint() == null){
-            requestModel.setStartingPoint(currentRequest.getStartingPoint());
+        if(requestModel.getStartingLatitude() == null){
+            requestModel.setStartingLatitude(currentRequest.getStartingLatitude());
         }
-        if(requestModel.getEndingPoint() == null){
-            requestModel.setEndingPoint(currentRequest.getEndingPoint());
+        if(requestModel.getStartingLongitude() == null){
+            requestModel.setStartingLongitude(currentRequest.getStartingLongitude());
+        }
+        if(requestModel.getEndingLatitude() == null){
+            requestModel.setEndingLatitude(currentRequest.getEndingLatitude());
+        }
+        if(requestModel.getEndingLongitude() == null){
+            requestModel.setEndingLongitude(currentRequest.getEndingLongitude());
         }
         if(requestModel.getStartingDate() == null){
             requestModel.setStartingDate(currentRequest.getStartingDate());
