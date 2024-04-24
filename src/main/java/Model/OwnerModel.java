@@ -15,6 +15,9 @@ public class OwnerModel {
     private String contactNo;
     private String password;
     private int deleteState;
+    private String created_at;
+    private String fromDate;
+    private String toDate;
 
 
     public OwnerModel(String name, String email, String NIC, String contactNo, String password) {
@@ -110,6 +113,13 @@ public class OwnerModel {
         return password;
     }
 
+    public void setCreatedDate(String created_at) {this.created_at = created_at;}
+    public String getFromDate() {return fromDate;}
+    public String setFromDate(String fromDate){return fromDate;}
+    public String getToDate() {return toDate;}
+
+    public String setToDate(String toDate){return toDate;}
+
     public boolean createOwner(){
         OwnerDAO ownerDAO = new OwnerDAO();
         boolean status = ownerDAO.createOwner(this);
@@ -126,8 +136,15 @@ public class OwnerModel {
         return ownerDAO.viewAllOwners();
     }
 
+
     public int getNoOfOwners() {
         OwnerDAO ownerDAO = new OwnerDAO();
         return ownerDAO.getNoOfOwners();
+    }
+
+
+    public static List<OwnerModel> getTotalOwners(String fromDate, String toDate){
+        OwnerDAO ownerDAO = new OwnerDAO();
+        return ownerDAO.getOwnerCount(fromDate, toDate);
     }
 }

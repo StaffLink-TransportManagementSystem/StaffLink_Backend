@@ -176,7 +176,9 @@ public class RequestValidation {
         }
     }
     public boolean validateRequestOnInsert(RequestModel requestModel) {
+
         if(validateVehicleNo(requestModel.getVehicleNo()) && validationPassengerEmail(requestModel.getPassengerEmail()) && validatePrice(requestModel.getPrice()) && validateStartingPoint(requestModel.getStartingLatitude()) && validateStartingPoint(requestModel.getStartingLongitude()) && validateEndingPoint(requestModel.getEndingLatitude()) && validateEndingPoint(requestModel.getEndingLongitude()) && startingPointAndEndingPointAreSame(requestModel.getStartingLatitude(), requestModel.getEndingLatitude()) && startingPointAndEndingPointAreSame(requestModel.getStartingLongitude(), requestModel.getEndingLongitude()) && validateStartingDate(requestModel.getStartingDate()) && validateEndingDate(requestModel.getEndingDate(), requestModel.getStartingDate()) && onTime(requestModel.getOnTime()) && offTime(requestModel.getOffTime()) && validateStatus(requestModel.getStatus())) {
+
             return true;
         } else {
             return false;
@@ -200,14 +202,18 @@ public class RequestValidation {
             if(requestModel.getPrice() == 0){
                 requestModel.setPrice(currentRequest.getPrice());
             }
+
             if(requestModel.getStartingLatitude() == null){
                 requestModel.setStartingLatitude(currentRequest.getStartingLatitude());
+
             }
             if(requestModel.getStartingLongitude() == null){
                 requestModel.setStartingLongitude(currentRequest.getStartingLongitude());
             }
+
             if(requestModel.getEndingLatitude() == null){
                 requestModel.setEndingLatitude(currentRequest.getEndingLatitude());
+
             }
             if(requestModel.getEndingLongitude() == null){
                 requestModel.setEndingLongitude(currentRequest.getEndingLongitude());
@@ -232,11 +238,13 @@ public class RequestValidation {
         if(valid && requestModel.getPrice() != 0) {
             valid = validatePrice(requestModel.getPrice());
         }
+
         if(valid && requestModel.getStartingLatitude() != null) {
             valid = validateStartingPoint(requestModel.getStartingLatitude());
         }
         if(valid && requestModel.getEndingLatitude() != null) {
             valid = validateEndingPoint(requestModel.getEndingLatitude());
+
         }
         if(valid && requestModel.getStartingLongitude() != null) {
             valid = validateStartingPoint(requestModel.getStartingLongitude());
@@ -269,14 +277,18 @@ public class RequestValidation {
         if(requestModel.getPrice() == 0){
             requestModel.setPrice(currentRequest.getPrice());
         }
+
         if(requestModel.getStartingLatitude() == null){
             requestModel.setStartingLatitude(currentRequest.getStartingLatitude());
+
         }
         if(requestModel.getStartingLongitude() == null){
             requestModel.setStartingLongitude(currentRequest.getStartingLongitude());
         }
+
         if(requestModel.getEndingLatitude() == null){
             requestModel.setEndingLatitude(currentRequest.getEndingLatitude());
+
         }
         if(requestModel.getEndingLongitude() == null){
             requestModel.setEndingLongitude(currentRequest.getEndingLongitude());

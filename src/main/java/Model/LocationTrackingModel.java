@@ -96,4 +96,5 @@ public class LocationTrackingModel {
         LocationTrackingModel locationTrackingModel = locationTrackingDAO.getLocationTrackingByTripId(tripId);
         return locationTrackingModel;
     }
+
 }

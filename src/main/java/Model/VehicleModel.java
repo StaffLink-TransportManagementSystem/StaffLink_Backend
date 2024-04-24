@@ -34,6 +34,9 @@ public class VehicleModel {
     private String certificateType;
     private String insuranceType;
     private String varifiedState;
+    private String created_at;
+    private String fromDate;
+    private String toDate;
 
     public VehicleModel() {
     }
@@ -322,6 +325,13 @@ public class VehicleModel {
         this.varifiedState = varifiedState;
     }
 
+    public void setCreatedDate(String created_at) {this.created_at = created_at;}
+    public String getFromDate() {return fromDate;}
+    public String setFromDate(String fromDate){return fromDate;}
+    public String getToDate() {return toDate;}
+
+    public String setToDate(String toDate){return toDate;}
+
     public boolean createVehicle(){
 //        System.out.println("check");
         VehicleDAO vehicleDAO = new VehicleDAO();
@@ -385,9 +395,11 @@ public class VehicleModel {
         return vehicleDAO.getVehicleByDriver(email);
     }
 
+
     public static VehicleModel getVehicleByVehicleNo(String vehicleNo){
         VehicleDAO vehicleDAO = new VehicleDAO();
         return vehicleDAO.getVehicle(vehicleNo);
     }
+
 
 }

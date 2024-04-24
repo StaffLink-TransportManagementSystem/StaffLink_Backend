@@ -205,6 +205,7 @@ public class OwnerDAO {
         }
     }
 
+
     public static int getNoOfOwners(){
         Connection connection = DBConnection.getInstance().getConnection();
         Connection con = null;
@@ -224,6 +225,34 @@ public class OwnerDAO {
             throw new RuntimeException(e);
         } finally {
             return noOfOwners;
+        }
+    }
+
+
+    public static List<OwnerModel> getOwnerCount(String fromDate, String toDate) {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        List<OwnerModel> owners = new ArrayList<>();
+//        int count = 0;
+
+        try {
+            con = connection;
+            String sql = "SELECT id FROM owners WHERE DATE(created_at) >= ? AND DATE(created_at) <= ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, fromDate);
+            preparedStatement.setString(2, toDate);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                OwnerModel owner = new OwnerModel();
+                owner.setId(resultSet.getInt("id"));
+                owners.add(owner);
+            }
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return owners;
         }
     }
 }

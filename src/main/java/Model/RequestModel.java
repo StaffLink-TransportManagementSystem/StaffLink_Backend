@@ -9,9 +9,11 @@ public class RequestModel {
     private String vehicleNo;
     private String passengerEmail;
     private float price;
+
     private String startingLatitude;
     private String startingLongitude;
     private String endingLatitude;
+
     private String endingLongitude;
     private String startingDate;
     private String endingDate;
@@ -28,9 +30,11 @@ public class RequestModel {
         this.vehicleNo = vehicleNo;
         this.passengerEmail = passengerEmail;
         this.price = price;
+
         this.startingLatitude = startingLatitute;
         this.startingLongitude = startingLongitude;
         this.endingLatitude = endingLatitute;
+
         this.endingLongitude = endingLongitude;
         this.startingDate = startingDate;
         this.endingDate = endingDate;
@@ -44,9 +48,11 @@ public class RequestModel {
         this.vehicleNo = vehicleNo;
         this.passengerEmail = passengerEmail;
         this.price = price;
+
         this.startingLatitude = startingLatitute;
         this.startingLongitude = startingLongitude;
         this.endingLatitude = endingLatitute;
+
         this.endingLongitude = endingLongitude;
         this.startingDate = startingDate;
         this.endingDate = endingDate;
@@ -61,9 +67,11 @@ public class RequestModel {
         this.vehicleNo = vehicleNo;
         this.passengerEmail = passengerEmail;
         this.price = price;
+
         this.startingLatitude = startingLatitute;
         this.startingLongitude = startingLongitude;
         this.endingLatitude = endingLatitute;
+
         this.endingLongitude = endingLongitude;
         this.startingDate = startingDate;
         this.endingDate = endingDate;
@@ -95,6 +103,7 @@ public class RequestModel {
 
     public void setStartingLatitude(String startingLatitude) {
         this.startingLatitude = startingLatitude;
+
     }
 
     public String getStartingLongitude() {
@@ -105,12 +114,14 @@ public class RequestModel {
         this.startingLongitude = startingLongitude;
     }
 
+
     public String getEndingLatitude() {
         return endingLatitude;
     }
 
     public void setEndingLatitude(String endingLatitude) {
         this.endingLatitude = endingLatitude;
+
     }
 
     public String getEndingLongitude() {
