@@ -74,12 +74,12 @@ public class editRequest extends HttpServlet{
             RequestValidation requestValidation = new RequestValidation();
             boolean requestValid = requestValidation.validateRequestOnUpdate(editRequest);
 
-            if(!requestValid) {
-                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.write("{\"message\": \"Update unsuccessfully\"}");
-                System.out.println("Validation Failed");
-                return;
-            }
+//            if(!requestValid) {
+//                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//                out.write("{\"message\": \"Update unsuccessfully\"}");
+//                System.out.println("Validation Failed");
+//                return;
+//            }
 
             editRequest = requestValidation.updateRequest(editRequest);
 

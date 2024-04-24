@@ -24,6 +24,7 @@ public class getVehicleServelet  extends HttpServlet{
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
+        System.out.println("Inside the getVehicle");
 
         // Get all cookies from the request
         Cookie[] cookies = request.getCookies();
@@ -63,6 +64,7 @@ public class getVehicleServelet  extends HttpServlet{
 
 
         String vehicleNo = request.getParameter("vehicleNo");
+        System.out.println("Vehicle No: " + vehicleNo);
 //        int account_id = Integer.parseInt(request.getParameter("id"));
 
         try {

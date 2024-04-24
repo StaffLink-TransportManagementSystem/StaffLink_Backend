@@ -5,11 +5,17 @@ import Model.LocationTrackingModel;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class LocationTrackingDAO {
     public static boolean createLocationTracking(LocationTrackingModel locationTrackingModel) {
         System.out.println("Location tracking creating...");
         Connection connection = DBConnection.getInstance().getConnection();
+
+        System.out.println("Latitude: " + locationTrackingModel.getLatitude());
+        System.out.println("Longitude: " + locationTrackingModel.getLongitude());
+        System.out.println("TripId: " + locationTrackingModel.getTripId());
+
         boolean success = false;
         try {
             String sql = "INSERT INTO locationtracking (latitude, longitude,tripId) VALUES (?,?,?)";
@@ -18,13 +24,9 @@ public class LocationTrackingDAO {
             preparedStatement.setString(2, locationTrackingModel.getLongitude());
             preparedStatement.setInt(3, locationTrackingModel.getTripId());
             preparedStatement.executeUpdate();
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            if (resultSet.next()) {
-                success = true;
-            }
-            resultSet.close();
+            success = true;
             preparedStatement.close();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
             return success;

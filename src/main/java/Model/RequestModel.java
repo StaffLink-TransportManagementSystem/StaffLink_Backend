@@ -9,8 +9,10 @@ public class RequestModel {
     private String vehicleNo;
     private String passengerEmail;
     private float price;
-    private String startingPoint;
-    private String endingPoint;
+    private String startingLatitute;
+    private String startingLongitude;
+    private String endingLatitute;
+    private String endingLongitude;
     private String startingDate;
     private String endingDate;
     private String onTime;
@@ -18,42 +20,18 @@ public class RequestModel {
     private String type;
     private String status; //pending, accepted, rejected
     private int deleteState;
+    private float distance;
     public RequestModel() {
     }
 
-    public RequestModel(String vehicleNo, String passengerEmail, float price, String startingPoint, String endingPoint, String type, String status) {
+    public RequestModel(String vehicleNo, String passengerEmail, float price, String startingLatitute, String startingLongitude, String endingLatitute, String endingLongitude, String startingDate, String endingDate, String onTime, String offTime, String type, String status) {
         this.vehicleNo = vehicleNo;
         this.passengerEmail = passengerEmail;
         this.price = price;
-        this.startingPoint = startingPoint;
-        this.endingPoint = endingPoint;
-        this.type = type;
-        this.status = status;
-    }
-
-    public RequestModel(String vehicleNo, String passengerEmail) {
-
-        this.vehicleNo = vehicleNo;
-        this.passengerEmail = passengerEmail;
-    }
-
-    public RequestModel(int id, String vehicleNo, String passengerEmail, float price, String startingPoint, String endingPoint, String type, String status) {
-        this.id = id;
-        this.vehicleNo = vehicleNo;
-        this.passengerEmail = passengerEmail;
-        this.price = price;
-        this.startingPoint = startingPoint;
-        this.endingPoint = endingPoint;
-        this.type = type;
-        this.status = status;
-    }
-    public RequestModel(int id, String vehicleNo, String passengerEmail, float price, String startingPoint, String endingPoint, String startingDate, String endingDate, String onTime, String offTime, String type, String status) {
-        this.id = id;
-        this.vehicleNo = vehicleNo;
-        this.passengerEmail = passengerEmail;
-        this.price = price;
-        this.startingPoint = startingPoint;
-        this.endingPoint = endingPoint;
+        this.startingLatitute = startingLatitute;
+        this.startingLongitude = startingLongitude;
+        this.endingLatitute = endingLatitute;
+        this.endingLongitude = endingLongitude;
         this.startingDate = startingDate;
         this.endingDate = endingDate;
         this.onTime = onTime;
@@ -61,6 +39,42 @@ public class RequestModel {
         this.type = type;
         this.status = status;
     }
+
+    public RequestModel(String vehicleNo, String passengerEmail, float price, String startingLatitute, String startingLongitude, String endingLatitute, String endingLongitude, String startingDate, String endingDate, String onTime, String offTime, String type, String status, int id) {
+        this.vehicleNo = vehicleNo;
+        this.passengerEmail = passengerEmail;
+        this.price = price;
+        this.startingLatitute = startingLatitute;
+        this.startingLongitude = startingLongitude;
+        this.endingLatitute = endingLatitute;
+        this.endingLongitude = endingLongitude;
+        this.startingDate = startingDate;
+        this.endingDate = endingDate;
+        this.onTime = onTime;
+        this.offTime = offTime;
+        this.type = type;
+        this.status = status;
+        this.id = id;
+    }
+
+    public RequestModel(String vehicleNo, String passengerEmail, float price, String startingLatitute, String startingLongitude, String endingLatitute, String endingLongitude, String startingDate, String endingDate, String onTime, String offTime, String type, String status, int id, float distance) {
+        this.vehicleNo = vehicleNo;
+        this.passengerEmail = passengerEmail;
+        this.price = price;
+        this.startingLatitute = startingLatitute;
+        this.startingLongitude = startingLongitude;
+        this.endingLatitute = endingLatitute;
+        this.endingLongitude = endingLongitude;
+        this.startingDate = startingDate;
+        this.endingDate = endingDate;
+        this.onTime = onTime;
+        this.offTime = offTime;
+        this.type = type;
+        this.status = status;
+        this.id = id;
+        this.distance = distance;
+    }
+
 
     public void setId(int id) {
         this.id = id;
@@ -74,12 +88,47 @@ public class RequestModel {
     public void setPrice(float price) {
         this.price = price;
     }
-    public void setStartingPoint(String startingPoint) {
-        this.startingPoint = startingPoint;
+
+    public String getStartingLatitute() {
+        return startingLatitute;
     }
-    public void setEndingPoint(String endingPoint) {
-        this.endingPoint = endingPoint;
+
+    public void setStartingLatitute(String startingLatitute) {
+        this.startingLatitute = startingLatitute;
     }
+
+    public String getStartingLongitude() {
+        return startingLongitude;
+    }
+
+    public void setStartingLongitude(String startingLongitude) {
+        this.startingLongitude = startingLongitude;
+    }
+
+    public String getEndingLatitute() {
+        return endingLatitute;
+    }
+
+    public void setEndingLatitute(String endingLatitute) {
+        this.endingLatitute = endingLatitute;
+    }
+
+    public String getEndingLongitude() {
+        return endingLongitude;
+    }
+
+    public void setEndingLongitude(String endingLongitude) {
+        this.endingLongitude = endingLongitude;
+    }
+
+    public float getDistance() {
+        return distance;
+    }
+
+    public void setDistance(float distance) {
+        this.distance = distance;
+    }
+
     public void setType(String type) {
         this.type = type;
     }
@@ -97,12 +146,6 @@ public class RequestModel {
     }
     public float getPrice() {
         return price;
-    }
-    public String getStartingPoint() {
-        return startingPoint;
-    }
-    public String getEndingPoint() {
-        return endingPoint;
     }
     public String getType() {
         return type;
@@ -151,42 +194,13 @@ public class RequestModel {
         this.deleteState = deleteState;
     }
 
-    public RequestModel(String vehicleNo, String passengerEmail, float price, String startingPoint, String endingPoint, String type) {
-        this.vehicleNo = vehicleNo;
-        this.passengerEmail = passengerEmail;
-        this.price = price;
-        this.startingPoint = startingPoint;
-        this.endingPoint = endingPoint;
-        this.type = type;
-    }
     public RequestModel(String vehicleNo) {
         this.vehicleNo = vehicleNo;
     }
-    public RequestModel(String vehicleNo, String passengerEmail, float price, String startingPoint, String endingPoint, String type, String status, int id) {
-        this.vehicleNo = vehicleNo;
-        this.passengerEmail = passengerEmail;
-        this.price = price;
-        this.startingPoint = startingPoint;
-        this.endingPoint = endingPoint;
-        this.type = type;
-        this.status = status;
-        this.id = id;
-    }
+
     public RequestModel(int id) {
         this.id = id;
     }
-    public RequestModel(String vehicleNo, String passengerEmail, float price, String startingPoint, String endingPoint, String type, String status, int id, int deleteState) {
-        this.vehicleNo = vehicleNo;
-        this.passengerEmail = passengerEmail;
-        this.price = price;
-        this.startingPoint = startingPoint;
-        this.endingPoint = endingPoint;
-        this.type = type;
-        this.status = status;
-        this.id = id;
-        this.deleteState = deleteState;
-    }
-
 
     public boolean createRequest(){
         RequestDAO requestDAO = new RequestDAO();
