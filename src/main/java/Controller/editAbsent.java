@@ -70,7 +70,7 @@ public class editAbsent extends HttpServlet{
             BufferedReader bufferedReader = req.getReader();
             AbsentModel editAbsent = gson.fromJson(bufferedReader, AbsentModel.class);
 
-            System.out.println(editAbsent.getVehicleNo());
+            System.out.println(editAbsent.getReservationId());
             System.out.println(editAbsent.getPassengerEmail());
 
             boolean absentUpdate = editAbsent.updateAbsent();

@@ -6,8 +6,8 @@ import java.util.List;
 public class AbsentModel {
     int id;
     String passengerEmail;
-    String vehicleNo;
-    String daysOfAbsent;
+    int reservationId;
+    int daysOfAbsent;
     String startingDate;
     String endingDate;
     int deleteState;
@@ -28,19 +28,18 @@ public class AbsentModel {
         this.passengerEmail = passengerEmail;
     }
 
-    public String getVehicleNo() {
-        return vehicleNo;
+    public int getReservationId() {
+        return reservationId;
+    }
+    public void setReservationId(int reservationId) {
+        this.reservationId = reservationId;
     }
 
-    public void setVehicleNo(String vehicleNo) {
-        this.vehicleNo = vehicleNo;
-    }
-
-    public String getDaysOfAbsent() {
+    public int getDaysOfAbsent() {
         return daysOfAbsent;
     }
 
-    public void setDaysOfAbsent(String daysOfAbsent) {
+    public void setDaysOfAbsent(int daysOfAbsent) {
         this.daysOfAbsent = daysOfAbsent;
     }
 
@@ -68,17 +67,17 @@ public class AbsentModel {
     }
     public AbsentModel() {
     }
-    public AbsentModel(String passengerEmail, String vehicleNo, String daysOfAbsent, String startingDate, String endingDate) {
+    public AbsentModel(String passengerEmail, int reservationId, int daysOfAbsent, String startingDate, String endingDate) {
         this.passengerEmail = passengerEmail;
-        this.vehicleNo = vehicleNo;
+        this.reservationId = reservationId;
         this.daysOfAbsent = daysOfAbsent;
         this.startingDate = startingDate;
         this.endingDate = endingDate;
     }
-    public AbsentModel(int id, String passengerEmail, String vehicleNo, String daysOfAbsent, String startingDate, String endingDate) {
+    public AbsentModel(int id, String passengerEmail, int reservationId, int daysOfAbsent, String startingDate, String endingDate) {
         this.id = id;
         this.passengerEmail = passengerEmail;
-        this.vehicleNo = vehicleNo;
+        this.reservationId = reservationId;
         this.daysOfAbsent = daysOfAbsent;
         this.startingDate = startingDate;
         this.endingDate = endingDate;
@@ -86,17 +85,14 @@ public class AbsentModel {
     public AbsentModel(int id){
         this.id = id;
     }
-    public AbsentModel(String vehicleNo){
-        this.vehicleNo = vehicleNo;
-    }
-    public AbsentModel(String passengerEmail, String vehicleNo){
+    public AbsentModel(String passengerEmail, int reservationId){
         this.passengerEmail = passengerEmail;
-        this.vehicleNo = vehicleNo;
+        this.reservationId = reservationId;
     }
-    public AbsentModel(int id, String passengerEmail, String vehicleNo, String daysOfAbsent, String startingDate, String endingDate, int deleteState) {
+    public AbsentModel(int id, String passengerEmail, int reservationId, int daysOfAbsent, String startingDate, String endingDate, int deleteState) {
         this.id = id;
         this.passengerEmail = passengerEmail;
-        this.vehicleNo = vehicleNo;
+        this.reservationId = reservationId;
         this.daysOfAbsent = daysOfAbsent;
         this.startingDate = startingDate;
         this.endingDate = endingDate;
@@ -125,7 +121,7 @@ public class AbsentModel {
         return  status;
     }
 
-    public List<AbsentModel> viewAbsentList(String vehicleNo){
+    public static List<AbsentModel> viewAbsentList(String vehicleNo){
         AbsentDAO absentDAO = new AbsentDAO();
         List<AbsentModel> absents = absentDAO.getAbsentList(vehicleNo);
         return absents;
