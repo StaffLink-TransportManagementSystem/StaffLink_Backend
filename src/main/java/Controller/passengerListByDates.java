@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 @WebServlet("/passengerListByDates")
-public class passengerListByDates extends HttpServlet {
+public class passengerListByDates extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
@@ -89,5 +89,4 @@ public class passengerListByDates extends HttpServlet {
         }
 
     }
-}
 

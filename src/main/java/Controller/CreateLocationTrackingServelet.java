@@ -1,9 +1,13 @@
 package Controller;
 
 import Auth.JwtUtils;
+import Model.LocationTrackingModel;
+import Model.OngoingTripModel;
 import Model.RequestModel;
+import Model.VehicleModel;
+import com.google.gson.Gson;
+import org.json.JSONObject;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -12,22 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import Validation.Passenger;
-import com.google.gson.Gson;
-import org.json.JSONObject;
-
-@WebServlet("/createRequest")
-public class createRequestServelet extends HttpServlet{
-
+@WebServlet("/createLocationTracking")
+public class CreateLocationTrackingServelet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        System.out.println("Hello");
-
+        System.out.println("Inside CreateLocationTrackingServelet");
 
         // Get all cookies from the request
         Cookie[] cookies = req.getCookies();
@@ -64,43 +59,39 @@ public class createRequestServelet extends HttpServlet{
             System.out.println("UnAuthorized - JWT cookie not found");
             return;
         }
-
         try {
             Gson gson = new Gson();
-
-            // json data to user object
             BufferedReader bufferedReader = req.getReader();
-            RequestModel request = gson.fromJson(bufferedReader, RequestModel.class);
-            System.out.println("Request: " + request.getVehicleNo());
-            float distance = request.getDistance();
-            float price = distance * 90.00f;
-            request.setPrice(price);
-            Date date = new Date();
-            request.setStartingDate(date.toString());
-            request.setEndingDate(date.toString());
-            request.setStatus("Pending");
-            request.setType("Both");
-            request.setOnTime("8:00 AM");
-            request.setOffTime("8:00 PM");
+            LocationTrackingModel locationTrackingModel = gson.fromJson(bufferedReader, LocationTrackingModel.class);
+            System.out.println(locationTrackingModel.getLatitude());
 
+            String driverEmail = locationTrackingModel.getEmail();
+            System.out.println("DriverEmail"+ driverEmail);
 
-            // All validations are passed then register
-            if(request.createRequest()){
+            String vehicleNo = VehicleModel.getVehicleByDriver(driverEmail).getVehicleNo();
+            OngoingTripModel ongoingTripModel = new OngoingTripModel();
+            System.out.println("VehicleNo"+ vehicleNo);
+            System.out.println("DriverEmail"+ driverEmail);
+            ongoingTripModel = OngoingTripModel.getOngoingTripByVehicleNoAndStatusOngoing(vehicleNo, driverEmail);
+            System.out.println(ongoingTripModel.getId());
+
+            locationTrackingModel.setTripId(ongoingTripModel.getId());
+
+            if (locationTrackingModel.createLocationTracking()) {
                 res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"message\": \"Registration successfully\"}");
-                System.out.println("Request successful");
-            }else{
-                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.write("{\"message\": \"Registration unsuccessfully\"}");
-                System.out.println("Request incorrect");
+                out.write("{\"message\": \"Location Tracking Created\"}");
+                System.out.println("Location Tracking Created");
+            } else {
+                res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.write("{\"message\": \"Location Tracking Creation Failed\"}");
+                System.out.println("Location Tracking Creation Failed");
+                System.out.println("Location Tracking Creation Failed");
             }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        } finally {
-            out.close();
+        } catch (Exception e) {
+//            res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//            out.write("{\"message\": \"Location Tracking Creation Failed\"}");
+//            System.out.println("Location Tracking Creation Failed");
+            System.out.println(e);
         }
     }
-
 }

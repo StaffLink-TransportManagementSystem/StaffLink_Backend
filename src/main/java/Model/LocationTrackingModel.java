@@ -1,11 +1,14 @@
 package Model;
 
+import DAO.LocationTrackingDAO;
+
 public class LocationTrackingModel {
     private int trackId;
     private String latitude;
     private String longitude;
     private String time;
-    private int tripId;
+    private int tripId; // foreign key from ongoingtrip table
+    private String email;
 
     public int getTrackId() {
         return trackId;
@@ -47,6 +50,14 @@ public class LocationTrackingModel {
         this.tripId = tripId;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public LocationTrackingModel() {
     }
     public LocationTrackingModel(int trackId, String latitude, String longitude, String time, int tripId) {
@@ -67,4 +78,23 @@ public class LocationTrackingModel {
         this.longitude = longitude;
         this.tripId = tripId;
     }
+
+    public LocationTrackingModel(String latitude, String longitude, String email) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.email = email;
+    }
+
+    public boolean createLocationTracking() {
+        LocationTrackingDAO locationTrackingDAO = new LocationTrackingDAO();
+        boolean status = locationTrackingDAO.createLocationTracking(this);
+        return status;
+    }
+
+    public LocationTrackingModel getLocationTrackingByTripId(int tripId) {
+        LocationTrackingDAO locationTrackingDAO = new LocationTrackingDAO();
+        LocationTrackingModel locationTrackingModel = locationTrackingDAO.getLocationTrackingByTripId(tripId);
+        return locationTrackingModel;
+    }
+
 }
