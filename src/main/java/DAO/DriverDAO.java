@@ -2,7 +2,6 @@ package DAO;
 
 import Database.DBConnection;
 import Model.DriverModel;
-import Model.OwnerModel;
 import Model.VehicleModel;
 
 import java.sql.*;
@@ -223,7 +222,6 @@ public class DriverDAO {
         }
     }
 
-
     public static List<DriverModel> getDriversByOwner(String email){
         Connection connection = DBConnection.getInstance().getConnection();
         Connection con = null;
@@ -257,7 +255,6 @@ public class DriverDAO {
             return drivers;
         }
     }
-
 
 
     public static List<DriverModel> getDriverCount(String fromDate, String toDate) {

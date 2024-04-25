@@ -1,8 +1,6 @@
 package Model;
 
-import DAO.OwnerDAO;
 import DAO.PassengerDAO;
-import DAO.VehicleDAO;
 
 import java.sql.Time;
 import java.util.Date;
@@ -126,9 +124,7 @@ public class PassengerModel {
     public void setPassword(String password) {
         this.password = password;
     }
-
     public void setCreatedDate(String created_at) {this.created_at = created_at;}
-
     public String setFromDate(String fromDate){return fromDate;}
     public String setToDate(String toDate){return toDate;}
 
@@ -179,10 +175,8 @@ public class PassengerModel {
     public String getPassword() {
         return password;
     }
-
     public String getFromDate() {return fromDate;}
     public String getToDate() {return toDate;}
-
 
     public boolean createPassenger(){
         PassengerDAO passengerDAO = new PassengerDAO();
@@ -208,7 +202,6 @@ public class PassengerModel {
         return passengers;
     }
 
-
     public int getNoOfPassengers(){
         PassengerDAO passengerDAO = new PassengerDAO();
         int noOfPassengers = passengerDAO.getNoOfPassengers();
@@ -219,7 +212,6 @@ public class PassengerModel {
         List<PassengerModel> passengers = passengerDAO.getOngingPassengersByTripId(tripId);
         return passengers;
     }
-
 
     public static List<PassengerModel> getTotalPassengers(String fromDate, String toDate){
         PassengerDAO passengerDAO = new PassengerDAO();
