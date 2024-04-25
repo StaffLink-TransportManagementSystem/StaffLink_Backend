@@ -27,8 +27,9 @@ public class PassengerNotificationDAO {
                     notifications.setUserId(resultSet.getInt("userId"));
                     notifications.setEmail(resultSet.getString("email"));
                     notifications.setMessage(resultSet.getString("message"));
-                    notifications.setDate(resultSet.getDate("Date").toLocalDate());
+                    notifications.setDate(resultSet.getString("Date"));
                     notification.add(notifications); // Add to the list
+//                    System.out.println();
                 } while(resultSet.next());
             }
             preparedStatement.close();

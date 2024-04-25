@@ -11,14 +11,14 @@ public class PassengerNotificationModel {
     int userId;
     String email;
     String message;
-    LocalDate Date;
+    String Date;
 
     int deleted;
 
     public PassengerNotificationModel() {
     }
 
-    public PassengerNotificationModel(int id, String email, int userId, LocalDate Date, String message) {
+    public PassengerNotificationModel(int id, String email, int userId, String Date, String message) {
         this.notificationId = id;
         this.email = email;
         this.userId = userId;
@@ -47,7 +47,7 @@ public class PassengerNotificationModel {
         this.message = message;
     }
 
-    public void setDate(LocalDate Date) {
+    public void setDate(String Date) {
         this.Date = Date;
     }
 

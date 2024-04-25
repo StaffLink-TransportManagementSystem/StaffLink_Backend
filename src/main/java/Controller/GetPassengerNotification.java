@@ -30,43 +30,44 @@ public class GetPassengerNotification extends HttpServlet {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         PrintWriter out = resp.getWriter();
+        System.out.println("Insife psssenger notiications");
 
 
         // Get all cookies from the request
-        Cookie[] cookies = req.getCookies();
-        JSONObject jsonObject = new JSONObject();
-        int user_id = 0;
-        boolean jwtCookieFound = false;
-
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("jwt".equals(cookie.getName())) {
-                    JwtUtils jwtUtils = new JwtUtils(cookie.getValue());
-                    if (!jwtUtils.verifyJwtAuthentication()) {
-                        resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                        out.write("{\"message\": \"UnAuthorized\"}");
-                        System.out.println("UnAuthorized1");
-                        return;
-                    }
-                    jsonObject = jwtUtils.getAuthPayload();
-                    jwtCookieFound = true;
-                    break;  // No need to continue checking if "jwt" cookie is found
-                }
-            }
-        } else {
-            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            out.write("{\"message\": \"UnAuthorized\"}");
-            System.out.println("No cookies found in the request.");
-            return;
-        }
-
-        // If "jwt" cookie is not found, respond with unauthorized status
-        if (!jwtCookieFound) {
-            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            out.write("{\"message\": \"UnAuthorized - JWT cookie not found\"}");
-            System.out.println("UnAuthorized - JWT cookie not found");
-            return;
-        }
+//        Cookie[] cookies = req.getCookies();
+//        JSONObject jsonObject = new JSONObject();
+//        int user_id = 0;
+//        boolean jwtCookieFound = false;
+//
+//        if (cookies != null) {
+//            for (Cookie cookie : cookies) {
+//                if ("jwt".equals(cookie.getName())) {
+//                    JwtUtils jwtUtils = new JwtUtils(cookie.getValue());
+//                    if (!jwtUtils.verifyJwtAuthentication()) {
+//                        resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//                        out.write("{\"message\": \"UnAuthorized\"}");
+//                        System.out.println("UnAuthorized1");
+//                        return;
+//                    }
+//                    jsonObject = jwtUtils.getAuthPayload();
+//                    jwtCookieFound = true;
+//                    break;  // No need to continue checking if "jwt" cookie is found
+//                }
+//            }
+//        } else {
+//            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            out.write("{\"message\": \"UnAuthorized\"}");
+//            System.out.println("No cookies found in the request.");
+//            return;
+//        }
+//
+//        // If "jwt" cookie is not found, respond with unauthorized status
+//        if (!jwtCookieFound) {
+//            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            out.write("{\"message\": \"UnAuthorized - JWT cookie not found\"}");
+//            System.out.println("UnAuthorized - JWT cookie not found");
+//            return;
+//        }
 
         String passengerEmail = req.getParameter("passengerEmail");
         System.out.println(passengerEmail);
@@ -76,14 +77,22 @@ public class GetPassengerNotification extends HttpServlet {
             List<PassengerNotificationModel> notification = PassengerNotificationModel.getNotification(passengerEmail);
 
             Gson gson = new Gson();
-            // Object array to json
+            // Object array to json 2024.04.02
             String object = gson.toJson(notification);
+            System.out.println("Size of notification: " + notification.size());
 
-            if (notification.size() != 0) {
+            if(notification == null){
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.write("{\"notification\": \"notification\"}");
+                System.out.println("No notification");
+            }
+            else if (notification.size() != 0) {
+                System.out.println("Size of notification: " + notification.size());
                 resp.setStatus(HttpServletResponse.SC_OK);
                 out.write("{\"notification\": " + object + "}");
                 System.out.println("Send notification");
             } else {
+                System.out.println("Size of notification: " + notification.size());
                 resp.setStatus(HttpServletResponse.SC_ACCEPTED);
                 out.write("{\"notification\": \"notification\"}");
                 System.out.println("No notification");
