@@ -75,13 +75,13 @@ public class createRequestServelet extends HttpServlet{
             float distance = request.getDistance();
             float price = distance * 90.00f;
             request.setPrice(price);
-            Date date = new Date();
-            request.setStartingDate(date.toString());
-            request.setEndingDate(date.toString());
+//            Date date = new Date();
+//            request.setStartingDate(date.toString());
+//            request.setEndingDate(date.toString());
             request.setStatus("Pending");
-            request.setType("Both");
-            request.setOnTime("8:00 AM");
-            request.setOffTime("8:00 PM");
+//            request.setType("Both");
+//            request.setOnTime("8:00 AM");
+//            request.setOffTime("8:00 PM");
 
 
             // All validations are passed then register
