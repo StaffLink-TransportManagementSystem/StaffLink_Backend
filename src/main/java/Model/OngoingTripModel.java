@@ -2,6 +2,8 @@ package Model;
 
 import DAO.OngoingTripDAO;
 
+import java.time.LocalDateTime;
+
 public class OngoingTripModel {
     private int id;
     private String vehicleNo;
@@ -97,5 +99,15 @@ public class OngoingTripModel {
         return ongoingTripDAO.getOngoingTripByVehicleNo(vehicleNo, driverEmail);
     }
 
+    public boolean updateOngoingTrip() {
+        OngoingTripDAO ongoingTripDAO = new OngoingTripDAO();
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        this.setEndedTime(currentDateTime.toString());
+        return ongoingTripDAO.updateOngoingTrip(this);
+    }
 
+    public static OngoingTripModel getOngoingTripByVehicleNoAndStatusOngoing(String vehicleNo, String driverEmail) {
+        OngoingTripDAO ongoingTripDAO = new OngoingTripDAO();
+        return ongoingTripDAO.getOngoingTripByVehicleNoAndStatusOngoing(vehicleNo, driverEmail);
+    }
 }

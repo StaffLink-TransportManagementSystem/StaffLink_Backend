@@ -34,15 +34,15 @@ public class ReservationValidation {
             return false;
         }
     }
-    public boolean validateStartingDate(String date) {
+    public boolean validateStartingDate(LocalDate date) {
         String dateRegex = "^(0[1-9]|[12][0-9]|3[01])[-](0[1-9]|1[012])[-]\\d{4}$";
         if(date == null) {
             System.out.println("Date validation error");
             return false;
         }
-        if(date.matches(dateRegex)) {
+        if(date.toString().matches(dateRegex)) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            LocalDate inputDate = LocalDate.parse(date, formatter);
+            LocalDate inputDate = date;
 
             // Get the current date
             LocalDate currentDate = LocalDate.now();
@@ -53,16 +53,16 @@ public class ReservationValidation {
         }
         return false;
     }
-    public boolean validateEndingDate(String startingDate, String endingDate) {
+    public boolean validateEndingDate(LocalDate startingDate, LocalDate endingDate) {
         String dateRegex = "^(0[1-9]|[12][0-9]|3[01])[-](0[1-9]|1[012])[-]\\d{4}$";
         if(endingDate == null) {
             System.out.println("Date validation error");
             return false;
         }
-        if(endingDate.matches(dateRegex)) {
+        if(endingDate.toString().matches(dateRegex)) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            LocalDate endDate = LocalDate.parse(endingDate, formatter);
-            LocalDate startDate = LocalDate.parse(startingDate, formatter);
+            LocalDate endDate = endingDate;
+            LocalDate startDate = startingDate;
 
 
             if (endDate.isAfter(startDate) || endDate.isEqual(startDate)) {
@@ -72,15 +72,15 @@ public class ReservationValidation {
         }
         return false;
     }
-    public boolean validateStartingWaypoint(int startingWaypoint) {
-        if(startingWaypoint == 0) {
+    public boolean validateStartingWaypoint(String startingWaypoint) {
+        if(startingWaypoint == null) {
             System.out.println("StartingWaypoint validation error");
             return false;
         }
         return true;
     }
-    public boolean validateEndingWaypoint(int endingWaypoint) {
-        if(endingWaypoint == 0) {
+    public boolean validateEndingWaypoint(String endingWaypoint) {
+        if(endingWaypoint == null) {
             System.out.println("EndingWaypoint validation error");
             return false;
         }
@@ -100,7 +100,7 @@ public class ReservationValidation {
         }
     }
     public boolean validateReservationOnInsert(ReservationModel reservationModel){
-        if(validatePassengerEmail(reservationModel.getPassengerEmail()) && validateVehicleNo(reservationModel.getVehicleNo()) && validateStartingDate(reservationModel.getStartingDate()) && validateEndingDate(reservationModel.getStartingDate(), reservationModel.getEndingDate()) && validateStartingWaypoint(reservationModel.getStartingWaypoint()) && validateEndingWaypoint(reservationModel.getEndingWaypoint()) && validateStatus(reservationModel.getStatus())){
+        if(validatePassengerEmail(reservationModel.getPassengerEmail()) && validateVehicleNo(reservationModel.getVehicleNo()) && validateStartingDate(reservationModel.getStartingDate()) && validateEndingDate(reservationModel.getStartingDate(), reservationModel.getEndingDate()) && validateStartingWaypoint(reservationModel.getStartingLongitude()) && validateStartingWaypoint(reservationModel.getStartingLatitude()) && validateEndingWaypoint(reservationModel.getEndingLatitude()) && validateEndingWaypoint(reservationModel.getEndingLongitude()) && validateStatus(reservationModel.getStatus())){
             return true;
         }
         else{
@@ -121,11 +121,17 @@ public class ReservationValidation {
         if(valid && reservationModel.getEndingDate()!=null){
             valid = validateEndingDate(reservationModel.getStartingDate(), reservationModel.getEndingDate());
         }
-        if(valid && reservationModel.getStartingWaypoint()!=0){
-            valid = validateStartingWaypoint(reservationModel.getStartingWaypoint());
+        if(valid && reservationModel.getStartingLatitude()!=null){
+            valid = validateStartingWaypoint(reservationModel.getStartingLatitude());
         }
-        if(valid && reservationModel.getEndingWaypoint()!=0){
-            valid = validateEndingWaypoint(reservationModel.getEndingWaypoint());
+        if(valid && reservationModel.getEndingLatitude()!=null){
+            valid = validateEndingWaypoint(reservationModel.getEndingLatitude());
+        }
+        if(valid && reservationModel.getStartingLongitude()!=null){
+            valid = validateStartingWaypoint(reservationModel.getStartingLongitude());
+        }
+        if(valid && reservationModel.getEndingLongitude()!=null){
+            valid = validateEndingWaypoint(reservationModel.getEndingLongitude());
         }
         if(valid && reservationModel.getStatus()!=null){
             valid = validateStatus(reservationModel.getStatus());

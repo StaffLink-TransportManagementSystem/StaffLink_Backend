@@ -1,33 +1,28 @@
 package Controller;
 
 import Auth.JwtUtils;
-import DAO.VehicleDAO;
-import Model.PassengerModel;
-import Model.VehicleModel;
+import Model.AbsentModel;
+import com.google.gson.Gson;
+import org.json.JSONObject;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import com.google.gson.Gson;
-import org.json.JSONObject;
+import java.util.List;
 
-@WebServlet("/getVehicle")
-public class getVehicleServelet  extends HttpServlet{
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        System.out.println("Inside the getVehicle");
+@WebServlet("/getAbasntsByPassenger")
+public class GetAbasntsByPassengerServelet extends HttpServlet {
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        res.setContentType("application/json");
+        PrintWriter out = res.getWriter();
+        System.out.println("Inside GetAbasntsByPassengerServelet");
 
         // Get all cookies from the request
-        Cookie[] cookies = request.getCookies();
+        Cookie[] cookies = req.getCookies();
         JSONObject jsonObject = new JSONObject();
         int user_id = 0;
         boolean jwtCookieFound = false;
@@ -37,7 +32,7 @@ public class getVehicleServelet  extends HttpServlet{
                 if ("jwt".equals(cookie.getName())) {
                     JwtUtils jwtUtils = new JwtUtils(cookie.getValue());
                     if (!jwtUtils.verifyJwtAuthentication()) {
-                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                         out.write("{\"message\": \"UnAuthorized\"}");
                         System.out.println("UnAuthorized1");
                         return;
@@ -48,7 +43,7 @@ public class getVehicleServelet  extends HttpServlet{
                 }
             }
         } else {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             out.write("{\"message\": \"UnAuthorized\"}");
             System.out.println("No cookies found in the request.");
             return;
@@ -56,41 +51,43 @@ public class getVehicleServelet  extends HttpServlet{
 
         // If "jwt" cookie is not found, respond with unauthorized status
         if (!jwtCookieFound) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             out.write("{\"message\": \"UnAuthorized - JWT cookie not found\"}");
             System.out.println("UnAuthorized - JWT cookie not found");
             return;
         }
 
-
-        String vehicleNo = request.getParameter("vehicleNo");
-        System.out.println("Vehicle No: " + vehicleNo);
-//        int account_id = Integer.parseInt(request.getParameter("id"));
-
         try {
-            VehicleDAO vehicleDAO = new VehicleDAO();
-            VehicleModel vehicle = vehicleDAO.getVehicle(vehicleNo);
+            String passengerEmail = req.getParameter("passengerEmail");
+            System.out.println("passengerEmail: " + passengerEmail);
+
+            AbsentModel absentModel = new AbsentModel();
+            List<AbsentModel> absentModels = absentModel.getAbsentsByPassenger(passengerEmail);
 
             Gson gson = new Gson();
-            // Object array to json
-            String object = gson.toJson(vehicle);
+            String absentJson = gson.toJson(absentModels);
 
-            if (vehicle.getId() != 0) {
-                response.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"vehicle\": " + object + "}");
-                System.out.println("Send vehicle");
-            } else {
-                response.setStatus(HttpServletResponse.SC_ACCEPTED);
-                out.write("{\"vehicle\": \"No vehicle\"}");
-                System.out.println("No vehicle");
+            if(absentModels.size() == 0){
+                res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                out.write("{\"message\": \"No Absents found\"}");
+                System.out.println("No Absents found");
+                return;
             }
-            // TODO handle
+            else if(absentModels.size() > 0){
+                res.setStatus(HttpServletResponse.SC_OK);
+                out.write("{\"message\": \"Absents found\", \"absents\": " + absentJson + "}");
+                System.out.println("Absents found");
+                return;
+            }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         } finally {
             out.close();
         }
     }
+
+
 }

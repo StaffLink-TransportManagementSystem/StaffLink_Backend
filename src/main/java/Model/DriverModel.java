@@ -18,6 +18,9 @@ public class DriverModel {
     private String ownerEmail;
     private int deleteState;
     private String onTrip;
+    private String created_at;
+    private String fromDate;
+    private String toDate;
     public DriverModel(String name, String email, String NIC,int age, String contactNo, String password,String ownerEmail,int deleteState,String onTrip) {
         this.name = name;
         this.email = email;
@@ -129,6 +132,9 @@ public class DriverModel {
     public void setContact(String contact) {
         this.contact = contact;
     }
+    public void setCreatedDate(String created_at) {this.created_at = created_at;}
+    public String setFromDate(String fromDate){return fromDate;}
+    public String setToDate(String toDate){return toDate;}
 
     public int getDeleteState() {
         return deleteState;
@@ -167,6 +173,8 @@ public class DriverModel {
     public String getOnTrip() {
         return onTrip;
     }
+    public String getFromDate() {return fromDate;}
+    public String getToDate() {return toDate;}
 
     public boolean createDriver(){
         DriverDAO driverDAO = new DriverDAO();
@@ -192,5 +200,10 @@ public class DriverModel {
     public static DriverModel getDriverByEmail(String email){
         DriverDAO driverDAO = new DriverDAO();
         return driverDAO.getDriver(email);
+    }
+
+    public static List<DriverModel> getTotalDrivers(String fromDate, String toDate){
+        DriverDAO driverDAO = new DriverDAO();
+        return driverDAO.getDriverCount(fromDate, toDate);
     }
 }

@@ -39,11 +39,13 @@ public class OngoingTripDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
         try {
-            String sql = "UPDATE ongoingtrips SET endedTime = ?, status = ? WHERE id = ?";
+            String sql = "UPDATE ongoingtrips SET status = ? WHERE id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, ongoingTripModel.getEndedTime());
-            preparedStatement.setString(2, ongoingTripModel.getStatus());
-            preparedStatement.setInt(3, ongoingTripModel.getId());
+            preparedStatement.setString(1, ongoingTripModel.getStatus());
+            preparedStatement.setInt(2, ongoingTripModel.getId());
+//            preparedStatement.setString(1, ongoingTripModel.getEndedTime());
+//            preparedStatement.setString(2, ongoingTripModel.getStatus());
+//            preparedStatement.setInt(3, ongoingTripModel.getId());
             preparedStatement.executeUpdate();
             success = true;
             preparedStatement.close();
@@ -109,5 +111,30 @@ public class OngoingTripDAO {
         }
     }
 
-
+    public static OngoingTripModel getOngoingTripByVehicleNoAndStatusOngoing(String vehicleNo, String driverEmail) {
+        // get ongoing trip by driver email
+        Connection connection = DBConnection.getInstance().getConnection();
+        OngoingTripModel ongoingTripModel = new OngoingTripModel();
+        try {
+            String sql = "SELECT * FROM ongoingtrips WHERE driverEmail = ? AND vehicleNo=? AND status = 'ongoing' ORDER BY id DESC LIMIT 1";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, driverEmail);
+            preparedStatement.setString(2, vehicleNo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                ongoingTripModel.setId(resultSet.getInt("id"));
+                ongoingTripModel.setVehicleNo(resultSet.getString("vehicleNo"));
+                ongoingTripModel.setDriverEmail(resultSet.getString("driverEmail"));
+                ongoingTripModel.setStartedTime(resultSet.getString("startedTime"));
+                ongoingTripModel.setStatus(resultSet.getString("status"));
+                ongoingTripModel.setRouteNo(resultSet.getInt("routeNo"));
+            }
+            resultSet.close();
+            preparedStatement.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            return ongoingTripModel;
+        }
+    }
 }
