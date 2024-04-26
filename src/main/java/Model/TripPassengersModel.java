@@ -99,4 +99,13 @@ public class TripPassengersModel {
         return tripPassengersDAO.getTripPassengerByTripIdAndReservationId(tripId, reservationId);
     }
 
+    public boolean markPicked(){
+        TripPassengersDAO tripPassengersDAO = new TripPassengersDAO();
+        return tripPassengersDAO.markPicked(this.id);
+    }
+    public boolean markLate(){
+        TripPassengersDAO tripPassengersDAO = new TripPassengersDAO();
+        return tripPassengersDAO.markLate(this.id);
+    }
+
 }

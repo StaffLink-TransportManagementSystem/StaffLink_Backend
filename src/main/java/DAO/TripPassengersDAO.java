@@ -55,12 +55,18 @@ public class TripPassengersDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean success = false;
 
+        System.out.println("TripId: " + tripPassenger.getTripId());
+        System.out.println("PassengerEmail: " + tripPassenger.getPassengerEmail());
+        System.out.println("Status: " + tripPassenger.getStatus());
+        System.out.println("ReservationId: " + tripPassenger.getReservationId());
+
+
         try {
             String sql = "UPDATE trippassengers SET status = ? WHERE tripId = ? AND reservationId = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, tripPassenger.getStatus());
             preparedStatement.setInt(2, tripPassenger.getTripId());
-            preparedStatement.setString(3, tripPassenger.getPassengerEmail());
+            preparedStatement.setInt(3, tripPassenger.getReservationId());
             preparedStatement.executeUpdate();
             success = true;
         } catch (Exception e) {
@@ -228,4 +234,47 @@ public class TripPassengersDAO {
         return tripPassenger;
     }
 
+    public static boolean markPicked(int id){
+        System.out.println("Inside markPicked");
+        Connection connection = DBConnection.getInstance().getConnection();
+        boolean success = false;
+
+        try {
+            String sql = "UPDATE trippassengers SET status = 'picked' WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+//            preparedStatement.executeUpdate();
+            int x = preparedStatement.executeUpdate();
+//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if (x != 0) {
+                success = true;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return success;
+    }
+
+    public static boolean markLate(int id){
+        System.out.println("Inside markPicked");
+        Connection connection = DBConnection.getInstance().getConnection();
+        boolean success = false;
+
+        try {
+            String sql = "UPDATE trippassengers SET status = 'late' WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+//            preparedStatement.executeUpdate();
+            int x = preparedStatement.executeUpdate();
+//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if (x != 0) {
+                success = true;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return success;
+    }
 }

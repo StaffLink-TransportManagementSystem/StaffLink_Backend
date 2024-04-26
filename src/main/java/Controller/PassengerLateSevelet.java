@@ -16,8 +16,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet("/passengerPicked")
-public class PassengerPickedSevelet extends HttpServlet {
+@WebServlet("/passengerLate")
+public class PassengerLateSevelet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
@@ -89,7 +89,7 @@ public class PassengerPickedSevelet extends HttpServlet {
             // Update the status of the passenger
 //            TripPassengersModel tripPassengerModel = new TripPassengersModel(tripId, passengerEmail, "picked");
 
-            if (tripPassenger.markPicked()) {
+            if (tripPassenger.markLate()) {
                 res.setStatus(HttpServletResponse.SC_OK);
                 out.write("{\"message\": \"Passenger picked successfully\"}");
                 System.out.println("Passenger picked successfully");
