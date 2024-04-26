@@ -390,4 +390,87 @@ public class RequestDAO {
             return success;
         }
     }
+
+    public static List<RequestModel> getRequestsByVehicle(String vehicleNo){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        List<RequestModel> requests = new ArrayList<>();
+        System.out.println("Inside getRequestsByVehicle - "+vehicleNo);
+        //Error occors below this statement
+        try {
+            con = connection;
+            String sql = "SELECT * FROM requests WHERE vehicleNo = ? AND deleteState = 0 ORDER BY id DESC";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, vehicleNo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                RequestModel request = new RequestModel();
+                request.setId(resultSet.getInt("id"));
+                request.setVehicleNo(resultSet.getString("vehicleNo"));
+                request.setPassengerEmail(resultSet.getString("passengerEmail"));
+                request.setPrice(resultSet.getFloat("price"));
+
+                request.setStartingLatitude(resultSet.getString("startingLatitute"));
+                request.setStartingLongitude(resultSet.getString("startingLongitude"));
+                request.setEndingLatitude(resultSet.getString("endingLatitute"));
+
+                request.setEndingLongitude(resultSet.getString("endingLongitude"));
+                request.setStartingDate(resultSet.getString("startingDate"));
+                request.setEndingDate(resultSet.getString("endingDate"));
+                request.setOnTime(resultSet.getString("onTime"));
+                request.setOffTime(resultSet.getString("offTime"));
+                request.setType(resultSet.getString("type"));
+                request.setStatus(resultSet.getString("status"));
+
+                requests.add(request);
+            }
+            resultSet.close();
+            preparedStatement.close();
+            System.out.println("Check - "+ requests +" requests found");
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return requests;
+    }
+
+    public static RequestModel getRequestById(int id){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        RequestModel request = new RequestModel();
+        System.out.println("Inside getRequestById - "+id);
+        //Error occors below this statement
+        try {
+            con = connection;
+            String sql = "SELECT * FROM requests WHERE id = ? AND deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                request.setId(resultSet.getInt("id"));
+                request.setVehicleNo(resultSet.getString("vehicleNo"));
+                request.setPassengerEmail(resultSet.getString("passengerEmail"));
+                request.setPrice(resultSet.getFloat("price"));
+
+                request.setStartingLatitude(resultSet.getString("startingLatitute"));
+                request.setStartingLongitude(resultSet.getString("startingLongitude"));
+                request.setEndingLatitude(resultSet.getString("endingLatitute"));
+
+                request.setEndingLongitude(resultSet.getString("endingLongitude"));
+                request.setStartingDate(resultSet.getString("startingDate"));
+                request.setEndingDate(resultSet.getString("endingDate"));
+                request.setOnTime(resultSet.getString("onTime"));
+                request.setOffTime(resultSet.getString("offTime"));
+                request.setType(resultSet.getString("type"));
+                request.setStatus(resultSet.getString("status"));
+            }
+            resultSet.close();
+            preparedStatement.close();
+            System.out.println("Check - "+ request +" request found");
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return request;
+    }
 }

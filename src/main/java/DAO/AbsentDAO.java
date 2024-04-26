@@ -303,4 +303,32 @@ public class AbsentDAO {
 
         return absents;
     }
+
+    public static List<AbsentModel> viewAbasntListByVehicle(String vehicleNo){
+        Connection connection = DBConnection.getInstance().getConnection();
+        System.out.println("Inside viewAbasntListByVehicle");
+        List<AbsentModel> absents = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM absents WHERE reservationId IN (SELECT reservationId from reservations WHERE vehicleNo=? AND deleteState=0) AND deleteState = 0";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1,vehicleNo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                AbsentModel absent = new AbsentModel();
+                absent.setId(resultSet.getInt("absentId"));
+                absent.setPassengerEmail(resultSet.getString("passengerEmail"));
+                absent.setReservationId(resultSet.getInt("reservationId"));
+                absent.setDaysOfAbsent(resultSet.getInt("daysOfAbsent"));
+                absent.setStartingDate(resultSet.getString("startingDate"));
+                absent.setEndingDate(resultSet.getString("endingDate"));
+                absents.add(absent);
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return absents;
+    }
 }

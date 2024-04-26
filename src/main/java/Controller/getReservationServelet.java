@@ -3,6 +3,7 @@ package Controller;
 import Auth.JwtUtils;
 import Model.ReservationModel;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.json.JSONObject;
 
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 
 import static java.lang.Integer.parseInt;
 
@@ -67,7 +69,9 @@ public class getReservationServelet extends HttpServlet {
             ReservationModel reservationModel = new ReservationModel();
             ReservationModel reservations = reservationModel.getReservation(parseInt(reservationId));
 
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                    .create();
             // Object array to json
             String object = gson.toJson(reservations);
 
