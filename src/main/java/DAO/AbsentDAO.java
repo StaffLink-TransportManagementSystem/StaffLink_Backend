@@ -23,8 +23,8 @@ public class AbsentDAO {
             while(resultSet.next()){
                 absent.setId(resultSet.getInt("absentId"));
                 absent.setPassengerEmail(resultSet.getString("passengerEmail"));
-                absent.setVehicleNo(resultSet.getString("vehicleNo"));
-                absent.setDaysOfAbsent(resultSet.getString("daysOfAbsent"));
+                absent.setReservationId(resultSet.getInt("reservationId"));
+                absent.setDaysOfAbsent(resultSet.getInt("daysOfAbsent"));
                 absent.setStartingDate(resultSet.getString("startingDate"));
                 absent.setEndingDate(resultSet.getString("endingDate"));
             }
@@ -45,23 +45,23 @@ public class AbsentDAO {
         }
         return absent;
     }
-    public static List<AbsentModel> getAbsentsPassengers(String vehicleNo){
+    public static List<AbsentModel> getAbsentsPassengers(int reservationId){
         Connection connection = DBConnection.getInstance().getConnection();
         System.out.println("Inside getAbsentsPassengers");
         List<AbsentModel> absents = new ArrayList<>();
 
         try {
-            String sql = "SELECT * FROM absents WHERE vehicleNo = ? AND deleteState = 0";
+            String sql = "SELECT * FROM absents WHERE reservationId = ? AND deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1,vehicleNo);
+            preparedStatement.setInt(1,reservationId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
                 AbsentModel absent = new AbsentModel();
                 absent.setId(resultSet.getInt("id"));
                 absent.setPassengerEmail(resultSet.getString("passengerEmail"));
-                absent.setVehicleNo(resultSet.getString("vehicleNo"));
-                absent.setDaysOfAbsent(resultSet.getString("daysOfAbsent"));
+                absent.setReservationId(resultSet.getInt("reservationId"));
+                absent.setDaysOfAbsent(resultSet.getInt("daysOfAbsent"));
                 absent.setStartingDate(resultSet.getString("startingDate"));
                 absent.setEndingDate(resultSet.getString("endingDate"));
                 absents.add(absent);
@@ -92,8 +92,8 @@ public class AbsentDAO {
                 AbsentModel absent = new AbsentModel();
                 absent.setId(resultSet.getInt("absentId"));
                 absent.setPassengerEmail(resultSet.getString("passengerEmail"));
-                absent.setVehicleNo(resultSet.getString("vehicleNo"));
-                absent.setDaysOfAbsent(resultSet.getString("daysOfAbsent"));
+                absent.setReservationId(resultSet.getInt("reservationId"));
+                absent.setDaysOfAbsent(resultSet.getInt("daysOfAbsent"));
                 absent.setStartingDate(resultSet.getString("startingDate"));
                 absent.setEndingDate(resultSet.getString("endingDate"));
                 absents.add(absent);
@@ -116,12 +116,12 @@ public class AbsentDAO {
         boolean success = false;
         try{
             System.out.println("try");
-            String sql = "INSERT INTO absents (vehicleNo,passengerEmail, daysOfAbsent, startingDate, endingDate) VALUES (?,?,?,?,?)";
+            String sql = "INSERT INTO absents (reservationId,passengerEmail, daysOfAbsent, startingDate, endingDate) VALUES (?,?,?,?,?)";
 //            System.out.println("try");
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1,absent.getVehicleNo());
+            preparedStatement.setInt(1,absent.getReservationId());
             preparedStatement.setString(2,absent.getPassengerEmail());
-            preparedStatement.setString(3,absent.getDaysOfAbsent());
+            preparedStatement.setInt(3,absent.getDaysOfAbsent());
             preparedStatement.setString(4,absent.getStartingDate());
             preparedStatement.setString(5,absent.getEndingDate());
 
@@ -158,12 +158,12 @@ public class AbsentDAO {
 //        System.out.println(java.time.LocalTime.now());
         try{
             con = connection;
-            String sql = "UPDATE absents SET vehicleNo = ?, passengerEmail = ?, daysOfAbsent = ?, startingDate = ?, endingDate = ? WHERE absentId = ? AND deleteState = 0";
+            String sql = "UPDATE absents SET reservationId = ?, passengerEmail = ?, daysOfAbsent = ?, startingDate = ?, endingDate = ? WHERE absentId = ? AND deleteState = 0";
 //            String sql = "UPDATE requests SET vehicalNo = ?, passengerEmail = ?, price = ?, startingPoint = ?, endingPoint = ?, type = ?, status = ? WHERE vehicalNo = ? AND passengerEmail = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1,absent.getVehicleNo());
+            preparedStatement.setInt(1,absent.getReservationId());
             preparedStatement.setString(2,absent.getPassengerEmail());
-            preparedStatement.setString(3,absent.getDaysOfAbsent());
+            preparedStatement.setInt(3,absent.getDaysOfAbsent());
             preparedStatement.setString(4,absent.getStartingDate());
             preparedStatement.setString(5,absent.getEndingDate());
             preparedStatement.setInt(6,absent.getId());
@@ -253,7 +253,7 @@ public class AbsentDAO {
         System.out.println("Inside getAbsentList");
         List<AbsentModel> absents = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM absents WHERE vehicleNo = ? AND deleteState = 0";
+            String sql = "SELECT * FROM absents WHERE reservationId IN (SELECT reservationId from reservations WHERE vehicleNo=? AND deleteState=0) AND deleteState = 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,vehicleNo);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -262,8 +262,8 @@ public class AbsentDAO {
                 AbsentModel absent = new AbsentModel();
                 absent.setId(resultSet.getInt("absentId"));
                 absent.setPassengerEmail(resultSet.getString("passengerEmail"));
-                absent.setVehicleNo(resultSet.getString("vehicleNo"));
-                absent.setDaysOfAbsent(resultSet.getString("daysOfAbsent"));
+                absent.setReservationId(resultSet.getInt("reservationId"));
+                absent.setDaysOfAbsent(resultSet.getInt("daysOfAbsent"));
                 absent.setStartingDate(resultSet.getString("startingDate"));
                 absent.setEndingDate(resultSet.getString("endingDate"));
                 absents.add(absent);
@@ -290,8 +290,8 @@ public class AbsentDAO {
                 AbsentModel absent = new AbsentModel();
                 absent.setId(resultSet.getInt("absentId"));
                 absent.setPassengerEmail(resultSet.getString("passengerEmail"));
-                absent.setVehicleNo(resultSet.getString("vehicleNo"));
-                absent.setDaysOfAbsent(resultSet.getString("daysOfAbsent"));
+                absent.setReservationId(resultSet.getInt("reservationId"));
+                absent.setDaysOfAbsent(resultSet.getInt("daysOfAbsent"));
                 absent.setStartingDate(resultSet.getString("startingDate"));
                 absent.setEndingDate(resultSet.getString("endingDate"));
                 absents.add(absent);

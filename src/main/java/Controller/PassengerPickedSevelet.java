@@ -74,20 +74,22 @@ public class PassengerPickedSevelet extends HttpServlet {
             Gson gson = new Gson();
             BufferedReader bufferedReader = req.getReader();
             TripPassengersModel tripPassenger = gson.fromJson(bufferedReader, TripPassengersModel.class);
+            System.out.println("passengerEmail " + tripPassenger.getPassengerEmail());
+            System.out.println("id"+tripPassenger.getId());
 
             // Get the vehicle number
-            String vehicleNo = VehicleModel.getVehicleByDriver(tripPassenger.getDriverEmail()).getVehicleNo();
+//            String vehicleNo = VehicleModel.getVehicleByDriver(tripPassenger.getDriverEmail()).getVehicleNo();
 
             // Get the trip id
-            int tripId = OngoingTripModel.getOngoingTripByVehicleNo(vehicleNo, tripPassenger.getDriverEmail()).getId();
+            int tripId = tripPassenger.getTripId();
 
             // Get the passenger email
-            String passengerEmail = tripPassenger.getPassengerEmail();
+//            String passengerEmail = tripPassenger.getPassengerEmail();
 
             // Update the status of the passenger
-            TripPassengersModel tripPassengerModel = new TripPassengersModel(tripId, passengerEmail, "picked");
+//            TripPassengersModel tripPassengerModel = new TripPassengersModel(tripId, passengerEmail, "picked");
 
-            if (tripPassengerModel.updatePassenger()) {
+            if (tripPassenger.markPicked()) {
                 res.setStatus(HttpServletResponse.SC_OK);
                 out.write("{\"message\": \"Passenger picked successfully\"}");
                 System.out.println("Passenger picked successfully");

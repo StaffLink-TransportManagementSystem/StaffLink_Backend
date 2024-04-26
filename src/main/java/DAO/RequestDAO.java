@@ -121,15 +121,30 @@ public class RequestDAO {
 //        return true;
     }
 
-    public static boolean updateRequest(RequestModel request){
+    public static boolean updateRequest(RequestModel request) {
         Connection connection = DBConnection.getInstance().getConnection();
         Connection con = null;
         boolean success = false;
 //        System.out.println(java.time.LocalTime.now());
-        try{
+        try {
             con = connection;
             System.out.println("trydlxa");
-            String sql = "UPDATE requests SET vehicleNo = ?, passengerEmail = ?, price = ?, startingLatitute=?, startingLongitude=?, endingLatitute=?, endingLongitude=?, startingDate = ?, endingDate = ?, onTime = ?, offTime = ?, type = ?, status = ? WHERE vehicleNo = ? AND passengerEmail = ? AND deleteState = 0";
+            System.out.println("Vehicle No: " + request.getVehicleNo());
+            System.out.println("Passenger :" + request.getPassengerEmail());
+            System.out.println("price: " + request.getPrice());
+            System.out.println("starting Latitiude: " + request.getStartingLatitude());
+            System.out.println("startng Logitude: " + request.getStartingLongitude());
+            System.out.println("ending latitude: " + request.getEndingLatitude());
+            System.out.println("ending logitude: " + request.getEndingLongitude());
+            System.out.println("starting Date " + request.getStartingDate());
+            System.out.println("ending Date " + request.getEndingDate());
+            System.out.println("on Time " + request.getOnTime());
+            System.out.println("off Time " + request.getOffTime());
+            System.out.println("type " + request.getType());
+            System.out.println("status " + request.getStatus());
+
+
+            String sql = "UPDATE requests SET vehicleNo = ?, passengerEmail = ?, price = ?, startingLatitute=?, startingLongitude=?, endingLatitute=?, endingLongitude=?, startingDate = ?, endingDate = ?, onTime = ?, offTime = ?, type = ?, status = ? WHERE id=? AND deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, request.getVehicleNo());
             preparedStatement.setString(2, request.getPassengerEmail());
@@ -146,32 +161,43 @@ public class RequestDAO {
             preparedStatement.setString(11, request.getOffTime());
             preparedStatement.setString(12, request.getType());
             preparedStatement.setString(13, request.getStatus());
-            preparedStatement.setString(14, request.getVehicleNo());
-            preparedStatement.setString(15, request.getPassengerEmail());
+            preparedStatement.setInt(14, request.getId());
 
             int temp = preparedStatement.executeUpdate();
-
-            System.out.println("check");
-            System.out.println(temp);
-//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            if(temp==1){
-//                passenger.setId(resultSet.getInt(1));
+            if (temp != 0) {
                 success = true;
             }
-//            resultSet.close();
             preparedStatement.close();
-//            System.out.println(java.time.LocalTime.now());
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            if (con != null) try {
-//                con.close();
-            } catch (Exception ignore) {
-            }
+            return success;
         }
-        return success;
     }
+
+//            int temp = preparedStatement.executeUpdate();
+//
+//            System.out.println("check");
+//            System.out.println(temp);
+////            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+//            if(temp==1){
+////                passenger.setId(resultSet.getInt(1));
+//                success = true;
+//            }
+////            resultSet.close();
+//            preparedStatement.close();
+////            System.out.println(java.time.LocalTime.now());
+//        }
+//        catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        } finally {
+//            if (con != null) try {
+////                con.close();
+//            } catch (Exception ignore) {
+//            }
+//        }
+//        return success;
+//    }
 
     public static boolean deleteRequest(int id){
         Connection connection = DBConnection.getInstance().getConnection();

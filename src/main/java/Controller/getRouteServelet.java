@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+
+import Model.VehicleModel;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
@@ -58,16 +60,24 @@ public class getRouteServelet  extends HttpServlet{
         }
 
 
-        String routeNo = request.getParameter("routeNo");
+
+
 //        int account_id = Integer.parseInt(request.getParameter("id"));
 
         try {
-            Gson gson1 = new Gson();
-            BufferedReader bufferedReader = request.getReader();
-            RouteModel getRoute = gson1.fromJson(bufferedReader, RouteModel.class);
+            String driverEmail = request.getParameter("driverEmail");
+            VehicleModel vehicle = new VehicleModel();
+            vehicle.setDriverEmail(driverEmail);
+            vehicle = vehicle.getVehicleByDriverEmail(driverEmail);
+            RouteModel route = new RouteModel();
+            route = route.getRouteByVehicleNo(vehicle.getVehicleNo());
 
-            RouteDAO routeDAO = new RouteDAO();
-            RouteModel route = routeDAO.getRoute(getRoute);
+//            Gson gson1 = new Gson();
+//            BufferedReader bufferedReader = request.getReader();
+//            RouteModel getRoute = gson1.fromJson(bufferedReader, RouteModel.class);
+//
+//            RouteDAO routeDAO = new RouteDAO();
+//            RouteModel route = routeDAO.getRoute(getRoute);
 
             Gson gson = new Gson();
             String object = gson.toJson(route);

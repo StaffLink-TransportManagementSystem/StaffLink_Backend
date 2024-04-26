@@ -76,9 +76,13 @@ public class passengerCashPayment extends HttpServlet {
             ReservationModel reservation = new ReservationModel();
             reservation.setPassengerEmail(request.getPassengerEmail());
             reservation.setVehicleNo(request.getVehicleNo());
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD");
+//            reservation.setStartingDate(LocalDate.parse(request.getStartingDate(), formatter));
+//            reservation.setEndingDate(LocalDate.parse(request.getEndingDate(), formatter));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             reservation.setStartingDate(LocalDate.parse(request.getStartingDate(), formatter));
             reservation.setEndingDate(LocalDate.parse(request.getEndingDate(), formatter));
+
             reservation.setStartingLatitude(request.getStartingLatitude());
             reservation.setStartingLongitude(request.getStartingLongitude());
             reservation.setEndingLatitude(request.getEndingLatitude());
