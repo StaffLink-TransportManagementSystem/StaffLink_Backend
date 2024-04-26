@@ -15,6 +15,7 @@ public class PassengerPaymentsModel {
     String paymentType; //card or cash
     float amount;
     float totalCash;
+    float totalCard;
     String status;
     int deleteState;
     private String fromDate;
@@ -169,6 +170,8 @@ public class PassengerPaymentsModel {
 //    public String setToDate(String toDate){return toDate;}
     public float getTotalCash() {return totalCash;}
     public void setTotalCash(float totalCash) {this.totalCash = totalCash;}
+    public float getTotalCard() {return totalCard;}
+    public void setTotalCard(float totalCard) {this.totalCard = totalCard;}
 
     public boolean createPayment(){
         PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
@@ -205,11 +208,18 @@ public class PassengerPaymentsModel {
     }
 
     public static List<PassengerPaymentsModel> getCashRevenue(String fromDate, String toDate){
-        System.out.println("inside getRevenue");
+        System.out.println("inside getCashRevenue");
         System.out.println(fromDate);
         System.out.println(toDate);
         PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
         return passengerPaymentsDAO.vehicleCashRevenue(fromDate, toDate);
     }
 
+    public static List<PassengerPaymentsModel> getCardRevenue(String fromDate, String toDate){
+        System.out.println("inside getCashRevenue");
+        System.out.println(fromDate);
+        System.out.println(toDate);
+        PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
+        return passengerPaymentsDAO.vehicleCardRevenue(fromDate, toDate);
+    }
 }
