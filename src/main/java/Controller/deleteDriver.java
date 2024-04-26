@@ -71,14 +71,25 @@ public class deleteDriver extends HttpServlet{
             BufferedReader bufferedReader = req.getReader();
             DriverModel deletedriver = gson.fromJson(bufferedReader, DriverModel.class);
             DriverDAO driverDAO = new DriverDAO();
-            if(driverDAO.deleteDriver(deletedriver.getEmail())){
-                res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"message\": \"Delete successfully\"}");
-                System.out.println("Delete successful");
-            }else{
+
+            VehicleModel vehicle = new VehicleModel();
+            vehicle = vehicle.getVehicleByDriver(deletedriver.getEmail());
+
+            if(vehicle == null) {
+                if (driverDAO.deleteDriver(deletedriver.getEmail())) {
+                    res.setStatus(HttpServletResponse.SC_OK);
+                    out.write("{\"message\": \"Delete successfully\"}");
+                    System.out.println("Delete successful");
+                } else {
+                    res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    out.write("{\"message\": \"Delete unsuccessfully\"}");
+                    System.out.println("Delete incorrect");
+                }
+            }
+            else {
                 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.write("{\"message\": \"Delete unsuccessfully\"}");
-                System.out.println("Delete incorrect");
+                out.write("{\"message\": \"Driver is still assigned to a vehicle\"}");
+                System.out.println("Driver is still assigned to a vehicle");
             }
         }
         catch (Exception e) {

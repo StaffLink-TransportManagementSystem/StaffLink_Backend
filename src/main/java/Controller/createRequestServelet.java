@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -70,7 +71,17 @@ public class createRequestServelet extends HttpServlet{
             // json data to user object
             BufferedReader bufferedReader = req.getReader();
             RequestModel request = gson.fromJson(bufferedReader, RequestModel.class);
-
+            System.out.println("Request: " + request.getVehicleNo());
+            float distance = request.getDistance();
+            float price = distance * 90.00f;
+            request.setPrice(price);
+//            Date date = new Date();
+//            request.setStartingDate(date.toString());
+//            request.setEndingDate(date.toString());
+            request.setStatus("Pending");
+//            request.setType("Both");
+//            request.setOnTime("8:00 AM");
+//            request.setOffTime("8:00 PM");
 
 
             // All validations are passed then register

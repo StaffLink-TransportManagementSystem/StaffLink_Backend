@@ -1,11 +1,12 @@
 package Controller;
 
 import Auth.JwtUtils;
-import DAO.AbsentDAO;
+import Model.OngoingTripModel;
+import Model.TripPassengersModel;
+import Model.VehicleModel;
+import com.google.gson.Gson;
+import org.json.JSONObject;
 
-import Model.AbsentModel;
-
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -14,19 +15,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import com.google.gson.Gson;
-import org.json.JSONObject;
 
-@WebServlet("/addAbsent")
-public class createAbsentServelet extends HttpServlet{
-
+@WebServlet("/passengerLate")
+public class PassengerLateSevelet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        System.out.println("Hello");
+        System.out.println("In passengerPicked");
 
         // Get all cookies from the request
         Cookie[] cookies = req.getCookies();
@@ -64,35 +59,52 @@ public class createAbsentServelet extends HttpServlet{
             return;
         }
 
+        // Get the payload from the JWT cookie
+        String email = jsonObject.getString("email");
+        String role = jsonObject.getString("role");
+
+        if (!role.equals("driver")) {
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            out.write("{\"message\": \"UnAuthorized - Not a driver\"}");
+            System.out.println("UnAuthorized - Not a driver");
+            return;
+        }
+
         try {
             Gson gson = new Gson();
-
-            // json data to user object
             BufferedReader bufferedReader = req.getReader();
-            AbsentModel absent = gson.fromJson(bufferedReader, AbsentModel.class);
-            System.out.println(absent.getReservationId());
+            TripPassengersModel tripPassenger = gson.fromJson(bufferedReader, TripPassengersModel.class);
+            System.out.println("passengerEmail " + tripPassenger.getPassengerEmail());
+            System.out.println("id"+tripPassenger.getId());
 
-            LocalDate date = LocalDate.parse(absent.getStartingDate());
-            System.out.println("Date: " + date);
-            LocalDate endDate = date.plusDays(absent.getDaysOfAbsent());
-            absent.setEndingDate(endDate.toString());
-            // All validations are passed then register
-            if(absent.addAbsent()){
+            // Get the vehicle number
+//            String vehicleNo = VehicleModel.getVehicleByDriver(tripPassenger.getDriverEmail()).getVehicleNo();
+
+            // Get the trip id
+            int tripId = tripPassenger.getTripId();
+
+            // Get the passenger email
+//            String passengerEmail = tripPassenger.getPassengerEmail();
+
+            // Update the status of the passenger
+//            TripPassengersModel tripPassengerModel = new TripPassengersModel(tripId, passengerEmail, "picked");
+
+            if (tripPassenger.markLate()) {
                 res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"message\": \"Registration successfully\"}");
-                System.out.println("Registration successful");
-            }else{
-                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.write("{\"message\": \"Registration unsuccessfully\"}");
-                System.out.println("Registration incorrect");
+                out.write("{\"message\": \"Passenger picked successfully\"}");
+                System.out.println("Passenger picked successfully");
+            } else {
+                res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                out.write("{\"message\": \"Internal Server Error\"}");
+                System.out.println("Internal Server Error");
             }
         }
         catch (Exception e) {
+            System.out.println("Error"+e);
             e.printStackTrace();
             throw new RuntimeException(e);
         } finally {
             out.close();
         }
     }
-
 }

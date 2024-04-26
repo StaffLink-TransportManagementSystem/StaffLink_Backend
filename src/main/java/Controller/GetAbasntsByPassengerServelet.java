@@ -1,31 +1,28 @@
 package Controller;
 
 import Auth.JwtUtils;
-import DAO.AbsentDAO;
 import Model.AbsentModel;
+import com.google.gson.Gson;
+import org.json.JSONObject;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import com.google.gson.Gson;
-import org.json.JSONObject;
+import java.util.List;
 
-@WebServlet("/getAbsent")
-public class getAbsentServelet  extends HttpServlet{
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
+@WebServlet("/getAbasntsByPassenger")
+public class GetAbasntsByPassengerServelet extends HttpServlet {
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        res.setContentType("application/json");
+        PrintWriter out = res.getWriter();
+        System.out.println("Inside GetAbasntsByPassengerServelet");
 
         // Get all cookies from the request
-        Cookie[] cookies = request.getCookies();
+        Cookie[] cookies = req.getCookies();
         JSONObject jsonObject = new JSONObject();
         int user_id = 0;
         boolean jwtCookieFound = false;
@@ -35,7 +32,7 @@ public class getAbsentServelet  extends HttpServlet{
                 if ("jwt".equals(cookie.getName())) {
                     JwtUtils jwtUtils = new JwtUtils(cookie.getValue());
                     if (!jwtUtils.verifyJwtAuthentication()) {
-                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                         out.write("{\"message\": \"UnAuthorized\"}");
                         System.out.println("UnAuthorized1");
                         return;
@@ -46,7 +43,7 @@ public class getAbsentServelet  extends HttpServlet{
                 }
             }
         } else {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             out.write("{\"message\": \"UnAuthorized\"}");
             System.out.println("No cookies found in the request.");
             return;
@@ -54,45 +51,43 @@ public class getAbsentServelet  extends HttpServlet{
 
         // If "jwt" cookie is not found, respond with unauthorized status
         if (!jwtCookieFound) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             out.write("{\"message\": \"UnAuthorized - JWT cookie not found\"}");
             System.out.println("UnAuthorized - JWT cookie not found");
             return;
         }
 
-
         try {
+            String passengerEmail = req.getParameter("passengerEmail");
+            System.out.println("passengerEmail: " + passengerEmail);
 
-            Gson gson1 = new Gson();
-
-            // json data to user object
-            BufferedReader bufferedReader = request.getReader();
-            AbsentModel absentModel = gson1.fromJson(bufferedReader, AbsentModel.class);
-            System.out.println(absentModel.getId());
-
-            AbsentDAO absentDAO = new AbsentDAO();
-            AbsentModel absent = absentDAO.getAbsent(absentModel.getId());
-            System.out.println(absent.getId());
+            AbsentModel absentModel = new AbsentModel();
+            List<AbsentModel> absentModels = absentModel.getAbsentsByPassenger(passengerEmail);
 
             Gson gson = new Gson();
-            // Object array to json
-            String object = gson.toJson(absent);
+            String absentJson = gson.toJson(absentModels);
 
-            if (absent != null) {
-                response.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"absent\": " + object + "}");
-                System.out.println("Send absent");
-            } else {
-                response.setStatus(HttpServletResponse.SC_ACCEPTED);
-                out.write("{\"absent\": \"No absent\"}");
-                System.out.println("No absent");
+            if(absentModels.size() == 0){
+                res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                out.write("{\"message\": \"No Absents found\"}");
+                System.out.println("No Absents found");
+                return;
+            }
+            else if(absentModels.size() > 0){
+                res.setStatus(HttpServletResponse.SC_OK);
+                out.write("{\"message\": \"Absents found\", \"absents\": " + absentJson + "}");
+                System.out.println("Absents found");
+                return;
             }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         } finally {
             out.close();
         }
     }
+
+
 }

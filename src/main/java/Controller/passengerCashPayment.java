@@ -4,6 +4,7 @@ import Auth.JwtUtils;
 import DAO.RequestDAO;
 import Model.PassengerPaymentsModel;
 import Model.RequestModel;
+import Model.ReservationModel;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
@@ -15,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @WebServlet("/passengerCashPayment")
 public class passengerCashPayment extends HttpServlet {
@@ -70,21 +73,38 @@ public class passengerCashPayment extends HttpServlet {
             RequestDAO requestDAO = new RequestDAO();
             boolean requestStatus = requestDAO.updatePayment(request.getId(), "Reserved");
 
+            ReservationModel reservation = new ReservationModel();
+            reservation.setPassengerEmail(request.getPassengerEmail());
+            reservation.setVehicleNo(request.getVehicleNo());
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD");
+//            reservation.setStartingDate(LocalDate.parse(request.getStartingDate(), formatter));
+//            reservation.setEndingDate(LocalDate.parse(request.getEndingDate(), formatter));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            reservation.setStartingDate(LocalDate.parse(request.getStartingDate(), formatter));
+            reservation.setEndingDate(LocalDate.parse(request.getEndingDate(), formatter));
+
+            reservation.setStartingLatitude(request.getStartingLatitude());
+            reservation.setStartingLongitude(request.getStartingLongitude());
+            reservation.setEndingLatitude(request.getEndingLatitude());
+            reservation.setEndingLongitude(request.getEndingLongitude());
+            reservation.setStatus("Pending");
+
+            boolean reservationStatus = reservation.createReservation();
+
             PassengerPaymentsModel passengerPayment = new PassengerPaymentsModel(request.getId(), request.getPassengerEmail(), request.getVehicleNo(), request.getStartingDate(), request.getPrice(), "Cash", "Pending");
             boolean passengerPaymentStatus = passengerPayment.createPayment();
 
             // All validations are passed then register
-            if(requestStatus && passengerPaymentStatus){
+            if (requestStatus && passengerPaymentStatus && reservationStatus) {
                 res.setStatus(HttpServletResponse.SC_OK);
                 out.write("{\"message\": \"Payment successfully\"}");
                 System.out.println("Payment successful");
-            }else{
+            } else {
                 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 out.write("{\"message\": \"Payment unsuccessfully\"}");
                 System.out.println("Payment incorrect");
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         } finally {

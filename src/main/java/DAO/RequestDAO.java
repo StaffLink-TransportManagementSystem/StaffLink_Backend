@@ -26,8 +26,12 @@ public class RequestDAO {
                 request.setVehicleNo(resultSet.getString("vehicleNo"));
                 request.setPassengerEmail(resultSet.getString("passengerEmail"));
                 request.setPrice(resultSet.getFloat("price"));
-                request.setStartingPoint(resultSet.getString("startingPoint"));
-                request.setEndingPoint(resultSet.getString("endingPoint"));
+
+                request.setStartingLatitude(resultSet.getString("startingLatitute"));
+                request.setStartingLongitude(resultSet.getString("startingLongitude"));
+                request.setEndingLatitude(resultSet.getString("endingLatitute"));
+
+                request.setEndingLongitude(resultSet.getString("endingLongitude"));
                 request.setStartingDate(resultSet.getString("startingDate"));
                 request.setEndingDate(resultSet.getString("endingDate"));
                 request.setOnTime(resultSet.getString("onTime"));
@@ -56,20 +60,43 @@ public class RequestDAO {
         boolean success = false;
         try{
             System.out.println("try");
-            String sql = "INSERT INTO requests (vehicleNo,passengerEmail, price, startingPoint, endingPoint, startingDate, endingDate, onTime, offTime, type, status) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+            System.out.println("request.getVehicleNo() - "+request.getVehicleNo());
+            System.out.println("request.getPassengerEmail() - "+request.getPassengerEmail());
+            System.out.println("request.getPrice() - "+request.getPrice());
+
+            System.out.println("request.getStartingLatitute() - "+request.getStartingLatitude());
+            System.out.println("request.getStartingLongitude() - "+request.getStartingLongitude());
+            System.out.println("request.getEndingLatitute() - "+request.getEndingLatitude());
+
+            System.out.println("request.getEndingLongitude() - "+request.getEndingLongitude());
+            System.out.println("request.getStartingDate() - "+request.getStartingDate());
+            System.out.println("request.getEndingDate() - "+request.getEndingDate());
+            System.out.println("request.getOnTime() - "+request.getOnTime());
+            System.out.println("request.getOffTime() - "+request.getOffTime());
+            System.out.println("request.getType() - "+request.getType());
+            System.out.println("request.getStatus() - "+request.getStatus());
+            System.out.println("request.getDistance() - "+request.getDistance());
+
+            String sql = "INSERT INTO requests (vehicleNo,passengerEmail, price, startingLatitute, startingLongitude, endingLatitute, endingLongitude, startingDate, endingDate, onTime, offTime, type, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 //            System.out.println("try");
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, request.getVehicleNo());
             preparedStatement.setString(2, request.getPassengerEmail());
             preparedStatement.setFloat(3, request.getPrice());
-            preparedStatement.setString(4, request.getStartingPoint());
-            preparedStatement.setString(5, request.getEndingPoint());
-            preparedStatement.setString(6, request.getStartingDate());
-            preparedStatement.setString(7, request.getEndingDate());
-            preparedStatement.setString(8, request.getOnTime());
-            preparedStatement.setString(9, request.getOffTime());
-            preparedStatement.setString(10, request.getType());
-            preparedStatement.setString(11, request.getStatus());
+
+            preparedStatement.setString(4, request.getStartingLatitude());
+            preparedStatement.setString(5, request.getStartingLongitude());
+            preparedStatement.setString(6, request.getEndingLatitude());
+
+            preparedStatement.setString(7, request.getEndingLongitude());
+            preparedStatement.setString(8, request.getStartingDate());
+            preparedStatement.setString(9, request.getEndingDate());
+            preparedStatement.setString(10, request.getOnTime());
+            preparedStatement.setString(11, request.getOffTime());
+            preparedStatement.setString(12, request.getType());
+            preparedStatement.setString(13, request.getStatus());
+
+
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
 
@@ -94,64 +121,93 @@ public class RequestDAO {
 //        return true;
     }
 
-    public static boolean updateRequest(RequestModel request){
+    public static boolean updateRequest(RequestModel request) {
         Connection connection = DBConnection.getInstance().getConnection();
         Connection con = null;
         boolean success = false;
 //        System.out.println(java.time.LocalTime.now());
-        try{
+        try {
             con = connection;
             System.out.println("trydlxa");
-            String sql = "UPDATE requests SET vehicleNo = ?, passengerEmail = ?, price = ?, startingPoint = ?, endingPoint = ?, startingDate = ?, endingDate = ?, onTime = ?, offTime = ?, type = ?, status = ? WHERE vehicleNo = ? AND passengerEmail = ? AND deleteState = 0";
+            System.out.println("Vehicle No: " + request.getVehicleNo());
+            System.out.println("Passenger :" + request.getPassengerEmail());
+            System.out.println("price: " + request.getPrice());
+            System.out.println("starting Latitiude: " + request.getStartingLatitude());
+            System.out.println("startng Logitude: " + request.getStartingLongitude());
+            System.out.println("ending latitude: " + request.getEndingLatitude());
+            System.out.println("ending logitude: " + request.getEndingLongitude());
+            System.out.println("starting Date " + request.getStartingDate());
+            System.out.println("ending Date " + request.getEndingDate());
+            System.out.println("on Time " + request.getOnTime());
+            System.out.println("off Time " + request.getOffTime());
+            System.out.println("type " + request.getType());
+            System.out.println("status " + request.getStatus());
+
+
+            String sql = "UPDATE requests SET vehicleNo = ?, passengerEmail = ?, price = ?, startingLatitute=?, startingLongitude=?, endingLatitute=?, endingLongitude=?, startingDate = ?, endingDate = ?, onTime = ?, offTime = ?, type = ?, status = ? WHERE id=? AND deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, request.getVehicleNo());
             preparedStatement.setString(2, request.getPassengerEmail());
             preparedStatement.setFloat(3, request.getPrice());
-            preparedStatement.setString(4, request.getStartingPoint());
-            preparedStatement.setString(5, request.getEndingPoint());
-            preparedStatement.setString(6, request.getStartingDate());
-            preparedStatement.setString(7, request.getEndingDate());
-            preparedStatement.setString(8, request.getOnTime());
-            preparedStatement.setString(9, request.getOffTime());
-            preparedStatement.setString(10, request.getType());
-            preparedStatement.setString(11, request.getStatus());
-            preparedStatement.setString(12, request.getVehicleNo());
-            preparedStatement.setString(13, request.getPassengerEmail());
+
+            preparedStatement.setString(4, request.getStartingLatitude());
+            preparedStatement.setString(5, request.getStartingLongitude());
+            preparedStatement.setString(6, request.getEndingLatitude());
+
+            preparedStatement.setString(7, request.getEndingLongitude());
+            preparedStatement.setString(8, request.getStartingDate());
+            preparedStatement.setString(9, request.getEndingDate());
+            preparedStatement.setString(10, request.getOnTime());
+            preparedStatement.setString(11, request.getOffTime());
+            preparedStatement.setString(12, request.getType());
+            preparedStatement.setString(13, request.getStatus());
+            preparedStatement.setInt(14, request.getId());
 
             int temp = preparedStatement.executeUpdate();
-
-            System.out.println("check");
-            System.out.println(temp);
-//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            if(temp==1){
-//                passenger.setId(resultSet.getInt(1));
+            if (temp != 0) {
                 success = true;
             }
-//            resultSet.close();
             preparedStatement.close();
-//            System.out.println(java.time.LocalTime.now());
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            if (con != null) try {
-//                con.close();
-            } catch (Exception ignore) {
-            }
+            return success;
         }
-        return success;
     }
 
-    public static boolean deleteRequest(String VehicleNo,String passengerEmail){
+//            int temp = preparedStatement.executeUpdate();
+//
+//            System.out.println("check");
+//            System.out.println(temp);
+////            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+//            if(temp==1){
+////                passenger.setId(resultSet.getInt(1));
+//                success = true;
+//            }
+////            resultSet.close();
+//            preparedStatement.close();
+////            System.out.println(java.time.LocalTime.now());
+//        }
+//        catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        } finally {
+//            if (con != null) try {
+////                con.close();
+//            } catch (Exception ignore) {
+//            }
+//        }
+//        return success;
+//    }
+
+    public static boolean deleteRequest(int id){
         Connection connection = DBConnection.getInstance().getConnection();
         Connection con = null;
         boolean success = false;
         try{
             con = connection;
-            String sql = "UPDATE requests SET deleteState = 1 WHERE vehicleNo = ? AND passengerEmail = ?";
+            String sql = "UPDATE requests SET deleteState = 1 WHERE id = ?";;
             PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setString(1,VehicleNo);
-            preparedStatement.setString(2,passengerEmail);
+            preparedStatement.setInt(1,id);
             int x = preparedStatement.executeUpdate();
 //            ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if(x != 0){
@@ -218,8 +274,12 @@ public class RequestDAO {
                 request.setVehicleNo(resultSet.getString("vehicleNo"));
                 request.setPassengerEmail(resultSet.getString("passengerEmail"));
                 request.setPrice(resultSet.getFloat("price"));
-                request.setStartingPoint(resultSet.getString("startingPoint"));
-                request.setEndingPoint(resultSet.getString("endingPoint"));
+
+                request.setStartingLatitude(resultSet.getString("startingLatitute"));
+                request.setStartingLongitude(resultSet.getString("startingLongitude"));
+                request.setEndingLatitude(resultSet.getString("endingLatitute"));
+
+                request.setEndingLongitude(resultSet.getString("endingLongitude"));
                 request.setStartingDate(resultSet.getString("startingDate"));
                 request.setEndingDate(resultSet.getString("endingDate"));
                 request.setOnTime(resultSet.getString("onTime"));
@@ -257,8 +317,12 @@ public class RequestDAO {
                 request.setVehicleNo(resultSet.getString("vehicleNo"));
                 request.setPassengerEmail(resultSet.getString("passengerEmail"));
                 request.setPrice(resultSet.getFloat("price"));
-                request.setStartingPoint(resultSet.getString("startingPoint"));
-                request.setEndingPoint(resultSet.getString("endingPoint"));
+
+                request.setStartingLatitude(resultSet.getString("startingLatitute"));
+                request.setStartingLongitude(resultSet.getString("startingLongitude"));
+                request.setEndingLatitude(resultSet.getString("endingLatitute"));
+
+                request.setEndingLongitude(resultSet.getString("endingLongitude"));
                 request.setStartingDate(resultSet.getString("startingDate"));
                 request.setEndingDate(resultSet.getString("endingDate"));
                 request.setOnTime(resultSet.getString("onTime"));
@@ -325,5 +389,5 @@ public class RequestDAO {
         } finally {
             return success;
         }
-        }
+    }
 }

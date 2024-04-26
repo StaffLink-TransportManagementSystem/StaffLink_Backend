@@ -71,14 +71,10 @@ public class AbasntValidation {
     }
 
     //days of abasnet shoud be integer
-    public boolean validateDaysOfAbsent(String daysOfAbsent) {
-        if(daysOfAbsent == null) {
+    public boolean validateDaysOfAbsent(int daysOfAbsent) {
+        if(daysOfAbsent <= 0) {
             System.out.println("DaysOfAbsent validation error");
             return false;
-        }
-        if(daysOfAbsent.equals("1") || daysOfAbsent.equals("2") || daysOfAbsent.equals("3") || daysOfAbsent.equals("4") || daysOfAbsent.equals("5")) {
-            System.out.println("DaysOfAbsent validation success");
-            return true;
         } else {
             System.out.println("DaysOfAbsent validation error");
             return false;
@@ -86,7 +82,7 @@ public class AbasntValidation {
     }
 
     public boolean validateAbsantOnInsert(AbsentModel absentModel){
-        if(validatePassengerEmail(absentModel.getPassengerEmail()) && validateVehicleNo(absentModel.getVehicleNo()) && validateDaysOfAbsent(absentModel.getDaysOfAbsent()) && validateStartingDate(absentModel.getStartingDate()) && validateEndingDate(absentModel.getEndingDate(), absentModel.getStartingDate())){
+        if(validatePassengerEmail(absentModel.getPassengerEmail()) && validateReservationId(absentModel.getReservationId()) && validateDaysOfAbsent(absentModel.getDaysOfAbsent()) && validateStartingDate(absentModel.getStartingDate()) && validateEndingDate(absentModel.getEndingDate(), absentModel.getStartingDate())){
             return true;
         }
         else{
@@ -98,10 +94,10 @@ public class AbasntValidation {
         if(valid && absentModel.getPassengerEmail()!=null){
             valid = validatePassengerEmail(absentModel.getPassengerEmail());
         }
-        if(valid && absentModel.getVehicleNo()!=null){
-            valid = validateVehicleNo(absentModel.getVehicleNo());
+        if(valid && absentModel.getReservationId()<=0){
+            valid = validateReservationId(absentModel.getId());
         }
-        if(valid && absentModel.getDaysOfAbsent()!=null){
+        if(valid){
             valid = validateDaysOfAbsent(absentModel.getDaysOfAbsent());
         }
         if(valid && absentModel.getStartingDate()!=null){
@@ -116,6 +112,14 @@ public class AbasntValidation {
         }
         else{
             System.out.println("Absent validation error");
+            return false;
+        }
+    }
+
+    public boolean validateReservationId(int reservationId) {
+        if(reservationId > 0) {
+            return true;
+        } else {
             return false;
         }
     }

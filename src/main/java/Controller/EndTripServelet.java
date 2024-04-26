@@ -70,7 +70,7 @@ public class EndTripServelet extends HttpServlet {
             ongoingTripModel = OngoingTripModel.getOngoingTripByVehicleNoAndStatusOngoing(vehicleNo, email);
             System.out.println(ongoingTripModel.getId());
             System.out.println(ongoingTripModel.getStatus());
-            
+
             if(ongoingTripModel == null){
                 res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 out.write("{\"message\": \"No ongoing trip found\"}");

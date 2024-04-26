@@ -218,4 +218,9 @@ public class PassengerModel {
         return passengerDAO.getPassengerCount(fromDate, toDate);
     }
 
+    public static PassengerModel getPassengerByEmail(String email){
+        PassengerDAO passengerDAO = new PassengerDAO();
+        return passengerDAO.getPassenger(email);
+    }
+
 }

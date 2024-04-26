@@ -1,7 +1,9 @@
 package Controller;
 
 import Auth.JwtUtils;
-import Model.AbsentModel;
+import Model.LocationTrackingModel;
+import Model.OngoingTripModel;
+import Model.ReservationModel;
 import Model.VehicleModel;
 import com.google.gson.Gson;
 import org.json.JSONObject;
@@ -11,17 +13,14 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-
-@WebServlet("/viewAbsent")
-public class viewAbsentList extends HttpServlet {
-    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+@WebServlet("/liveLocation")
+public class GetLocationServelet extends HttpServlet {
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        System.out.println("Inside view absent list");
+        System.out.println("Inside GetLocationServelet");
 
         // Get all cookies from the request
         Cookie[] cookies = req.getCookies();
@@ -60,31 +59,54 @@ public class viewAbsentList extends HttpServlet {
         }
 
         try {
+
+            String reservationId = req.getParameter("reservationId");
+            System.out.println("ReservationId: " + reservationId);
+
+            ReservationModel reservationModel = new ReservationModel();
+            reservationModel = reservationModel.getReservation(Integer.parseInt(reservationId));
+
+            if (reservationModel == null) {
+                res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                out.write("{\"message\": \"Reservation not found\"}");
+                System.out.println("Reservation not found");
+                return;
+            }
+
+            VehicleModel vehicleModel = new VehicleModel();
+            vehicleModel = vehicleModel.getVehicleByVehicleNo(reservationModel.getVehicleNo());
+
+            if (vehicleModel == null) {
+                res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                out.write("{\"message\": \"Vehicle not found\"}");
+                System.out.println("Vehicle not found");
+                return;
+            }
+
+            OngoingTripModel ongoingTripModel = new OngoingTripModel();
+            ongoingTripModel = ongoingTripModel.getOngoingTripByVehicleNo(vehicleModel.getVehicleNo(), vehicleModel.getDriverEmail());
+
+            LocationTrackingModel locationTrackingModel = new LocationTrackingModel();
+            locationTrackingModel = locationTrackingModel.getLocationTrackingByTripId(ongoingTripModel.getId());
+
+            if (locationTrackingModel == null) {
+                res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                out.write("{\"message\": \"Location not found\"}");
+                System.out.println("Location not found");
+                return;
+            }
+
             Gson gson = new Gson();
+            String object = gson.toJson(locationTrackingModel);
 
-            // json data to user object
-            BufferedReader bufferedReader = req.getReader();
-            VehicleModel vehicle = gson.fromJson(bufferedReader, VehicleModel.class);
-//            AbsentModel absent = gson.fromJson(bufferedReader, AbsentModel.class);
-//            System.out.println(absent.getId());
-            List<AbsentModel> absents = AbsentModel.viewAbsentList(vehicle.getVehicleNo());
-            // All validations are passed then register
-            Gson gson1 = new Gson();
-            // Object array to json
-            String object = gson1.toJson(absents);
-
-            if(absents.size() != 0) {
+            if (locationTrackingModel != null) {
                 res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"size\": " + absents.size() + ",\"list\":" + object + "}");
-                System.out.println("View all Absents");
-            }
-            else if(absents.size() == 0){
+                out.write(object);
+                System.out.println("Send location");
+            } else {
                 res.setStatus(HttpServletResponse.SC_ACCEPTED);
-                out.write("{\"size\": \"0\"}");
-                System.out.println("No Absents");
-            }
-            else{
-                // TODO handle
+                out.write("{\"message\": \"No location\"}");
+                System.out.println("No location");
             }
         }
         catch (Exception e) {
@@ -93,6 +115,5 @@ public class viewAbsentList extends HttpServlet {
         } finally {
             out.close();
         }
-
     }
 }
