@@ -6,6 +6,7 @@ import Model.TripPassengersModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +17,12 @@ public class TripPassengersDAO {
         boolean success = false;
 
         try {
-            String sql = "INSERT INTO trippassengers (tripId, passengerEmail, status) VALUES (?,?,?)";
+            String sql = "INSERT INTO trippassengers (tripId, passengerEmail, status, reservationId) VALUES (?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, tripPassenger.getTripId());
             preparedStatement.setString(2, tripPassenger.getPassengerEmail());
             preparedStatement.setString(3, tripPassenger.getStatus());
+            preparedStatement.setInt(4, tripPassenger.getReservationId());
 
             preparedStatement.executeUpdate();
             success = true;
@@ -54,7 +56,7 @@ public class TripPassengersDAO {
         boolean success = false;
 
         try {
-            String sql = "UPDATE trippassengers SET status = ? WHERE tripId = ? AND passengerEmail = ?";
+            String sql = "UPDATE trippassengers SET status = ? WHERE tripId = ? AND reservationId = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, tripPassenger.getStatus());
             preparedStatement.setInt(2, tripPassenger.getTripId());
@@ -73,15 +75,16 @@ public class TripPassengersDAO {
         TripPassengersModel tripPassenger1 = new TripPassengersModel();
 
         try {
-            String sql = "SELECT * FROM trippassengers WHERE tripId = ? AND passengerEmail = ?";
+            String sql = "SELECT * FROM trippassengers WHERE tripId = ? AND reservationId = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, tripPassenger.getTripId());
-            preparedStatement.setString(2, tripPassenger.getPassengerEmail());
+            preparedStatement.setInt(2, tripPassenger.getReservationId());
             preparedStatement.executeQuery();
             tripPassenger1.setId(preparedStatement.getResultSet().getInt("id"));
             tripPassenger1.setTripId(preparedStatement.getResultSet().getInt("tripId"));
             tripPassenger1.setPassengerEmail(preparedStatement.getResultSet().getString("passengerEmail"));
             tripPassenger1.setStatus(preparedStatement.getResultSet().getString("status"));
+            tripPassenger1.setReservationId(preparedStatement.getResultSet().getInt("reservationId"));
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -104,6 +107,7 @@ public class TripPassengersDAO {
                 tripPassenger1.setTripId(preparedStatement.getResultSet().getInt("tripId"));
                 tripPassenger1.setPassengerEmail(preparedStatement.getResultSet().getString("passengerEmail"));
                 tripPassenger1.setStatus(preparedStatement.getResultSet().getString("status"));
+                tripPassenger1.setReservationId(preparedStatement.getResultSet().getInt("reservationId"));
                 tripPassengers.add(tripPassenger1);
             }
         } catch (Exception e) {
@@ -127,6 +131,7 @@ public class TripPassengersDAO {
                 tripPassenger.setTripId(preparedStatement.getResultSet().getInt("tripId"));
                 tripPassenger.setPassengerEmail(preparedStatement.getResultSet().getString("passengerEmail"));
                 tripPassenger.setStatus(preparedStatement.getResultSet().getString("status"));
+                tripPassenger.setReservationId(preparedStatement.getResultSet().getInt("reservationId"));
                 tripPassengers.add(tripPassenger);
             }
         } catch (Exception e) {
@@ -152,6 +157,7 @@ public class TripPassengersDAO {
                 tripPassenger.setTripId(preparedStatement.getResultSet().getInt("tripId"));
                 tripPassenger.setPassengerEmail(preparedStatement.getResultSet().getString("passengerEmail"));
                 tripPassenger.setStatus(preparedStatement.getResultSet().getString("status"));
+                tripPassenger.setReservationId(preparedStatement.getResultSet().getInt("reservationId"));
                 tripPassengers.add(tripPassenger);
             }
         } catch (Exception e) {
@@ -165,6 +171,7 @@ public class TripPassengersDAO {
         System.out.println("Inside getNotPickedTripPassengersByTripId");
         Connection connection = DBConnection.getInstance().getConnection();
         List<TripPassengersModel> tripPassengers = new ArrayList<>();
+        System.out.println("TripId: " + tripId);
 
         try {
             String sql = "SELECT * FROM trippassengers WHERE tripId = ? AND status = 'notpicked'";
@@ -177,6 +184,7 @@ public class TripPassengersDAO {
                 tripPassenger.setTripId(preparedStatement.getResultSet().getInt("tripId"));
                 tripPassenger.setPassengerEmail(preparedStatement.getResultSet().getString("passengerEmail"));
                 tripPassenger.setStatus(preparedStatement.getResultSet().getString("status"));
+                tripPassenger.setReservationId(preparedStatement.getResultSet().getInt("reservationId"));
                 tripPassengers.add(tripPassenger);
             }
         } catch (Exception e) {
@@ -185,4 +193,39 @@ public class TripPassengersDAO {
 
         return tripPassengers;
     }
+
+    public static TripPassengersModel getTripPassengerByTripIdAndReservationId(int tripId, int reservationId) {
+        System.out.println("Inside getTripPassengerByTripIdAndReservationId");
+        Connection connection = DBConnection.getInstance().getConnection();
+        TripPassengersModel tripPassenger = new TripPassengersModel();
+
+        try {
+            String sql = "SELECT * FROM trippassengers WHERE tripId = ? AND reservationId = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, tripId);
+            preparedStatement.setInt(2, reservationId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Check if the result set contains any rows
+            if (resultSet.next()) {
+                tripPassenger.setId(resultSet.getInt("id"));
+                tripPassenger.setTripId(resultSet.getInt("tripId"));
+                tripPassenger.setPassengerEmail(resultSet.getString("passengerEmail"));
+                tripPassenger.setStatus(resultSet.getString("status"));
+                tripPassenger.setReservationId(resultSet.getInt("reservationId"));
+            } else {
+                // Handle the case where no rows were found (optional)
+                System.out.println("No data found for tripId=" + tripId + " and reservationId=" + reservationId);
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            // Close resources (connection, statement, result set)
+            // Add appropriate exception handling for closing resources
+        }
+
+        return tripPassenger;
+    }
+
 }

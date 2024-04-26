@@ -172,4 +172,12 @@ public class ReservationModel {
     public static List<PassengerModel> getPassengersByVehicleWithoutAbsants(String vehicleNo){
         return ReservationDAO.getPassengersByVehicleWithoutAbsants(vehicleNo);
     }
+
+    public static List<ReservationModel> getReservationsByDriverEmail(String driverEmail){
+        return ReservationDAO.getReservationsByDriverEmail(driverEmail);
+    }
+
+    public static List<ReservationModel> getReservationsByVehicleWithoutAbsants(String vehicleNo){
+        return ReservationDAO.getReservationsByVehicleWithoutAbsants(vehicleNo);
+    }
 }

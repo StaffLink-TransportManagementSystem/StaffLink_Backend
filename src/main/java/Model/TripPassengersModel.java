@@ -10,6 +10,15 @@ public class TripPassengersModel {
     private String passengerEmail;
     private String status;
     private String driverEmail;
+    private int reservationId;
+
+    public int getReservationId() {
+        return reservationId;
+    }
+
+    public void setReservationId(int reservationId) {
+        this.reservationId = reservationId;
+    }
 
     public int getId() {
         return id;
@@ -83,6 +92,11 @@ public class TripPassengersModel {
     public static List<TripPassengersModel> getNotPickedTripPassengersByTripId(int tripId) {
         TripPassengersDAO tripPassengersDAO = new TripPassengersDAO();
         return tripPassengersDAO.getNotPickedTripPassengersByTripId(tripId);
+    }
+
+    public static TripPassengersModel getTripPassengerByTripIdAndReservationId(int tripId, int reservationId) {
+        TripPassengersDAO tripPassengersDAO = new TripPassengersDAO();
+        return tripPassengersDAO.getTripPassengerByTripIdAndReservationId(tripId, reservationId);
     }
 
 }

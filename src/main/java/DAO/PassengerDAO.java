@@ -26,7 +26,7 @@ public class PassengerDAO {
                 passenger.setEmail(resultSet.getString("email"));
                 passenger.setName(resultSet.getString("name"));
                 passenger.setNIC(resultSet.getString("NIC"));
-//                passenger.setContactNo(resultSet.getString("contactNo"));
+                passenger.setContactNo(resultSet.getString("contact"));
                 passenger.setPassword(resultSet.getString("password"));
             }
             resultSet.close();
@@ -338,7 +338,7 @@ public class PassengerDAO {
 
         try{
             con = connection;
-            String sql = "SELECT * FROM passengers WHERE email = (SELECT passengerEmail from trippassengers WHERE tripId=? AND deleteState=0) AND deleteState = 0";
+            String sql = "SELECT * FROM passengers WHERE email IN (SELECT passengerEmail from trippassengers WHERE tripId=? AND deleteState=0) AND deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setInt(1,tripId);
             ResultSet resultSet = preparedStatement.executeQuery();
