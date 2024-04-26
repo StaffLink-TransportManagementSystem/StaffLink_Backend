@@ -38,4 +38,39 @@ public class otpDAO {
         return success;
 //        return true;
     }
+
+
+
+    public static boolean validOTP(String email, int otp){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+        try{
+            System.out.println(email);
+            con = connection;
+            String sql = "SELECT * FROM otp WHERE email = ? AND otp = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1,email);
+            preparedStatement.setInt(2,otp);
+            ResultSet resultSet = preparedStatement.executeQuery();
+//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()){
+                success = true;
+            }
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (con != null) try {
+//                con.close();
+            } catch (Exception ignore) {
+            }
+        }
+        return success;
+    }
 }
+
+
+
+

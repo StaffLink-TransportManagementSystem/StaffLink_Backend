@@ -1,6 +1,7 @@
 package Model;
 
 import DAO.PassengerPaymentsDAO;
+import DAO.VehicleDAO;
 
 import java.util.List;
 
@@ -13,8 +14,11 @@ public class PassengerPaymentsModel {
     String date;
     String paymentType; //card or cash
     float amount;
+    float totalCash;
     String status;
     int deleteState;
+    private String fromDate;
+    private String toDate;
 
     public String getStatus() {
         return status;
@@ -159,6 +163,12 @@ public class PassengerPaymentsModel {
     public void setReservationID(int reservationID) {
         this.reservationID = reservationID;
     }
+    public String getFromDate() {return fromDate;}
+//    public String setFromDate(String fromDate){return fromDate;}
+    public String getToDate() {return toDate;}
+//    public String setToDate(String toDate){return toDate;}
+    public float getTotalCash() {return totalCash;}
+    public void setTotalCash(float totalCash) {this.totalCash = totalCash;}
 
     public boolean createPayment(){
         PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
@@ -192,6 +202,14 @@ public class PassengerPaymentsModel {
     public boolean makePayment(){
         PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
         return passengerPaymentsDAO.makePayment(this);
+    }
+
+    public static List<PassengerPaymentsModel> getCashRevenue(String fromDate, String toDate){
+        System.out.println("inside getRevenue");
+        System.out.println(fromDate);
+        System.out.println(toDate);
+        PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
+        return passengerPaymentsDAO.vehicleCashRevenue(fromDate, toDate);
     }
 
 }

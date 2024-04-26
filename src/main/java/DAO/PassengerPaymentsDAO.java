@@ -2,9 +2,11 @@ package DAO;
 
 import Database.DBConnection;
 import Model.PassengerPaymentsModel;
+import Model.VehicleModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -272,5 +274,35 @@ public class PassengerPaymentsDAO {
             throw new RuntimeException(e);
         }
         return success;
+    }
+
+
+    public static List<PassengerPaymentsModel> vehicleCashRevenue(String fromDate, String toDate) {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        List<PassengerPaymentsModel> passengerPayments = new ArrayList<>();
+//        int count = 0;
+
+        try {
+            con = connection;
+            String sql = "SELECT vehicleNo, SUM(amount) AS totalCash FROM passengerpayments WHERE created_at BETWEEN ? AND ? AND paymentType='cash' GROUP BY vehicleNo";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, fromDate);
+            preparedStatement.setString(2, toDate);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                PassengerPaymentsModel passengerPayment = new PassengerPaymentsModel();
+                passengerPayment.setVehicleNo(resultSet.getString("vehicleNo"));
+                passengerPayment.setTotalCash(resultSet.getFloat("totalCash"));
+                passengerPayments.add(passengerPayment);
+            }
+            resultSet.close();
+            preparedStatement.close();
+            System.out.println(passengerPayments);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return passengerPayments;
+        }
     }
 }
