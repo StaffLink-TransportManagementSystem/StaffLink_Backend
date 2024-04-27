@@ -13,12 +13,11 @@ import java.util.List;
 
 import Auth.JwtUtils;
 import Model.PassengerPaymentsModel;
-import Model.VehicleModel;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
 @WebServlet("/cashRevenue")
-public class revenueReport extends HttpServlet{
+public class cashRevenue extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("Inside revenueReport");
         resp.setContentType("application/json");

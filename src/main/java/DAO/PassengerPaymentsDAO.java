@@ -305,4 +305,35 @@ public class PassengerPaymentsDAO {
             return passengerPayments;
         }
     }
+
+
+
+    public static List<PassengerPaymentsModel> vehicleCardRevenue(String fromDate, String toDate) {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        List<PassengerPaymentsModel> passengerPayments = new ArrayList<>();
+//        int count = 0;
+
+        try {
+            con = connection;
+            String sql = "SELECT vehicleNo, SUM(amount) AS totalCard FROM passengerpayments WHERE created_at BETWEEN ? AND ? AND paymentType='card' GROUP BY vehicleNo";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, fromDate);
+            preparedStatement.setString(2, toDate);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                PassengerPaymentsModel passengerPayment = new PassengerPaymentsModel();
+                passengerPayment.setVehicleNo(resultSet.getString("vehicleNo"));
+                passengerPayment.setTotalCard(resultSet.getFloat("totalCard"));
+                passengerPayments.add(passengerPayment);
+            }
+            resultSet.close();
+            preparedStatement.close();
+            System.out.println(passengerPayments);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return passengerPayments;
+        }
+    }
 }
