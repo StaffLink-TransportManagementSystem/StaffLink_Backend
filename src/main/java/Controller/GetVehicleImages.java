@@ -68,19 +68,19 @@ public class GetVehicleImages extends HttpServlet {
             vehicleModel = vehicleModel.getVehicleImages("NB-0902");
             String path = "C:/Users/User/Documents/Group Project/Implementation/try2/src/main/java/Images/";
 
-            System.out.println(path+vehicleModel.getFrontImage());
-            System.out.println(path+vehicleModel.getBackImage());
-            System.out.println(path+vehicleModel.getSideImage());
-            System.out.println(path+vehicleModel.getInsideImage());
-            System.out.println(path+vehicleModel.getCertificate());
-            System.out.println(path+vehicleModel.getInsurance());
+//            System.out.println(path+vehicleModel.getFrontImage());
+//            System.out.println(path+vehicleModel.getBackImage());
+//            System.out.println(path+vehicleModel.getSideImage());
+//            System.out.println(path+vehicleModel.getInsideImage());
+//            System.out.println(path+vehicleModel.getCertificate());
+//            System.out.println(path+vehicleModel.getInsurance());
 
-            byte[] frontImage = convertImageToByteArray(path+vehicleModel.getFrontImage());
-            byte[] backImage = convertImageToByteArray(path+vehicleModel.getBackImage());
-            byte[] sideImage = convertImageToByteArray(path+vehicleModel.getSideImage());
-            byte[] insideImage = convertImageToByteArray(path+vehicleModel.getInsideImage());
-            byte[] certificateImage = convertImageToByteArray(path+vehicleModel.getCertificate());
-            byte[] insuranceImage = convertImageToByteArray(path+vehicleModel.getInsurance());
+//            byte[] frontImage = convertImageToByteArray(path+vehicleModel.getFrontImage());
+//            byte[] backImage = convertImageToByteArray(path+vehicleModel.getBackImage());
+//            byte[] sideImage = convertImageToByteArray(path+vehicleModel.getSideImage());
+//            byte[] insideImage = convertImageToByteArray(path+vehicleModel.getInsideImage());
+//            byte[] certificateImage = convertImageToByteArray(path+vehicleModel.getCertificate());
+//            byte[] insuranceImage = convertImageToByteArray(path+vehicleModel.getInsurance());
 
 //            byte[] frontImage = convertImageToByteArray(path+vehicleModel.getFrontImage()+"."+vehicleModel.getFrontImageType());
 //            byte[] backImage = convertImageToByteArray(path+vehicleModel.getBackImage()+"."+vehicleModel.getBackImageType());
@@ -89,15 +89,15 @@ public class GetVehicleImages extends HttpServlet {
 //            byte[] certificateImage = convertImageToByteArray(path+vehicleModel.getCertificate()+"."+vehicleModel.getCertificateType());
 //            byte[] insuranceImage = convertImageToByteArray(path+vehicleModel.getInsurance()+"."+vehicleModel.getInsuranceType());
 
-            if (frontImage.length != 0 || backImage.length != 0 || sideImage.length != 0 || insideImage.length != 0 || certificateImage.length != 0 || insuranceImage.length != 0) {
-                res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"message\":\"success\",\"frontImage\": \"" + Base64.getEncoder().encodeToString(frontImage)+"\"}");
-                System.out.println("View all images");
-            } else if (frontImage.length == 0 && backImage.length == 0 && sideImage.length == 0 && insideImage.length == 0 && certificateImage.length == 0 && insuranceImage.length == 0) {
-                res.setStatus(HttpServletResponse.SC_ACCEPTED);
-                out.write("{\"message\":\"No images\"}");
-                System.out.println("No images");
-            }
+//            if (frontImage.length != 0 || backImage.length != 0 || sideImage.length != 0 || insideImage.length != 0 || certificateImage.length != 0 || insuranceImage.length != 0) {
+//                res.setStatus(HttpServletResponse.SC_OK);
+//                out.write("{\"message\":\"success\",\"frontImage\": \"" + Base64.getEncoder().encodeToString(frontImage)+"\"}");
+//                System.out.println("View all images");
+//            } else if (frontImage.length == 0 && backImage.length == 0 && sideImage.length == 0 && insideImage.length == 0 && certificateImage.length == 0 && insuranceImage.length == 0) {
+//                res.setStatus(HttpServletResponse.SC_ACCEPTED);
+//                out.write("{\"message\":\"No images\"}");
+//                System.out.println("No images");
+//            }
 
         }
         catch (Exception e) {
