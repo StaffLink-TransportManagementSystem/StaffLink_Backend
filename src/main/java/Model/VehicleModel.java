@@ -33,7 +33,7 @@ public class VehicleModel {
     private String vehicleRegistrationImage;
     private String insuranceImage;
 
-    private String varifiedState;
+    private String varifiedState;  // 0 - not verified, 1 - verified , 2 - rejected
     private String created_at;
     private String fromDate;
     private String toDate;
@@ -389,5 +389,14 @@ public class VehicleModel {
         return vehicleDAO.createVerifyVehicle(this);
     }
 
+    public VehicleModel getVerifyVehicleById(int id){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.getVerifyVehicleById(id);
+    }
+
+    public boolean updateVerifyState(int id, int varifiedState){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.updateVerifyState(id, varifiedState);
+    }
 
 }
