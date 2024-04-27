@@ -158,15 +158,15 @@ public boolean validatePrice(double price) {
             System.out.println("NoOfSeats validation error");
             return false;
         }
-        if(vehicleModel.getStartingPoint() == null) {
-            System.out.println("StartingLocation validation error");
-            return false;
-        }
-        if(vehicleModel.getEndingPoint() == null) {
-            System.out.println("Destination validation error");
-            return false;
-        }
-        if(validateVehicleNo(vehicleModel.getVehicleNo()) && validateVehicleType(vehicleModel.getType()) && validateVehicleOwner(vehicleModel.getOwnerEmail()) && validateTrips(vehicleModel.getTrips()) && validateVehicleBrand(vehicleModel.getVehicleBrand()) && validateVehicleModel(vehicleModel.getModel()) && validateRegNo(vehicleModel.getRegNo()) && validateDriverEmail(vehicleModel.getDriverEmail()) && validateNoOfSeats(vehicleModel.getSeatsCount()) && validateStartingLocation(vehicleModel.getStartingPoint()) && validateDestination(vehicleModel.getEndingPoint())) {
+//        if(vehicleModel.getStartingPoint() == null) {
+//            System.out.println("StartingLocation validation error");
+//            return false;
+//        }
+//        if(vehicleModel.getEndingPoint() == null) {
+//            System.out.println("Destination validation error");
+//            return false;
+//        }
+        if(validateVehicleNo(vehicleModel.getVehicleNo()) && validateVehicleType(vehicleModel.getType()) && validateVehicleOwner(vehicleModel.getOwnerEmail()) && validateTrips(vehicleModel.getTrips()) && validateVehicleBrand(vehicleModel.getVehicleBrand()) && validateVehicleModel(vehicleModel.getModel()) && validateRegNo(vehicleModel.getRegNo()) && validateDriverEmail(vehicleModel.getDriverEmail()) && validateNoOfSeats(vehicleModel.getSeatsCount()) ) {
             System.out.println("Vehicle validation success");
             return true;
         } else {
@@ -207,12 +207,12 @@ public boolean validatePrice(double price) {
         if (valid && vehicleModel.getSeatsCount() != 0) {
             valid = validateNoOfSeats(vehicleModel.getSeatsCount());
         }
-        if (valid && vehicleModel.getStartingPoint() != null) {
-            valid = validateStartingLocation(vehicleModel.getStartingPoint());
-        }
-        if (valid && vehicleModel.getEndingPoint() != null) {
-            valid = validateDestination(vehicleModel.getEndingPoint());
-        }
+//        if (valid && vehicleModel.getStartingPoint() != null) {
+//            valid = validateStartingLocation(vehicleModel.getStartingPoint());
+//        }
+//        if (valid && vehicleModel.getEndingPoint() != null) {
+//            valid = validateDestination(vehicleModel.getEndingPoint());
+//        }
         if (valid && vehicleModel.getOwnerEmail() != null) {
             valid = validateVehicleOwner(vehicleModel.getOwnerEmail());
         }

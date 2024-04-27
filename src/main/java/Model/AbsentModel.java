@@ -132,4 +132,9 @@ public class AbsentModel {
         List<AbsentModel> absents = absentDAO.getAbsentsByPassenger(passengerEmail);
         return absents;
     }
+    public List<AbsentModel> viewAbasntListByVehicle(String vehicleNo){
+        AbsentDAO absentDAO = new AbsentDAO();
+        List<AbsentModel> absents = absentDAO.viewAbasntListByVehicle(vehicleNo);
+        return absents;
+    }
 }

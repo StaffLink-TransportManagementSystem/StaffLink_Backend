@@ -1,11 +1,11 @@
 package Controller;
 
 import Auth.JwtUtils;
-import DAO.VehicleDAO;
-import Model.PassengerModel;
+import Model.RequestModel;
 import Model.VehicleModel;
+import com.google.gson.Gson;
+import org.json.JSONObject;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -14,18 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import com.google.gson.Gson;
-import org.json.JSONObject;
+import java.util.List;
 
-@WebServlet("/vehicleRegister")
-public class createVehicleServelet extends HttpServlet{
-
+@WebServlet("/viewRequestsByVehicle")
+public class GetRequestsByVehicle extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        System.out.println("Inside vehicle register servelet");
+        System.out.println("In viewRequestsByVehicle");
 
         // Get all cookies from the request
         Cookie[] cookies = req.getCookies();
@@ -65,38 +61,37 @@ public class createVehicleServelet extends HttpServlet{
 
         try {
             Gson gson = new Gson();
+            BufferedReader reader = req.getReader();
+            VehicleModel vehicle = gson.fromJson(reader, VehicleModel.class);
+            System.out.println(vehicle.getVehicleNo());
 
-            // json data to user object
-            BufferedReader bufferedReader = req.getReader();
-            VehicleModel vehicle = gson.fromJson(bufferedReader, VehicleModel.class);
-            vehicle.setInsuranceImage("Insurance Image");
-            vehicle.setInsideImage("Inside Image");
-            vehicle.setOutsideImage("Outside Image");
-            vehicle.setRevenueLicenseImage("Revenue License Image");
-            vehicle.setVehicleRegistrationImage("Vehicle Registration Image");
-            System.out.println("vehicle starting Latitute: "+vehicle.getStartingLatitude());
-            System.out.println("vehicle starting Longitude: "+vehicle.getStartingLongitude());
-            System.out.println("vehicle ending Latitute: "+vehicle.getEndingLatitude());
-            System.out.println("vehicle ending Longitude: "+vehicle.getEndingLongitude());
+            // Get all requests by vehicle
+            RequestModel requestModel = new RequestModel();
+            List<RequestModel> requests = requestModel.getRequestsByVehicle(vehicle.getVehicleNo());
+            String requestsJson = gson.toJson(requests);
 
-
-            // All validations are passed then register
-            if(vehicle.createVerifyVehicle()){
-                res.setStatus(HttpServletResponse.SC_OK);
-                    out.write("{\"message\": \"Registration successfully\"}");
-                System.out.println("Registration successful");
-            }else{
-                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.write("{\"message\": \"Registration unsuccessfully\"}");
-                System.out.println("Registration incorrect");
+            if(requests == null){
+                res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                out.write("{\"message\": \"No requests found for the vehicle\"}");
+                return;
             }
+            if(requests.size() == 0){
+                res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                out.write("{\"message\": \"No requests found for the vehicle\"}");
+                return;
+            }
+            else {
+                res.setStatus(HttpServletResponse.SC_OK);
+                out.write("{\"size\": " + requests.size() + ",\"list\":" + requestsJson + "}");
+                System.out.println("View all requests by vehicle");
+            }
+
         }
         catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        } finally {
-            out.close();
+            res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            out.write("{\"message\": \"Internal Server Error\"}");
+            System.out.println("Internal Server Error");
         }
-    }
 
+    }
 }
