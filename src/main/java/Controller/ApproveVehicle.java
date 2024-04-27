@@ -64,11 +64,18 @@ public class ApproveVehicle extends HttpServlet {
                 out.write("{\"message\": \"Vehicle not found\"}");
                 return;
             }
-            if(vehicleModel.updateVerifyState(id,1)){
-                res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"message\": \"Vehicle approved\"}");
-                System.out.println("Vehicle approved");
-            }else{
+            if(vehicleModel.createVehicle()) {
+                if (vehicleModel.updateVerifyState(id, 2)) {
+                    res.setStatus(HttpServletResponse.SC_OK);
+                    out.write("{\"message\": \"Vehicle approved\"}");
+                    System.out.println("Vehicle approved");
+                } else {
+                    res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    out.write("{\"message\": \"Vehicle not approved\"}");
+                    System.out.println("Vehicle not approved");
+                }
+            }
+            else{
                 res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 out.write("{\"message\": \"Vehicle not approved\"}");
                 System.out.println("Vehicle not approved");

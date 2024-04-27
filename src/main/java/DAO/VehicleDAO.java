@@ -23,17 +23,20 @@ public class VehicleDAO {
                 vehicle.setId(resultSet.getInt("id"));
                 vehicle.setVehicleNo(resultSet.getString("vehicleNo"));
                 vehicle.setOwnerEmail(resultSet.getString("ownerEmail"));
-                vehicle.setVehicleBrand(resultSet.getString("vehicleBrand"));
-                vehicle.setRegNo(resultSet.getString("regNo"));
+                vehicle.setVehicleBrand(resultSet.getString("brand"));
                 vehicle.setDriverEmail(resultSet.getString("driverEmail"));
                 vehicle.setModel(resultSet.getString("model"));
                 vehicle.setType(resultSet.getString("type"));
                 vehicle.setSeatsCount(resultSet.getInt("seatsCount"));
-//                vehicle.setStartingPoint(resultSet.getString("startingPoint"));
-//                vehicle.setEndingPoint(resultSet.getString("endingPoint"));
                 vehicle.setTrips(resultSet.getString("trips"));
-                vehicle.setVarifiedState(resultSet.getString("verifiedState"));
+                vehicle.setStartingLatitude(resultSet.getString("startingLatitude"));
+                vehicle.setStartingLongitude(resultSet.getString("startingLongitude"));
+                vehicle.setEndingLatitude(resultSet.getString("endingLatitude"));
+                vehicle.setEndingLongitude(resultSet.getString("endingLongitude"));
+                vehicle.setInsideImage(resultSet.getString("insideImage"));
+                vehicle.setOutsideImage(resultSet.getString("outsideImage"));
                 vehicle.setDeleteState(resultSet.getInt("deleteState"));
+                vehicle.setCreated_at(resultSet.getString("created_at"));
             }
             resultSet.close();
             preparedStatement.close();
@@ -56,21 +59,23 @@ public class VehicleDAO {
         boolean success = false;
         try{
             System.out.println("try");
-            String sql = "INSERT INTO vehicles (vehicleNo, ownerEmail, vehicleBrand, regNo, driverEmail, model, type, seatsCount,startingPoint,endingPoint, trips, verifiedState) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO vehicles (vehicleNo, ownerEmail, brand, type, seatsCount, model, driverEmail, startingLatitude, startingLongitude, endingLatitude, endingLongitude,trips, insideImage, outsideImage) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 //            System.out.println("try");
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,vehicle.getVehicleNo());
             preparedStatement.setString(2,vehicle.getOwnerEmail());
             preparedStatement.setString(3,vehicle.getVehicleBrand());
-            preparedStatement.setString(4,vehicle.getRegNo());
-            preparedStatement.setString(5,vehicle.getDriverEmail());
+            preparedStatement.setString(4,vehicle.getType());
+            preparedStatement.setInt(5,vehicle.getSeatsCount());
             preparedStatement.setString(6,vehicle.getModel());
-            preparedStatement.setString(7,vehicle.getType());
-            preparedStatement.setInt(8,vehicle.getSeatsCount());
-//            preparedStatement.setString(9,vehicle.getStartingPoint());
-//            preparedStatement.setString(10,vehicle.getEndingPoint());
-            preparedStatement.setString(11,vehicle.getTrips());
-            preparedStatement.setString(12,vehicle.getVarifiedState());
+            preparedStatement.setString(7,vehicle.getDriverEmail());
+            preparedStatement.setString(8,vehicle.getStartingLatitude());
+            preparedStatement.setString(9,vehicle.getStartingLongitude());
+            preparedStatement.setString(10,vehicle.getEndingLatitude());
+            preparedStatement.setString(11,vehicle.getEndingLongitude());
+            preparedStatement.setString(12,vehicle.getTrips());
+            preparedStatement.setString(13,vehicle.getInsideImage());
+            preparedStatement.setString(14,vehicle.getOutsideImage());
 
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -102,21 +107,23 @@ public class VehicleDAO {
 //        System.out.println(java.time.LocalTime.now());
         try{
             con = connection;
-            System.out.println("trydlxa");
-            String sql = "UPDATE vehicles SET ownerEmail = ?, vehicleNo = ?, vehicleBrand = ?, regNo = ?, driverEmail = ?, startingPoint=?,endingPoint=?,trips=?,model=?,type=?,seatsCount=? WHERE vehicleNo = ? && deleteState = 0";
+            System.out.println("Update Vehicle");
+            String sql = "UPDATE vehicles SET ownerEmail = ?, brand = ?, type = ?, seatsCount = ?, model = ?, driverEmail = ?, startingLatitude = ?, startingLongitude = ?, endingLatitude = ?, endingLongitude = ?, trips = ?, insideImage = ?, outsideImage = ? WHERE vehicleNo = ? && deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,vehicle.getOwnerEmail());
-            preparedStatement.setString(2,vehicle.getVehicleNo());
-            preparedStatement.setString(3,vehicle.getVehicleBrand());
-            preparedStatement.setString(4,vehicle.getRegNo());
-            preparedStatement.setString(5,vehicle.getDriverEmail());
-//            preparedStatement.setString(6,vehicle.getStartingPoint());
-//            preparedStatement.setString(7,vehicle.getEndingPoint());
-            preparedStatement.setString(8,vehicle.getTrips());
-            preparedStatement.setString(9,vehicle.getModel());
-            preparedStatement.setString(10,vehicle.getType());
-            preparedStatement.setInt(11,vehicle.getSeatsCount());
-            preparedStatement.setString(12,vehicle.getVehicleNo());
+            preparedStatement.setString(2,vehicle.getVehicleBrand());
+            preparedStatement.setString(3,vehicle.getType());
+            preparedStatement.setInt(4,vehicle.getSeatsCount());
+            preparedStatement.setString(5,vehicle.getModel());
+            preparedStatement.setString(6,vehicle.getDriverEmail());
+            preparedStatement.setString(7,vehicle.getStartingLatitude());
+            preparedStatement.setString(8,vehicle.getStartingLongitude());
+            preparedStatement.setString(9,vehicle.getEndingLatitude());
+            preparedStatement.setString(10,vehicle.getEndingLongitude());
+            preparedStatement.setString(11,vehicle.getTrips());
+            preparedStatement.setString(12,vehicle.getInsideImage());
+            preparedStatement.setString(13,vehicle.getOutsideImage());
+            preparedStatement.setString(14,vehicle.getVehicleNo());
 
             int temp = preparedStatement.executeUpdate();
 
@@ -212,16 +219,20 @@ public class VehicleDAO {
                 vehicle.setId(resultSet.getInt("id"));
                 vehicle.setVehicleNo(resultSet.getString("vehicleNo"));
                 vehicle.setOwnerEmail(resultSet.getString("ownerEmail"));
-                vehicle.setVehicleBrand(resultSet.getString("vehicleBrand"));
-                vehicle.setRegNo(resultSet.getString("regNo"));
+                vehicle.setVehicleBrand(resultSet.getString("brand"));
                 vehicle.setDriverEmail(resultSet.getString("driverEmail"));
                 vehicle.setModel(resultSet.getString("model"));
                 vehicle.setType(resultSet.getString("type"));
                 vehicle.setSeatsCount(resultSet.getInt("seatsCount"));
-//                vehicle.setStartingPoint(resultSet.getString("startingPoint"));
-//                vehicle.setEndingPoint(resultSet.getString("endingPoint"));
                 vehicle.setTrips(resultSet.getString("trips"));
-//                vehicle.setVarifiedState(resultSet.getString("varifiedState"));
+                vehicle.setStartingLatitude(resultSet.getString("startingLatitude"));
+                vehicle.setStartingLongitude(resultSet.getString("startingLongitude"));
+                vehicle.setEndingLatitude(resultSet.getString("endingLatitude"));
+                vehicle.setEndingLongitude(resultSet.getString("endingLongitude"));
+                vehicle.setInsideImage(resultSet.getString("insideImage"));
+                vehicle.setOutsideImage(resultSet.getString("outsideImage"));
+                vehicle.setDeleteState(resultSet.getInt("deleteState"));
+                vehicle.setCreated_at(resultSet.getString("created_at"));
                 vehicles.add(vehicle);
             }
             resultSet.close();
@@ -247,20 +258,23 @@ public class VehicleDAO {
             System.out.println(ownerEmail);
             while(resultSet.next()){
                 VehicleModel vehicle = new VehicleModel();
-                System.out.println(resultSet.getInt("id"));
                 vehicle.setId(resultSet.getInt("id"));
                 vehicle.setVehicleNo(resultSet.getString("vehicleNo"));
                 vehicle.setOwnerEmail(resultSet.getString("ownerEmail"));
-                vehicle.setVehicleBrand(resultSet.getString("vehicleBrand"));
-                vehicle.setRegNo(resultSet.getString("regNo"));
+                vehicle.setVehicleBrand(resultSet.getString("brand"));
                 vehicle.setDriverEmail(resultSet.getString("driverEmail"));
                 vehicle.setModel(resultSet.getString("model"));
                 vehicle.setType(resultSet.getString("type"));
                 vehicle.setSeatsCount(resultSet.getInt("seatsCount"));
-//                vehicle.setStartingPoint(resultSet.getString("startingPoint"));
-//                vehicle.setEndingPoint(resultSet.getString("endingPoint"));
                 vehicle.setTrips(resultSet.getString("trips"));
-                vehicle.setVarifiedState(resultSet.getString("verifiedState"));
+                vehicle.setStartingLatitude(resultSet.getString("startingLatitude"));
+                vehicle.setStartingLongitude(resultSet.getString("startingLongitude"));
+                vehicle.setEndingLatitude(resultSet.getString("endingLatitude"));
+                vehicle.setEndingLongitude(resultSet.getString("endingLongitude"));
+                vehicle.setInsideImage(resultSet.getString("insideImage"));
+                vehicle.setOutsideImage(resultSet.getString("outsideImage"));
+                vehicle.setDeleteState(resultSet.getInt("deleteState"));
+                vehicle.setCreated_at(resultSet.getString("created_at"));
                 vehicles.add(vehicle);
             }
             resultSet.close();
@@ -333,16 +347,20 @@ public class VehicleDAO {
                 vehicle.setId(resultSet.getInt("id"));
                 vehicle.setVehicleNo(resultSet.getString("vehicleNo"));
                 vehicle.setOwnerEmail(resultSet.getString("ownerEmail"));
-                vehicle.setVehicleBrand(resultSet.getString("vehicleBrand"));
-                vehicle.setRegNo(resultSet.getString("regNo"));
+                vehicle.setVehicleBrand(resultSet.getString("brand"));
                 vehicle.setDriverEmail(resultSet.getString("driverEmail"));
                 vehicle.setModel(resultSet.getString("model"));
                 vehicle.setType(resultSet.getString("type"));
                 vehicle.setSeatsCount(resultSet.getInt("seatsCount"));
-//                vehicle.setStartingPoint(resultSet.getString("startingPoint"));
-//                vehicle.setEndingPoint(resultSet.getString("endingPoint"));
                 vehicle.setTrips(resultSet.getString("trips"));
-                vehicle.setVarifiedState(resultSet.getString("verifiedState"));
+                vehicle.setStartingLatitude(resultSet.getString("startingLatitude"));
+                vehicle.setStartingLongitude(resultSet.getString("startingLongitude"));
+                vehicle.setEndingLatitude(resultSet.getString("endingLatitude"));
+                vehicle.setEndingLongitude(resultSet.getString("endingLongitude"));
+                vehicle.setInsideImage(resultSet.getString("insideImage"));
+                vehicle.setOutsideImage(resultSet.getString("outsideImage"));
+                vehicle.setDeleteState(resultSet.getInt("deleteState"));
+                vehicle.setCreated_at(resultSet.getString("created_at"));
                 vehicles.add(vehicle);
             }
             resultSet.close();
@@ -392,16 +410,20 @@ public class VehicleDAO {
                 vehicle.setId(resultSet.getInt("id"));
                 vehicle.setVehicleNo(resultSet.getString("vehicleNo"));
                 vehicle.setOwnerEmail(resultSet.getString("ownerEmail"));
-                vehicle.setVehicleBrand(resultSet.getString("vehicleBrand"));
-                vehicle.setRegNo(resultSet.getString("regNo"));
+                vehicle.setVehicleBrand(resultSet.getString("brand"));
                 vehicle.setDriverEmail(resultSet.getString("driverEmail"));
                 vehicle.setModel(resultSet.getString("model"));
                 vehicle.setType(resultSet.getString("type"));
                 vehicle.setSeatsCount(resultSet.getInt("seatsCount"));
-//                vehicle.setStartingPoint(resultSet.getString("startingPoint"));
-//                vehicle.setEndingPoint(resultSet.getString("endingPoint"));
                 vehicle.setTrips(resultSet.getString("trips"));
-                vehicle.setVarifiedState(resultSet.getString("verifiedState"));
+                vehicle.setStartingLatitude(resultSet.getString("startingLatitude"));
+                vehicle.setStartingLongitude(resultSet.getString("startingLongitude"));
+                vehicle.setEndingLatitude(resultSet.getString("endingLatitude"));
+                vehicle.setEndingLongitude(resultSet.getString("endingLongitude"));
+                vehicle.setInsideImage(resultSet.getString("insideImage"));
+                vehicle.setOutsideImage(resultSet.getString("outsideImage"));
+                vehicle.setDeleteState(resultSet.getInt("deleteState"));
+                vehicle.setCreated_at(resultSet.getString("created_at"));
                 vehicles.add(vehicle);
             }
             resultSet.close();
@@ -429,17 +451,20 @@ public class VehicleDAO {
                 vehicle.setId(resultSet.getInt("id"));
                 vehicle.setVehicleNo(resultSet.getString("vehicleNo"));
                 vehicle.setOwnerEmail(resultSet.getString("ownerEmail"));
-                vehicle.setVehicleBrand(resultSet.getString("vehicleBrand"));
-                vehicle.setRegNo(resultSet.getString("regNo"));
+                vehicle.setVehicleBrand(resultSet.getString("brand"));
                 vehicle.setDriverEmail(resultSet.getString("driverEmail"));
                 vehicle.setModel(resultSet.getString("model"));
                 vehicle.setType(resultSet.getString("type"));
                 vehicle.setSeatsCount(resultSet.getInt("seatsCount"));
-//                vehicle.setStartingPoint(resultSet.getString("startingPoint"));
-//                vehicle.setEndingPoint(resultSet.getString("endingPoint"));
                 vehicle.setTrips(resultSet.getString("trips"));
-                vehicle.setVarifiedState(resultSet.getString("verifiedState"));
+                vehicle.setStartingLatitude(resultSet.getString("startingLatitude"));
+                vehicle.setStartingLongitude(resultSet.getString("startingLongitude"));
+                vehicle.setEndingLatitude(resultSet.getString("endingLatitude"));
+                vehicle.setEndingLongitude(resultSet.getString("endingLongitude"));
+                vehicle.setInsideImage(resultSet.getString("insideImage"));
+                vehicle.setOutsideImage(resultSet.getString("outsideImage"));
                 vehicle.setDeleteState(resultSet.getInt("deleteState"));
+                vehicle.setCreated_at(resultSet.getString("created_at"));
             }
             resultSet.close();
             preparedStatement.close();
@@ -465,17 +490,20 @@ public class VehicleDAO {
                 vehicle.setId(resultSet.getInt("id"));
                 vehicle.setVehicleNo(resultSet.getString("vehicleNo"));
                 vehicle.setOwnerEmail(resultSet.getString("ownerEmail"));
-                vehicle.setVehicleBrand(resultSet.getString("vehicleBrand"));
-                vehicle.setRegNo(resultSet.getString("regNo"));
+                vehicle.setVehicleBrand(resultSet.getString("brand"));
                 vehicle.setDriverEmail(resultSet.getString("driverEmail"));
                 vehicle.setModel(resultSet.getString("model"));
                 vehicle.setType(resultSet.getString("type"));
                 vehicle.setSeatsCount(resultSet.getInt("seatsCount"));
-//                vehicle.setStartingPoint(resultSet.getString("startingPoint"));
-//                vehicle.setEndingPoint(resultSet.getString("endingPoint"));
                 vehicle.setTrips(resultSet.getString("trips"));
-                vehicle.setVarifiedState(resultSet.getString("verifiedState"));
+                vehicle.setStartingLatitude(resultSet.getString("startingLatitude"));
+                vehicle.setStartingLongitude(resultSet.getString("startingLongitude"));
+                vehicle.setEndingLatitude(resultSet.getString("endingLatitude"));
+                vehicle.setEndingLongitude(resultSet.getString("endingLongitude"));
+                vehicle.setInsideImage(resultSet.getString("insideImage"));
+                vehicle.setOutsideImage(resultSet.getString("outsideImage"));
                 vehicle.setDeleteState(resultSet.getInt("deleteState"));
+                vehicle.setCreated_at(resultSet.getString("created_at"));
             }
             resultSet.close();
             preparedStatement.close();
@@ -514,6 +542,12 @@ public class VehicleDAO {
         }
     }
 
+
+
+
+
+
+    //======================================================================================================
     // vehicle verify stage
     public static boolean createVerifyVehicle(VehicleModel vehicleModel){
         Connection connection = DBConnection.getInstance().getConnection();
