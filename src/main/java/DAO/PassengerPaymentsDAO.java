@@ -285,7 +285,7 @@ public class PassengerPaymentsDAO {
 
         try {
             con = connection;
-            String sql = "SELECT vehicleNo, SUM(amount) AS totalCash FROM passengerpayments WHERE created_at BETWEEN ? AND ? AND paymentType='cash' GROUP BY vehicleNo";
+            String sql = "SELECT vehicleNo, SUM(amount) AS totalCash FROM passengerpayments WHERE date BETWEEN ? AND ? AND paymentType='cash' GROUP BY vehicleNo";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, fromDate);
             preparedStatement.setString(2, toDate);
@@ -316,7 +316,7 @@ public class PassengerPaymentsDAO {
 
         try {
             con = connection;
-            String sql = "SELECT vehicleNo, SUM(amount) AS totalCard FROM passengerpayments WHERE created_at BETWEEN ? AND ? AND paymentType='card' GROUP BY vehicleNo";
+            String sql = "SELECT vehicleNo, SUM(amount) AS totalCard FROM passengerpayments WHERE date BETWEEN ? AND ? AND paymentType='card' GROUP BY vehicleNo";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, fromDate);
             preparedStatement.setString(2, toDate);
