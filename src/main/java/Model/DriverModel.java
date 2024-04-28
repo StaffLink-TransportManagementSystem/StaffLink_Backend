@@ -1,6 +1,7 @@
 package Model;
 
 import DAO.DriverDAO;
+import DAO.OwnerDAO;
 import DAO.VehicleDAO;
 
 import java.sql.Time;
@@ -205,5 +206,11 @@ public class DriverModel {
     public static List<DriverModel> getTotalDrivers(String fromDate, String toDate){
         DriverDAO driverDAO = new DriverDAO();
         return driverDAO.getDriverCount(fromDate, toDate);
+    }
+
+    public boolean changePassword(String email, String password){
+        DriverDAO driverDAO = new DriverDAO();
+        boolean status = driverDAO.changePassword(email, password);
+        return  status;
     }
 }
