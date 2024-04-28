@@ -253,4 +253,15 @@ public class RequestModel {
         return  status;
     }
 
+    public List<RequestModel> getRequestsByVehicle(String vehicleNo){
+        RequestDAO requestDAO = new RequestDAO();
+        List<RequestModel> requests = requestDAO.getRequestsByVehicle(vehicleNo);
+        return requests;
+    }
+
+    public RequestModel getRequestById(int id){
+        RequestDAO requestDAO = new RequestDAO();
+        RequestModel request = requestDAO.getRequestById(id);
+        return request;
+    }
 }

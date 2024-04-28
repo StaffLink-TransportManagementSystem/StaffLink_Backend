@@ -244,6 +244,7 @@ public class PassengerDAO {
             int count = 0;
             if (resultSet.next()) {
                 count = resultSet.getInt(1); // Retrieving the count value from the result set
+                System.out.println("Count: "+count);
             }
 
             if (count > 0) {

@@ -88,19 +88,19 @@ public class GetVehicleWithImages extends HttpServlet {
             for(VehicleModel vehicle : vehicles){
                 System.out.println(vehicle.getVehicleNo());
                 VehicleModel vehicleImage = vehicle.getVehicleImages(vehicle.getVehicleNo());
-                byte[] front_image = convertImageToByteArray("C:/Users/User/Documents/Group Project/Implementation/try2/src/main/java/Images/"+vehicleImage.getFrontImage()+"."+vehicleImage.getFrontImageType());
-                byte[] back_image = convertImageToByteArray("C:/Users/User/Documents/Group Project/Implementation/try2/src/main/java/Images/"+vehicleImage.getBackImage()+"."+vehicleImage.getBackImageType());
-                byte[] side_image = convertImageToByteArray("C:/Users/User/Documents/Group Project/Implementation/try2/src/main/java/Images/"+vehicleImage.getSideImage()+"."+vehicleImage.getSideImageType());
-                byte[] inside_image = convertImageToByteArray("C:/Users/User/Documents/Group Project/Implementation/try2/src/main/java/Images/"+vehicleImage.getInsideImage()+"."+vehicleImage.getInsideImageType());
-                byte[] certificate_image = convertImageToByteArray("C:/Users/User/Documents/Group Project/Implementation/try2/src/main/java/Images/"+vehicleImage.getCertificate()+"."+vehicleImage.getCertificateType());
-                byte[] insurance_image = convertImageToByteArray("C:/Users/User/Documents/Group Project/Implementation/try2/src/main/java/Images/"+vehicleImage.getInsurance()+"."+vehicleImage.getInsuranceType());
+//                byte[] front_image = convertImageToByteArray("C:/Users/User/Documents/Group Project/Implementation/try2/src/main/java/Images/"+vehicleImage.getFrontImage()+"."+vehicleImage.getFrontImageType());
+//                byte[] back_image = convertImageToByteArray("C:/Users/User/Documents/Group Project/Implementation/try2/src/main/java/Images/"+vehicleImage.getBackImage()+"."+vehicleImage.getBackImageType());
+//                byte[] side_image = convertImageToByteArray("C:/Users/User/Documents/Group Project/Implementation/try2/src/main/java/Images/"+vehicleImage.getSideImage()+"."+vehicleImage.getSideImageType());
+//                byte[] inside_image = convertImageToByteArray("C:/Users/User/Documents/Group Project/Implementation/try2/src/main/java/Images/"+vehicleImage.getInsideImage()+"."+vehicleImage.getInsideImageType());
+//                byte[] certificate_image = convertImageToByteArray("C:/Users/User/Documents/Group Project/Implementation/try2/src/main/java/Images/"+vehicleImage.getCertificate()+"."+vehicleImage.getCertificateType());
+//                byte[] insurance_image = convertImageToByteArray("C:/Users/User/Documents/Group Project/Implementation/try2/src/main/java/Images/"+vehicleImage.getInsurance()+"."+vehicleImage.getInsuranceType());
 
-                imageList.add(front_image);
-                imageList.add(back_image);
-                imageList.add(side_image);
-                imageList.add(inside_image);
-                imageList.add(certificate_image);
-                imageList.add(insurance_image);
+//                imageList.add(front_image);
+//                imageList.add(back_image);
+//                imageList.add(side_image);
+//                imageList.add(inside_image);
+//                imageList.add(certificate_image);
+//                imageList.add(insurance_image);
             }
 
 
