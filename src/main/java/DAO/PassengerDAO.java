@@ -391,4 +391,37 @@ public class PassengerDAO {
         }
     }
 
+
+    public static boolean changePassword(String email, String password){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+        System.out.println(success);
+        try{
+            System.out.println("inside try");
+            con = connection;
+            String sql = "UPDATE passengers SET password = ? WHERE email = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1,password);
+            preparedStatement.setString(2,email);
+            int x = preparedStatement.executeUpdate();
+            System.out.println(x);
+//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if(x != 0){
+                success = true;
+            }
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (con != null) try {
+//                con.close();
+            } catch (Exception ignore) {
+            }
+        }
+        return success;
+//        return passenger;
+    }
+
 }

@@ -223,4 +223,10 @@ public class PassengerModel {
         return passengerDAO.getPassenger(email);
     }
 
+    public boolean changePassword(String email, String password){
+        PassengerDAO passengerDAO = new PassengerDAO();
+        boolean status = passengerDAO.changePassword(email, password);
+        return  status;
+    }
+
 }
