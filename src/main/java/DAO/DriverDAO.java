@@ -136,6 +136,7 @@ public class DriverDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         Connection con = null;
         boolean success = false;
+        System.out.println("hello delete driverr");
         try{
             System.out.println(email);
             con = connection;

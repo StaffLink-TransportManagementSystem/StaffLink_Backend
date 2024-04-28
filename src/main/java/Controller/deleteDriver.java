@@ -70,12 +70,13 @@ public class deleteDriver extends HttpServlet{
             // json data to user object
             BufferedReader bufferedReader = req.getReader();
             DriverModel deletedriver = gson.fromJson(bufferedReader, DriverModel.class);
+            System.out.println("Email: " + deletedriver.getEmail();
             DriverDAO driverDAO = new DriverDAO();
 
             VehicleModel vehicle = new VehicleModel();
             vehicle = vehicle.getVehicleByDriver(deletedriver.getEmail());
 
-            if(vehicle == null) {
+            if(vehicle.getVehicleNo() == null) {
                 if (driverDAO.deleteDriver(deletedriver.getEmail())) {
                     res.setStatus(HttpServletResponse.SC_OK);
                     out.write("{\"message\": \"Delete successfully\"}");
