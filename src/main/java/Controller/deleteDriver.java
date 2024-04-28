@@ -75,7 +75,7 @@ public class deleteDriver extends HttpServlet{
             VehicleModel vehicle = new VehicleModel();
             vehicle = vehicle.getVehicleByDriver(deletedriver.getEmail());
 
-            if(vehicle == null) {
+            if(vehicle.getVehicleNo() == null) {
                 if (driverDAO.deleteDriver(deletedriver.getEmail())) {
                     res.setStatus(HttpServletResponse.SC_OK);
                     out.write("{\"message\": \"Delete successfully\"}");

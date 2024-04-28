@@ -239,6 +239,7 @@ public class VehicleDAO {
             preparedStatement.close();
         }
         catch (SQLException e) {
+            System.out.println(e);
             throw new RuntimeException(e);
         } finally {
             return vehicles;

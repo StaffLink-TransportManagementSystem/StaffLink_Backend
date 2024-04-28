@@ -71,6 +71,7 @@ public class editVehicle extends HttpServlet{
             VehicleModel editVehicle = gson.fromJson(bufferedReader, VehicleModel.class);
 
             System.out.println(editVehicle.getVehicleNo());
+            System.out.println("seats"+editVehicle.getSeatsCount());
 
             boolean vehicleUpdate = editVehicle.updateVehicle();
 
