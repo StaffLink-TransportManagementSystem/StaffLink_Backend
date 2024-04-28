@@ -222,4 +222,13 @@ public class PassengerPaymentsModel {
         PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
         return passengerPaymentsDAO.vehicleCardRevenue(fromDate, toDate);
     }
+
+    public static List<PassengerPaymentsModel> paymentHistory(String email,String fromDate, String toDate){
+        System.out.println("inside paymentHistory");
+        System.out.println(email);
+        System.out.println(fromDate);
+        System.out.println(toDate);
+        PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
+        return passengerPaymentsDAO.passengerPaymentHistory(email, fromDate, toDate);
+    }
 }
