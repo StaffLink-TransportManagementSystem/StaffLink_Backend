@@ -31,6 +31,7 @@ public class DriverDAO {
                 owner.setOwnerEmail(resultSet.getString("ownerEmail"));
                 owner.setOnTrip(resultSet.getString("onTrip"));
                 owner.setPassword(resultSet.getString("password"));
+
             }
             resultSet.close();
             preparedStatement.close();

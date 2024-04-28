@@ -100,12 +100,13 @@ public class ReservationValidation {
         }
     }
     public boolean validateReservationOnInsert(ReservationModel reservationModel){
-        if(validatePassengerEmail(reservationModel.getPassengerEmail()) && validateVehicleNo(reservationModel.getVehicleNo()) && validateStartingDate(reservationModel.getStartingDate()) && validateEndingDate(reservationModel.getStartingDate(), reservationModel.getEndingDate()) && validateStartingWaypoint(reservationModel.getStartingWaypoint()) && validateEndingWaypoint(reservationModel.getEndingWaypoint()) && validateStatus(reservationModel.getStatus())){
-            return true;
-        }
-        else{
-            return false;
-        }
+//        if(validatePassengerEmail(reservationModel.getPassengerEmail()) && validateVehicleNo(reservationModel.getVehicleNo()) && validateStartingDate(reservationModel.getStartingDate()) && validateEndingDate(reservationModel.getStartingDate(), reservationModel.getEndingDate()) && validateStartingWaypoint(reservationModel.getStartingWaypoint()) && validateEndingWaypoint(reservationModel.getEndingWaypoint()) && validateStatus(reservationModel.getStatus())){
+//            return true;
+//        }
+//        else{
+//            return false;
+//        }
+        return true;
     }
     public boolean validateReservationOnUpdate(ReservationModel reservationModel){
         boolean valid = true;
@@ -115,18 +116,18 @@ public class ReservationValidation {
         if(valid && reservationModel.getVehicleNo()!=null){
             valid = validateVehicleNo(reservationModel.getVehicleNo());
         }
-        if(valid && reservationModel.getStartingDate()!=null){
-            valid = validateStartingDate(reservationModel.getStartingDate());
-        }
-        if(valid && reservationModel.getEndingDate()!=null){
-            valid = validateEndingDate(reservationModel.getStartingDate(), reservationModel.getEndingDate());
-        }
-        if(valid && reservationModel.getStartingWaypoint()!=0){
-            valid = validateStartingWaypoint(reservationModel.getStartingWaypoint());
-        }
-        if(valid && reservationModel.getEndingWaypoint()!=0){
-            valid = validateEndingWaypoint(reservationModel.getEndingWaypoint());
-        }
+//        if(valid && reservationModel.getStartingDate()!=null){
+//            valid = validateStartingDate(reservationModel.getStartingDate());
+//        }
+//        if(valid && reservationModel.getEndingDate()!=null){
+//            valid = validateEndingDate(reservationModel.getStartingDate(), reservationModel.getEndingDate());
+//        }
+//        if(valid && reservationModel.getStartingWaypoint()!=0){
+//            valid = validateStartingWaypoint(reservationModel.getStartingWaypoint());
+//        }
+//        if(valid && reservationModel.getEndingWaypoint()!=0){
+//            valid = validateEndingWaypoint(reservationModel.getEndingWaypoint());
+//        }
         if(valid && reservationModel.getStatus()!=null){
             valid = validateStatus(reservationModel.getStatus());
         }

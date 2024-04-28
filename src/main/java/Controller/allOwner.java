@@ -22,6 +22,7 @@ import org.json.JSONObject;
 @WebServlet("/viewAllOwner")
 public class allOwner extends HttpServlet {
 
+
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
