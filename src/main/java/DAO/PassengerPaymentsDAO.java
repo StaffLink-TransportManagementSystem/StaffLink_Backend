@@ -285,7 +285,7 @@ public class PassengerPaymentsDAO {
 
         try {
             con = connection;
-            String sql = "SELECT vehicleNo, SUM(amount) AS totalCash FROM passengerpayments WHERE created_at BETWEEN ? AND ? AND paymentType='cash' GROUP BY vehicleNo";
+            String sql = "SELECT vehicleNo, SUM(amount) AS totalCash FROM passengerpayments WHERE date BETWEEN ? AND ? AND paymentType='cash' GROUP BY vehicleNo";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, fromDate);
             preparedStatement.setString(2, toDate);
@@ -316,7 +316,7 @@ public class PassengerPaymentsDAO {
 
         try {
             con = connection;
-            String sql = "SELECT vehicleNo, SUM(amount) AS totalCard FROM passengerpayments WHERE created_at BETWEEN ? AND ? AND paymentType='card' GROUP BY vehicleNo";
+            String sql = "SELECT vehicleNo, SUM(amount) AS totalCard FROM passengerpayments WHERE date BETWEEN ? AND ? AND paymentType='card' GROUP BY vehicleNo";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, fromDate);
             preparedStatement.setString(2, toDate);
@@ -335,5 +335,71 @@ public class PassengerPaymentsDAO {
         } finally {
             return passengerPayments;
         }
+    }
+
+
+    public static List<PassengerPaymentsModel> passengerPaymentHistory(String email, String fromDate, String toDate) {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        List<PassengerPaymentsModel> passengerPayments = new ArrayList<>();
+//        int count = 0;
+
+        try {
+            con = connection;
+            String sql = "SELECT date, vehicleNo, amount, paymentType FROM passengerpayments WHERE passengerEmail = ? AND date BETWEEN ? AND ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, fromDate);
+            preparedStatement.setString(3, toDate);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                PassengerPaymentsModel passengerPayment = new PassengerPaymentsModel();
+                passengerPayment.setDate(resultSet.getString("date"));
+                passengerPayment.setVehicleNo(resultSet.getString("vehicleNo"));
+                passengerPayment.setAmount(resultSet.getFloat("amount"));
+                passengerPayment.setPaymentType(resultSet.getString("paymentType"));
+                passengerPayments.add(passengerPayment);
+            }
+            resultSet.close();
+            preparedStatement.close();
+            System.out.println(passengerPayments);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return passengerPayments;
+        }
+    }
+
+
+    public static List<PassengerPaymentsModel> ownerVehicleRevenue(String ownerEmail, String fromDate, String toDate){
+        Connection connection = DBConnection.getInstance().getConnection();
+        List<PassengerPaymentsModel> passengerPayments = new ArrayList<>();
+        try{
+            String sql = "SELECT vehicleNo, SUM(CASE WHEN paymentType = 'cash' THEN amount ELSE 0 END) AS cash_total, SUM(CASE WHEN paymentType = 'card' THEN amount ELSE 0 END) AS card_total, SUM(amount) AS total_amount FROM passengerPayments WHERE vehicleNo IN (SELECT vehicleNo FROM vehicles WHERE ownerEmail = ?) AND date BETWEEN ? AND ? GROUP BY vehicleNo";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, ownerEmail);
+            preparedStatement.setString(2, fromDate);
+            preparedStatement.setString(3, toDate);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+//            System.out.println(sql);
+
+            while (resultSet.next()) {
+                PassengerPaymentsModel passengerPayment = new PassengerPaymentsModel();
+                passengerPayment.setVehicleNo(resultSet.getString("vehicleNo"));
+                passengerPayment.setCashTotal(resultSet.getFloat("cash_total"));
+                passengerPayment.setCardTotal(resultSet.getFloat("card_total"));
+                passengerPayment.setTotalAmount(resultSet.getFloat("total_amount"));
+                passengerPayments.add(passengerPayment);
+            }
+            resultSet.close();
+            preparedStatement.close();
+            System.out.println(passengerPayments);
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        return passengerPayments;
     }
 }
