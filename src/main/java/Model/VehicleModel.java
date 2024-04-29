@@ -399,4 +399,9 @@ public class VehicleModel {
         return vehicleDAO.updateVerifyState(id, varifiedState);
     }
 
+    public List<VehicleModel> viewAllVerifyVehicles(){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.viewAllVerifyVehicles();
+    }
+
 }

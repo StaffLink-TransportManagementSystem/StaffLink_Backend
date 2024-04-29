@@ -663,4 +663,46 @@ public class VehicleDAO {
         }
     }
 
+    public static List<VehicleModel> viewAllVerifyVehicles(){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        List<VehicleModel> vehicles = new ArrayList<>();
+        try{
+            con = connection;
+            String sql = "SELECT * FROM verifyvehicles";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                VehicleModel vehicle = new VehicleModel();
+                vehicle.setId(resultSet.getInt("id"));
+                vehicle.setVehicleNo(resultSet.getString("vehicleNo"));
+                vehicle.setOwnerEmail(resultSet.getString("ownerEmail"));
+                vehicle.setVehicleBrand(resultSet.getString("brand"));
+                vehicle.setDriverEmail(resultSet.getString("driverEmail"));
+                vehicle.setModel(resultSet.getString("model"));
+                vehicle.setType(resultSet.getString("type"));
+                vehicle.setSeatsCount(resultSet.getInt("seatsCount"));
+                vehicle.setTrips(resultSet.getString("trips"));
+                vehicle.setStartingLatitude(resultSet.getString("startingLatitude"));
+                vehicle.setStartingLongitude(resultSet.getString("startingLongitude"));
+                vehicle.setEndingLatitude(resultSet.getString("endingLatitude"));
+                vehicle.setEndingLongitude(resultSet.getString("endingLongitude"));
+                vehicle.setInsideImage(resultSet.getString("insideImage"));
+                vehicle.setOutsideImage(resultSet.getString("outsideImage"));
+                vehicle.setRevenueLicenseImage(resultSet.getString("revenueLicenseImage"));
+                vehicle.setVehicleRegistrationImage(resultSet.getString("vehicleRegistrationImage"));
+                vehicle.setInsuranceImage(resultSet.getString("insuranceImage"));
+                vehicle.setVarifiedState(resultSet.getString("varifiedState"));
+                vehicles.add(vehicle);
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return vehicles;
+        }
+    }
+
 }
