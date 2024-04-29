@@ -15,7 +15,7 @@ import java.util.List;
 
 @WebFilter("/*")
 public class CorsFilter implements Filter {
-    private static final String[] allowedOrigins = {"http://127.0.0.1:5558", "http://127.0.0.1:5501", "http://127.0.0.1:5567"};
+    private static final String[] allowedOrigins = {"http://127.0.0.1:5558", "http://127.0.0.1:5560", "http://127.0.0.1:5501", "http://127.0.0.1:5567"};
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
