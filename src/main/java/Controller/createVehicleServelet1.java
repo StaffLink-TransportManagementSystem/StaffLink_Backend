@@ -37,10 +37,14 @@ public class createVehicleServelet1 extends HttpServlet {
             vehicleModel.setVehicleNo(req.getParameter("vehicleNo"));
             vehicleModel.setOwnerEmail(req.getParameter("ownerEmail"));
             vehicleModel.setType(req.getParameter("type"));
-            vehicleModel.setBrand(req.getParameter("vehicleBrand"));
+            String brand = req.getParameter("brand");
+            System.out.println("Brand: " + brand);
+            vehicleModel.setBrand(brand);
             vehicleModel.setModel(req.getParameter("model"));
             vehicleModel.setDriverEmail(req.getParameter("driverEmail"));
-            vehicleModel.setSeatsCount(Integer.parseInt(req.getParameter("seatsCount")));
+            String seats = req.getParameter("availableSeats");
+            System.out.println("Seats: " + seats);
+            vehicleModel.setSeatsCount(Integer.parseInt(seats));
             vehicleModel.setStartingLatitude(req.getParameter("startingLatitude"));
             vehicleModel.setStartingLongitude(req.getParameter("startingLongitude"));
             vehicleModel.setEndingLatitude(req.getParameter("endingLatitude"));

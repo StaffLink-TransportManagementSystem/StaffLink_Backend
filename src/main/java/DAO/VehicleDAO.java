@@ -55,6 +55,20 @@ public class VehicleDAO {
     public static boolean createVehicle(VehicleModel vehicle){
         Connection connection = DBConnection.getInstance().getConnection();
         System.out.println("Inside CP");
+        System.out.println("Vehicle No: "+vehicle.getVehicleNo());
+        System.out.println("Owner Email: "+vehicle.getOwnerEmail());
+        System.out.println("Vehicle Brand: "+vehicle.getVehicleBrand());
+        System.out.println("Type: "+vehicle.getType());
+        System.out.println("Seats Count: "+vehicle.getSeatsCount());
+        System.out.println("Model: "+vehicle.getModel());
+        System.out.println("Driver Email: "+vehicle.getDriverEmail());
+        System.out.println("Starting Latitude: "+vehicle.getStartingLatitude());
+        System.out.println("Starting Longitude: "+vehicle.getStartingLongitude());
+        System.out.println("Ending Latitude: "+vehicle.getEndingLatitude());
+        System.out.println("Ending Longitude: "+vehicle.getEndingLongitude());
+        System.out.println("Trips: "+vehicle.getTrips());
+        System.out.println("Inside Image: "+vehicle.getInsideImage());
+        System.out.println("Outside Image: "+vehicle.getOutsideImage());
 //        Connection connection = DBConnection.getInstance().getConnection();;
         boolean success = false;
         try{
@@ -555,6 +569,15 @@ public class VehicleDAO {
         boolean success = false;
         System.out.println("Inside create verify vehicle");
         System.out.println("Vehicle No: "+vehicleModel.getVehicleNo());
+        System.out.println("ownerEmail" + vehicleModel.getOwnerEmail());
+        System.out.println("Vehicle Brand: "+vehicleModel.getVehicleBrand());
+        System.out.println("Type: "+vehicleModel.getType());
+        System.out.println("Seats Count: "+vehicleModel.getSeatsCount());
+        System.out.println("Model: "+vehicleModel.getModel());
+        System.out.println("Driver Email: "+vehicleModel.getDriverEmail());
+        System.out.println("Starting Latitude: "+vehicleModel.getStartingLatitude());
+        System.out.println("Starting Longitude: "+vehicleModel.getStartingLongitude());
+        System.out.println("Ending Latitude: "+vehicleModel.getEndingLatitude());
 
         try{
             String sql = "INSERT INTO verifyvehicles (vehicleNo, ownerEmail, brand, type, seatsCount, model, driverEmail, startingLatitude, startingLongitude, endingLatitude, endingLongitude,trips,varifiedState, insideImage, outsideImage, revenueLicenseImage, vehicleRegistrationImage, insuranceImage) VALUES (?,? ,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
