@@ -744,4 +744,27 @@ public class VehicleDAO {
         }
     }
 
+    public boolean approveVehicleRequest(int id, int varifiedState){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+        try{
+            con = connection;
+            String sql = "UPDATE verifyvehicles SET varifiedState = ? WHERE id = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1,varifiedState);
+            preparedStatement.setInt(2,id);
+            int x = preparedStatement.executeUpdate();
+            if(x != 0){
+                success = true;
+            }
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return success;
+        }
+    }
+
 }

@@ -409,4 +409,13 @@ public class VehicleModel {
         return vehicleDAO.getVehicleRequest(id);
     }
 
+    public boolean approveVehicleRequest(int id){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.approveVehicleRequest(id,1);
+    }
+
+    public boolean rejectVehicleRequest(int id){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.approveVehicleRequest(id,2);
+    }
 }
