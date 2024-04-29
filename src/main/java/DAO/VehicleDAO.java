@@ -705,4 +705,43 @@ public class VehicleDAO {
         }
     }
 
+    public static VehicleModel getVehicleRequest(int id){
+        Connection connection = DBConnection.getInstance().getConnection();
+        VehicleModel vehicle = new VehicleModel();
+        try{
+            String sql = "SELECT * FROM verifyvehicles WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                vehicle.setId(resultSet.getInt("id"));
+                vehicle.setVehicleNo(resultSet.getString("vehicleNo"));
+                vehicle.setOwnerEmail(resultSet.getString("ownerEmail"));
+                vehicle.setVehicleBrand(resultSet.getString("brand"));
+                vehicle.setType(resultSet.getString("type"));
+                vehicle.setSeatsCount(resultSet.getInt("seatsCount"));
+                vehicle.setModel(resultSet.getString("model"));
+                vehicle.setDriverEmail(resultSet.getString("driverEmail"));
+                vehicle.setStartingLatitude(resultSet.getString("startingLatitude"));
+                vehicle.setStartingLongitude(resultSet.getString("startingLongitude"));
+                vehicle.setEndingLatitude(resultSet.getString("endingLatitude"));
+                vehicle.setEndingLongitude(resultSet.getString("endingLongitude"));
+                vehicle.setTrips(resultSet.getString("trips"));
+                vehicle.setVarifiedState(resultSet.getString("varifiedState"));
+                vehicle.setInsideImage(resultSet.getString("insideImage"));
+                vehicle.setOutsideImage(resultSet.getString("outsideImage"));
+                vehicle.setRevenueLicenseImage(resultSet.getString("revenueLicenseImage"));
+                vehicle.setVehicleRegistrationImage(resultSet.getString("vehicleRegistrationImage"));
+                vehicle.setInsuranceImage(resultSet.getString("insuranceImage"));
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return vehicle;
+        }
+    }
+
 }

@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 import java.util.Date;
 
 @MultipartConfig(
-        location = "C:/Users/User/Downloads/StaffLInk/StaffLink_Backend/src/main/java/Images",
+        location = "C:/Users/User/Downloads/StaffLInk/StaffLink_Web_Frontend/Public/Images",
         fileSizeThreshold = 2 * 1024 * 1024, // 2MB
         maxFileSize = 5 * 1024 * 1024, // 5MB
         maxRequestSize = 11 * 1024 * 1024 //10MB

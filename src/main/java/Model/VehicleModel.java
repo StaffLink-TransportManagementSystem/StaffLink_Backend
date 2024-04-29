@@ -404,4 +404,9 @@ public class VehicleModel {
         return vehicleDAO.viewAllVerifyVehicles();
     }
 
+    public VehicleModel getVehicleRequest(int id){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.getVehicleRequest(id);
+    }
+
 }
