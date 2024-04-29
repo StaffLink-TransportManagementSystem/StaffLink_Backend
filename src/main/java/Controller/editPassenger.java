@@ -72,11 +72,13 @@ public class editPassenger extends HttpServlet{
             PassengerModel editPassenger = gson.fromJson(bufferedReader, PassengerModel.class);
 
             System.out.println(editPassenger.getNIC());
+            System.out.println("name"+ editPassenger.getName());
 
             boolean passengerUpdate = false;
             System.out.println(editPassenger.getId());
             System.out.println(editPassenger.getEmail());
             System.out.println(editPassenger.getPassword());
+            System.out.println(editPassenger.getContactNo());
 
             passengerUpdate = editPassenger.updatePassenger();
             if(passengerUpdate) {
