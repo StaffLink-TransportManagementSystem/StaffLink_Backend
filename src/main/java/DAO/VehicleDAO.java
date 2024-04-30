@@ -844,14 +844,17 @@ public class VehicleDAO {
         Connection con = null;
         boolean success = false;
         try{
+
+            System.out.println("Inside update verify vehicle");
             con = connection;
-            String sql = "UPDATE verifyvehicles SET startingLatitude=? , startingLongitude=? , endingLatitude=? , endingLongitude=? WHERE vehicleNo = ? && deleteState = 0";
+            String sql = "UPDATE verifyvehicles SET insideImage=? , outsideImage=? , insuranceImage=? , vehicleRegistrationImage=?, revenueLicenseImage=? WHERE vehicleNo = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1,vehicleModel.getStartingLatitude());
-            preparedStatement.setString(2,vehicleModel.getStartingLongitude());
-            preparedStatement.setString(3,vehicleModel.getEndingLatitude());
-            preparedStatement.setString(4,vehicleModel.getEndingLongitude());
-            preparedStatement.setString(5,vehicleModel.getVehicleNo());
+            preparedStatement.setString(1,vehicleModel.getInsideImage());
+            preparedStatement.setString(2,vehicleModel.getOutsideImage());
+            preparedStatement.setString(3,vehicleModel.getInsuranceImage());
+            preparedStatement.setString(4,vehicleModel.getVehicleRegistrationImage());
+            preparedStatement.setString(5,vehicleModel.getRevenueLicenseImage());
+            preparedStatement.setString(6,vehicleModel.getVehicleNo());
 
             int x = preparedStatement.executeUpdate();
             if(x != 0){
@@ -860,6 +863,7 @@ public class VehicleDAO {
             preparedStatement.close();
         }
         catch (SQLException e) {
+            System.out.println(e);
             throw new RuntimeException(e);
         } finally {
             return success;

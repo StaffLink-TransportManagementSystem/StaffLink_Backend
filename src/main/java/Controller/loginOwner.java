@@ -39,6 +39,8 @@ public class loginOwner extends HttpServlet{
 
             if(ownerModel.getId() != 0){
                 res.setStatus(HttpServletResponse.SC_OK);
+                System.out.println("ownerModel Password: " + ownerModel.getPassword());
+                System.out.println("loginModel Password: " + loginModel.getPassword());
                 if(ownerModel.getPassword().equals(loginModel.getPassword())) {
 
                     JSONObject payload = new JSONObject();
