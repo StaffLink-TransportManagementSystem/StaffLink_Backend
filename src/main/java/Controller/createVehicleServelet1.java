@@ -36,15 +36,22 @@ public class createVehicleServelet1 extends HttpServlet {
             VehicleModel vehicleModel = new VehicleModel();
             vehicleModel.setVehicleNo(req.getParameter("vehicleNo"));
             vehicleModel.setOwnerEmail(req.getParameter("ownerEmail"));
-            vehicleModel.setType(req.getParameter("type"));
-            String brand = req.getParameter("brand");
+            vehicleModel.setType(req.getParameter("vehicleType"));
+            String brand = req.getParameter("vehicleBrand");
             System.out.println("Brand: " + brand);
+            if(brand == null || brand.isEmpty()){
+                brand = "Toyota";
+            }
             vehicleModel.setBrand(brand);
             vehicleModel.setModel(req.getParameter("model"));
             vehicleModel.setDriverEmail(req.getParameter("driverEmail"));
             String seats = req.getParameter("availableSeats");
             System.out.println("Seats: " + seats);
+            if(seats == null || seats.isEmpty()){
+                seats = "4";
+            }
             vehicleModel.setSeatsCount(Integer.parseInt(seats));
+
             vehicleModel.setStartingLatitude(req.getParameter("startingLatitude"));
             vehicleModel.setStartingLongitude(req.getParameter("startingLongitude"));
             vehicleModel.setEndingLatitude(req.getParameter("endingLatitude"));
@@ -71,6 +78,21 @@ public class createVehicleServelet1 extends HttpServlet {
             Part vehicleRegistrationImagePart = req.getPart("vehicleRegistrationImage");
             String vehicleRegistrationImageName = getSubmittedFileName(insideImagePart);
             String vehicleRegistrationImageType = getFileTypeFromFileName(insideImageName);
+
+            System.out.println("Check 1");
+            System.out.println("Vehicle No: " + vehicleModel.getVehicleNo());
+            System.out.println("Owner Email: " + vehicleModel.getOwnerEmail());
+            System.out.println("Vehicle Type: " + vehicleModel.getType());
+            System.out.println("Brand: " + vehicleModel.getBrand());
+            System.out.println("Model: " + vehicleModel.getModel());
+            System.out.println("Driver Email: " + vehicleModel.getDriverEmail());
+            System.out.println("Seats: " + vehicleModel.getSeatsCount());
+            System.out.println("Starting Latitude: " + vehicleModel.getStartingLatitude());
+            System.out.println("Starting Longitude: " + vehicleModel.getStartingLongitude());
+            System.out.println("Ending Latitude: " + vehicleModel.getEndingLatitude());
+            System.out.println("Ending Longitude: " + vehicleModel.getEndingLongitude());
+            System.out.println("Trips: " + vehicleModel.getTrips());
+
 
 
 

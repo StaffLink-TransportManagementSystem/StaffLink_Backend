@@ -73,23 +73,23 @@ public class VehicleDAO {
         boolean success = false;
         try{
             System.out.println("try");
-            String sql = "INSERT INTO vehicles (vehicleNo, ownerEmail, brand, type, seatsCount, model, driverEmail, startingLatitude, startingLongitude, endingLatitude, endingLongitude,trips, insideImage, outsideImage) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO vehicles (ownerEmail, vehicleNo, brand, model, driverEmail, trips, type, seatsCount, insideImage, outsideImage, startingLatitude, startingLongitude, endingLatitude, endingLongitude) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 //            System.out.println("try");
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1,vehicle.getVehicleNo());
-            preparedStatement.setString(2,vehicle.getOwnerEmail());
+            preparedStatement.setString(1,vehicle.getOwnerEmail());
+            preparedStatement.setString(2,vehicle.getVehicleNo());
             preparedStatement.setString(3,vehicle.getVehicleBrand());
-            preparedStatement.setString(4,vehicle.getType());
-            preparedStatement.setInt(5,vehicle.getSeatsCount());
-            preparedStatement.setString(6,vehicle.getModel());
-            preparedStatement.setString(7,vehicle.getDriverEmail());
-            preparedStatement.setString(8,vehicle.getStartingLatitude());
-            preparedStatement.setString(9,vehicle.getStartingLongitude());
-            preparedStatement.setString(10,vehicle.getEndingLatitude());
-            preparedStatement.setString(11,vehicle.getEndingLongitude());
-            preparedStatement.setString(12,vehicle.getTrips());
-            preparedStatement.setString(13,vehicle.getInsideImage());
-            preparedStatement.setString(14,vehicle.getOutsideImage());
+            preparedStatement.setString(4,vehicle.getModel());
+            preparedStatement.setString(5,vehicle.getDriverEmail());
+            preparedStatement.setString(6,vehicle.getTrips());
+            preparedStatement.setString(7,vehicle.getType());
+            preparedStatement.setInt(8,vehicle.getSeatsCount());
+            preparedStatement.setString(9,vehicle.getInsideImage());
+            preparedStatement.setString(10,vehicle.getOutsideImage());
+            preparedStatement.setString(11,vehicle.getStartingLatitude());
+            preparedStatement.setString(12,vehicle.getStartingLongitude());
+            preparedStatement.setString(13,vehicle.getEndingLatitude());
+            preparedStatement.setString(14,vehicle.getEndingLongitude());
 
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -102,6 +102,7 @@ public class VehicleDAO {
 
         }
         catch (SQLException e) {
+            System.out.println(e);
             throw new RuntimeException(e);
         } finally {
             if (connection != null) try {
@@ -570,7 +571,7 @@ public class VehicleDAO {
         System.out.println("Inside create verify vehicle");
         System.out.println("Vehicle No: "+vehicleModel.getVehicleNo());
         System.out.println("ownerEmail" + vehicleModel.getOwnerEmail());
-        System.out.println("Vehicle Brand: "+vehicleModel.getVehicleBrand());
+        System.out.println("Vehicle Brand: "+vehicleModel.getBrand());
         System.out.println("Type: "+vehicleModel.getType());
         System.out.println("Seats Count: "+vehicleModel.getSeatsCount());
         System.out.println("Model: "+vehicleModel.getModel());
@@ -580,26 +581,27 @@ public class VehicleDAO {
         System.out.println("Ending Latitude: "+vehicleModel.getEndingLatitude());
 
         try{
-            String sql = "INSERT INTO verifyvehicles (vehicleNo, ownerEmail, brand, type, seatsCount, model, driverEmail, startingLatitude, startingLongitude, endingLatitude, endingLongitude,trips,varifiedState, insideImage, outsideImage, revenueLicenseImage, vehicleRegistrationImage, insuranceImage) VALUES (?,? ,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO verifyvehicles (vehicleNo, ownerEmail, type, brand, model, seatsCount, driverEmail, startingLatitude, startingLongitude, endingLatitude, endingLongitude,trips, insideImage, outsideImage, revenueLicenseImage, vehicleRegistrationImage, insuranceImage) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,vehicleModel.getVehicleNo());
             preparedStatement.setString(2,vehicleModel.getOwnerEmail());
-            preparedStatement.setString(3,vehicleModel.getVehicleBrand());
-            preparedStatement.setString(4,vehicleModel.getType());
-            preparedStatement.setInt(5,vehicleModel.getSeatsCount());
-            preparedStatement.setString(6,vehicleModel.getModel());
+            preparedStatement.setString(3,vehicleModel.getType());
+            preparedStatement.setString(4,vehicleModel.getVehicleBrand());
+            preparedStatement.setString(5,vehicleModel.getModel());
+            preparedStatement.setInt(6,vehicleModel.getSeatsCount());
             preparedStatement.setString(7,vehicleModel.getDriverEmail());
             preparedStatement.setString(8,vehicleModel.getStartingLatitude());
             preparedStatement.setString(9,vehicleModel.getStartingLongitude());
             preparedStatement.setString(10,vehicleModel.getEndingLatitude());
             preparedStatement.setString(11,vehicleModel.getEndingLongitude());
             preparedStatement.setString(12,vehicleModel.getTrips());
-            preparedStatement.setInt(13,0);
-            preparedStatement.setString(14,vehicleModel.getInsideImage());
-            preparedStatement.setString(15,vehicleModel.getOutsideImage());
-            preparedStatement.setString(16,vehicleModel.getRevenueLicenseImage());
-            preparedStatement.setString(17,vehicleModel.getVehicleRegistrationImage());
-            preparedStatement.setString(18,vehicleModel.getInsuranceImage());
+            preparedStatement.setString(13,vehicleModel.getInsideImage());
+            preparedStatement.setString(14,vehicleModel.getOutsideImage());
+            preparedStatement.setString(15,vehicleModel.getRevenueLicenseImage());
+            preparedStatement.setString(16,vehicleModel.getVehicleRegistrationImage());
+            preparedStatement.setString(17,vehicleModel.getInsuranceImage());
+
+
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
 
@@ -777,6 +779,80 @@ public class VehicleDAO {
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1,varifiedState);
             preparedStatement.setInt(2,id);
+            int x = preparedStatement.executeUpdate();
+            if(x != 0){
+                success = true;
+            }
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return success;
+        }
+    }
+
+    public static boolean createVehicleWithoutImages(VehicleModel vehicleModel) {
+        Connection connection = DBConnection.getInstance().getConnection();
+        boolean success = false;
+        System.out.println("Inside create vehicle without images");
+        System.out.println("Vehicle No: " + vehicleModel.getVehicleNo());
+        System.out.println("ownerEmail" + vehicleModel.getOwnerEmail());
+        System.out.println("Vehicle Brand: " + vehicleModel.getBrand());
+        System.out.println("Type: " + vehicleModel.getType());
+        System.out.println("Seats Count: " + vehicleModel.getSeatsCount());
+        System.out.println("Model: " + vehicleModel.getModel());
+        System.out.println("Driver Email: " + vehicleModel.getDriverEmail());
+        System.out.println("Starting Latitude: " + vehicleModel.getStartingLatitude());
+        System.out.println("Starting Longitude: " + vehicleModel.getStartingLongitude());
+        System.out.println("Ending Latitude: " + vehicleModel.getEndingLatitude());
+
+        try {
+            String sql = "INSERT INTO verifyvehicles (vehicleNo, ownerEmail, type, brand, model, seatsCount, driverEmail, startingLatitude, startingLongitude, endingLatitude, endingLongitude,trips) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, vehicleModel.getVehicleNo());
+            preparedStatement.setString(2, vehicleModel.getOwnerEmail());
+            preparedStatement.setString(3, vehicleModel.getType());
+            preparedStatement.setString(4, vehicleModel.getVehicleBrand());
+            preparedStatement.setString(5, vehicleModel.getModel());
+            preparedStatement.setInt(6, vehicleModel.getSeatsCount());
+            preparedStatement.setString(7, vehicleModel.getDriverEmail());
+            preparedStatement.setString(8, vehicleModel.getStartingLatitude());
+            preparedStatement.setString(9, vehicleModel.getStartingLongitude());
+            preparedStatement.setString(10, vehicleModel.getEndingLatitude());
+            preparedStatement.setString(11, vehicleModel.getEndingLongitude());
+            preparedStatement.setString(12, vehicleModel.getTrips());
+
+            preparedStatement.executeUpdate();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+
+            if (resultSet.next()) {
+                success = true;
+            }
+            resultSet.close();
+            preparedStatement.close();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+            throw new RuntimeException(e);
+        }
+        return success;
+    }
+
+    public static boolean updateVerifyVehicle(VehicleModel vehicleModel){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+        try{
+            con = connection;
+            String sql = "UPDATE verifyvehicles SET startingLatitude=? , startingLongitude=? , endingLatitude=? , endingLongitude=? WHERE vehicleNo = ? && deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1,vehicleModel.getStartingLatitude());
+            preparedStatement.setString(2,vehicleModel.getStartingLongitude());
+            preparedStatement.setString(3,vehicleModel.getEndingLatitude());
+            preparedStatement.setString(4,vehicleModel.getEndingLongitude());
+            preparedStatement.setString(5,vehicleModel.getVehicleNo());
+
             int x = preparedStatement.executeUpdate();
             if(x != 0){
                 success = true;

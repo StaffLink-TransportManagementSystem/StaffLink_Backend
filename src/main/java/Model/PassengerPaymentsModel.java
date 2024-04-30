@@ -21,6 +21,8 @@ public class PassengerPaymentsModel {
     private String fromDate;
     private String toDate;
 
+
+
     public String getStatus() {
         return status;
     }
@@ -188,7 +190,7 @@ public class PassengerPaymentsModel {
         return passengerPaymentsDAO.viewPassengerPaymentList(email);
     }
 
-    public List<PassengerPaymentsModel> getPaymentsByOwner(String email){
+    public static List<PassengerPaymentsModel> getPaymentsByOwner(String email){
         PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
         return passengerPaymentsDAO.viewPaymentListByOwner(email);
     }

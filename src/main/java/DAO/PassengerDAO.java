@@ -28,6 +28,7 @@ public class PassengerDAO {
                 passenger.setNIC(resultSet.getString("NIC"));
                 passenger.setContactNo(resultSet.getString("contact"));
                 passenger.setPassword(resultSet.getString("password"));
+                passenger.setCreatedDate(resultSet.getString("created_at"));
             }
             resultSet.close();
             preparedStatement.close();
@@ -184,6 +185,7 @@ public class PassengerDAO {
                 passenger.setNIC(resultSet.getString("NIC"));
                 passenger.setPassword(resultSet.getString("password"));
                 passenger.setCreatedDate(resultSet.getString("created_at"));
+                passenger.setContactNo(resultSet.getString("contact"));
                 passengers.add(passenger);
 
             }
@@ -214,6 +216,8 @@ public class PassengerDAO {
                 passenger.setEmail(resultSet.getString("email"));
                 passenger.setNIC(resultSet.getString("NIC"));
                 passenger.setPassword(resultSet.getString("password"));
+                passenger.setContactNo(resultSet.getString("contact"));
+                passenger.setCreatedDate(resultSet.getString("created_at"));
                 passengers.add(passenger);
 
             }
@@ -423,6 +427,35 @@ public class PassengerDAO {
         }
         return success;
 //        return passenger;
+    }
+
+    public static List<PassengerModel> getPassengersByVehicle(String vehicleNo){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        List<PassengerModel> passengers = new ArrayList<>();
+        try{
+            con = connection;
+            String sql = "SELECT * FROM passengers WHERE email IN (SELECT email FROM reservations WHERE vehicleNo = ? AND deleteState=0) AND deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1,vehicleNo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                PassengerModel passenger = new PassengerModel();
+                passenger.setId(resultSet.getInt("id"));
+                passenger.setName(resultSet.getString("name"));
+                passenger.setEmail(resultSet.getString("email"));
+                passenger.setNIC(resultSet.getString("NIC"));
+                passenger.setContactNo(resultSet.getString("contact"));
+                passengers.add(passenger);
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return passengers;
+        }
     }
 
 }

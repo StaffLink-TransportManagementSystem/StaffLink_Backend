@@ -325,7 +325,7 @@ public class VehicleModel {
         VehicleDAO vehicleDAO = new VehicleDAO();
         return vehicleDAO.viewAllVehicles();
     }
-    public List<VehicleModel> viewVehicleList(String email){
+    public static List<VehicleModel> viewVehicleList(String email){
         VehicleDAO vehicleDAO = new VehicleDAO();
         return vehicleDAO.viewVehicleList(email);
     }
@@ -417,5 +417,15 @@ public class VehicleModel {
     public boolean rejectVehicleRequest(int id){
         VehicleDAO vehicleDAO = new VehicleDAO();
         return vehicleDAO.approveVehicleRequest(id,2);
+    }
+
+    public boolean createVehicleWithoutImages(){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.createVehicleWithoutImages(this);
+    }
+
+    public boolean updateVerifyVehicle(){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.updateVerifyVehicle(this);
     }
 }
