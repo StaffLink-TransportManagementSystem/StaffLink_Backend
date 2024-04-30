@@ -62,6 +62,25 @@ public class ApproveVehicleRequestServelet extends HttpServlet {
             VehicleModel vehicleModel = new VehicleModel();
             if (vehicleModel.approveVehicleRequest(vehicle_id)) {
                 VehicleModel vehicle = vehicleModel.getVehicleRequest(vehicle_id);
+                System.out.println("vehicle No"+vehicle.getVehicleNo());
+                System.out.println("owner Email"+vehicle.getOwnerEmail());
+                System.out.println("vehicle Type"+vehicle.getType());
+                System.out.println("brand"+vehicle.getBrand());
+                System.out.println("model"+vehicle.getModel());
+                System.out.println("seats"+vehicle.getSeatsCount());
+                System.out.println("driver Email"+vehicle.getDriverEmail());
+                System.out.println("starting latitude"+vehicle.getStartingLatitude());
+                System.out.println("starting longitude"+vehicle.getStartingLongitude());
+                System.out.println("ending latitude"+vehicle.getEndingLatitude());
+                System.out.println("ending longitude"+vehicle.getEndingLongitude());
+                System.out.println("trips"+vehicle.getTrips());
+                System.out.println("inside"+vehicle.getInsideImage());
+                System.out.println("outside"+vehicle.getOutsideImage());
+
+
+                if(vehicle.getTrips()==null){
+                    vehicle.setTrips("Morning");
+                }
                 if(vehicle.createVehicle()) {
                     resp.setStatus(HttpServletResponse.SC_OK);
                     out.write("{\"message\": \"Vehicle request approved\"}");

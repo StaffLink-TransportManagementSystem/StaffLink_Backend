@@ -188,6 +188,7 @@ public class PassengerPaymentsDAO {
                     passengerPayment.setDate(preparedStatement.getResultSet().getString("date"));
                     passengerPayment.setPaymentType(preparedStatement.getResultSet().getString("paymentType"));
                     passengerPayment.setAmount(preparedStatement.getResultSet().getFloat("amount"));
+                    passengerPayment.setStatus(preparedStatement.getResultSet().getString("status"));
                     passengerPayments.add(passengerPayment);
                 }while(preparedStatement.getResultSet().next());
             }
@@ -219,6 +220,7 @@ public class PassengerPaymentsDAO {
                     passengerPayment.setDate(preparedStatement.getResultSet().getString("date"));
                     passengerPayment.setPaymentType(preparedStatement.getResultSet().getString("paymentType"));
                     passengerPayment.setAmount(preparedStatement.getResultSet().getFloat("amount"));
+                    passengerPayment.setStatus(preparedStatement.getResultSet().getString("status"));
                     passengerPayments.add(passengerPayment);
                 }while(preparedStatement.getResultSet().next());
             }

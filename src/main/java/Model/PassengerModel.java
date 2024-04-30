@@ -229,4 +229,10 @@ public class PassengerModel {
         return  status;
     }
 
+    public static List<PassengerModel> getOngingPassengersByVehicle(String vehicleNo){
+        PassengerDAO passengerDAO = new PassengerDAO();
+        List<PassengerModel> passengers = passengerDAO.getPassengersByVehicle(vehicleNo);
+        return passengers;
+    }
+
 }
