@@ -1,6 +1,7 @@
 package Controller;
 
 import Auth.JwtUtils;
+import Model.RouteModel;
 import Model.VehicleModel;
 import org.json.JSONObject;
 
@@ -82,9 +83,25 @@ public class ApproveVehicleRequestServelet extends HttpServlet {
                     vehicle.setTrips("Morning");
                 }
                 if(vehicle.createVehicle()) {
-                    resp.setStatus(HttpServletResponse.SC_OK);
-                    out.write("{\"message\": \"Vehicle request approved\"}");
-                    System.out.println("Vehicle request approved");
+                    RouteModel routeModel = new RouteModel();
+                    routeModel.setVehicleNo(vehicle.getVehicleNo());
+                    routeModel.setStartingLatitude(vehicle.getStartingLatitude());
+                    routeModel.setStartingLongitude(vehicle.getStartingLongitude());
+                    routeModel.setEndingLatitude(vehicle.getEndingLatitude());
+                    routeModel.setEndingLongitude(vehicle.getEndingLongitude());
+                    routeModel.setStyle(vehicle.getType());
+                    if(routeModel.createRoute()) {
+//                        System.out.println("Route created");
+
+                        resp.setStatus(HttpServletResponse.SC_OK);
+                        out.write("{\"message\": \"Vehicle request approved\"}");
+                        System.out.println("Vehicle request approved");
+                    }
+                    else {
+                        resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                        out.write("{\"message\": \"Vehicle request approval failed\"}");
+                        System.out.println("Vehicle request approval failed");
+                    }
                 }
                 else {
                     resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

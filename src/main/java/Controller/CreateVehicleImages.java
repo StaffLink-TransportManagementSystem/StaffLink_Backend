@@ -59,6 +59,8 @@ public class CreateVehicleImages extends HttpServlet {
         }
 
         try {
+            String vehicleNo = request.getParameter("vehicleNo");
+
 
             Part insideImagePart = request.getPart("insideImage");
             String insideImageName = getSubmittedFileName(insideImagePart);
@@ -81,6 +83,7 @@ public class CreateVehicleImages extends HttpServlet {
             String vehicleRegistrationImageType = getFileTypeFromFileName(insideImageName);
 
             VehicleModel vehicleModel = new VehicleModel();
+            vehicleModel.setVehicleNo(vehicleNo);
 
             // Save the image if it's provided
             if (insideImageName != null && insideImagePart.getSize() > 0) {
