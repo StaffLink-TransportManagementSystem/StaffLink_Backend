@@ -134,21 +134,21 @@ public class vehicleRegisterWithImages extends HttpServlet {
             vehicle.setRegNo(registrationNo);
             vehicle.setDriverEmail(driverEmail);
             vehicle.setSeatsCount(noOfSeats);
-            vehicle.setStartingPoint(startingLocation);
-            vehicle.setEndingPoint(endingLocation);
+//            vehicle.setStartingPoint(startingLocation);
+//            vehicle.setEndingPoint(endingLocation);
             vehicle.setTrips(trips);
-            vehicle.setFrontImage("frontImage_"+ vehicleNo+ "_" + timeMilli + "." + frontImageType);
-            vehicle.setBackImage("backImage_"+ vehicleNo+ "_" + timeMilli + "." + backImageType);
-            vehicle.setSideImage("sideImage_"+ vehicleNo+ "_" + timeMilli + "." + sideImageType);
-            vehicle.setInsideImage("insideImage_"+ vehicleNo+ "_" + timeMilli + "." + insideImageType);
-            vehicle.setCertificate("certificate_"+ vehicleNo+ "_" + timeMilli + "." + certificateImageType);
-            vehicle.setInsurance("insurance_"+ vehicleNo+ "_" + timeMilli + "." + insuranceImageType);
-            vehicle.setFrontImageType(frontImageType);
-            vehicle.setBackImageType(backImageType);
-            vehicle.setSideImageType(sideImageType);
-            vehicle.setInsideImageType(insideImageType);
-            vehicle.setCertificateType(certificateImageType);
-            vehicle.setInsuranceType(insuranceImageType);
+//            vehicle.setFrontImage("frontImage_"+ vehicleNo+ "_" + timeMilli + "." + frontImageType);
+//            vehicle.setBackImage("backImage_"+ vehicleNo+ "_" + timeMilli + "." + backImageType);
+//            vehicle.setSideImage("sideImage_"+ vehicleNo+ "_" + timeMilli + "." + sideImageType);
+//            vehicle.setInsideImage("insideImage_"+ vehicleNo+ "_" + timeMilli + "." + insideImageType);
+//            vehicle.setCertificate("certificate_"+ vehicleNo+ "_" + timeMilli + "." + certificateImageType);
+//            vehicle.setInsurance("insurance_"+ vehicleNo+ "_" + timeMilli + "." + insuranceImageType);
+//            vehicle.setFrontImageType(frontImageType);
+//            vehicle.setBackImageType(backImageType);
+//            vehicle.setSideImageType(sideImageType);
+//            vehicle.setInsideImageType(insideImageType);
+//            vehicle.setCertificateType(certificateImageType);
+//            vehicle.setInsuranceType(insuranceImageType);
             vehicle.setVarifiedState("Not Verified");
 
             Boolean success = false;
@@ -161,7 +161,7 @@ public class vehicleRegisterWithImages extends HttpServlet {
                 if (frontImageName != null) {
                     String fullFileName = "frontImage_" + vehicleNo + "_" + timeMilli + "." + frontImageType;
                     frontImage.write(fullFileName);
-                    vehicle.setFrontImage(fullFileName);
+//                    vehicle.setFrontImage(fullFileName);
                     System.out.println("Front Image upload successful");
                 } else {
                     imageUpload = false;
@@ -170,7 +170,7 @@ public class vehicleRegisterWithImages extends HttpServlet {
                 if (backImageName != null) {
                     String fullFileName = "backImage_" + vehicleNo + "_" + timeMilli + "." + backImageType;
                     backImage.write(fullFileName);
-                    vehicle.setBackImage(fullFileName);
+//                    vehicle.setBackImage(fullFileName);
                     System.out.println("Back Image upload successful");
                 } else {
                     imageUpload = false;
@@ -179,7 +179,7 @@ public class vehicleRegisterWithImages extends HttpServlet {
                 if (sideImageName != null) {
                     String fullFileName = "sideImage_" + vehicleNo + "_" + timeMilli + "." + sideImageType;
                     sideImage.write(fullFileName);
-                    vehicle.setSideImage(fullFileName);
+//                    vehicle.setSideImage(fullFileName);
                     System.out.println("Side Image upload successful");
                 } else {
                     imageUpload = false;
@@ -197,7 +197,7 @@ public class vehicleRegisterWithImages extends HttpServlet {
                 if (certificateImageName != null) {
                     String fullFileName = "certificate_" + vehicleNo + "_" + timeMilli + "." + certificateImageType;
                     certificateImage.write(fullFileName);
-                    vehicle.setCertificate(fullFileName);
+//                    vehicle.setCertificate(fullFileName);
                     System.out.println("Certificate Image upload successful");
                 } else {
                     imageUpload = false;
@@ -206,7 +206,7 @@ public class vehicleRegisterWithImages extends HttpServlet {
                 if (insuranceImageName != null) {
                     String fullFileName = "insurance_" + vehicleNo + "_" + timeMilli + "." + insuranceImageType;
                     insuranceImage.write(fullFileName);
-                    vehicle.setInsurance(fullFileName);
+//                    vehicle.setInsurance(fullFileName);
                     System.out.println("Insurance Image upload successful");
                 } else {
                     imageUpload = false;

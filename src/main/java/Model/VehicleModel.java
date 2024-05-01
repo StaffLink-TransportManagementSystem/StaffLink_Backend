@@ -16,24 +16,24 @@ public class VehicleModel {
     private String driverEmail;
     private String model;
     private String type;
+    private String brand;
     private int seatsCount;
-    private String startingPoint;
-    private String endingPoint;
+    private String startingLatitude;
+    private String startingLongitude;
+    private String endingLatitude;
+    private String endingLongitude;
+
     private String trips;
     private int deleteState;
-    private String frontImage;
-    private String backImage;
-    private String sideImage;
+
     private String insideImage;
-    private String certificate;
-    private String insurance;
-    private String frontImageType;
-    private String backImageType;
-    private String sideImageType;
-    private String insideImageType;
-    private String certificateType;
-    private String insuranceType;
-    private String varifiedState;
+    private String outsideImage;
+
+    private String revenueLicenseImage;
+    private String vehicleRegistrationImage;
+    private String insuranceImage;
+
+    private String varifiedState;  // 0 - not verified, 1 - verified , 2 - rejected
     private String created_at;
     private String fromDate;
     private String toDate;
@@ -41,20 +41,7 @@ public class VehicleModel {
     public VehicleModel() {
     }
 
-    public VehicleModel(String ownerEmail, String vehicleNo, String vehicleBrand, String regNo, String driverEmail, String model, String type, int seatsCount, String startingPoint, String endingPoint, String trips) {
-        this.ownerEmail = ownerEmail;
-        this.vehicleNo = vehicleNo;
-        this.vehicleBrand = vehicleBrand;
-        this.regNo = regNo;
-        this.driverEmail = driverEmail;
-        this.model = model;
-        this.type = type;
-        this.seatsCount = seatsCount;
-        this.startingPoint = startingPoint;
-        this.endingPoint = endingPoint;
-        this.trips = trips;
-    }
-    public VehicleModel(int id, String ownerEmail, String vehicleNo, String vehicleBrand, String regNo, String driverEmail, String model, String type, int seatsCount, String startingPoint, String endingPoint, String trips) {
+    public VehicleModel(int id, String ownerEmail, String vehicleNo, String vehicleBrand, String regNo, String driverEmail, String model, String type, int seatsCount, String startingLatitude, String startingLongitude, String endingLatitude, String endingLongitude, String trips, int deleteState, String insideImage, String outsideImage, String revenueLicenseImage, String vehicleRegistrationImage, String insuranceImage, String varifiedState, String created_at, String fromDate, String toDate) {
         this.id = id;
         this.ownerEmail = ownerEmail;
         this.vehicleNo = vehicleNo;
@@ -64,52 +51,67 @@ public class VehicleModel {
         this.model = model;
         this.type = type;
         this.seatsCount = seatsCount;
-        this.startingPoint = startingPoint;
-        this.endingPoint = endingPoint;
-        this.trips = trips;
-    }
-    public VehicleModel(int id, String ownerEmail, String vehicleNo, String vehicleBrand, String regNo, String driverEmail, String model, String type, int seatsCount, String startingPoint, String endingPoint, String trips,int deleteState) {
-        this.id = id;
-        this.ownerEmail = ownerEmail;
-        this.vehicleNo = vehicleNo;
-        this.vehicleBrand = vehicleBrand;
-        this.regNo = regNo;
-        this.driverEmail = driverEmail;
-        this.model = model;
-        this.type = type;
-        this.seatsCount = seatsCount;
-        this.startingPoint = startingPoint;
-        this.endingPoint = endingPoint;
+        this.startingLatitude = startingLatitude;
+        this.startingLongitude = startingLongitude;
+        this.endingLatitude = endingLatitude;
+        this.endingLongitude = endingLongitude;
         this.trips = trips;
         this.deleteState = deleteState;
-    }
-
-    public VehicleModel(int id, String ownerEmail, String vehicleNo, String vehicleBrand, String regNo, String driverEmail, String model, String type, int seatsCount, String startingPoint, String endingPoint, String trips,int deleteState,String frontImage,String backImage,String sideImage,String insideImage,String certificate,String insurance,String frontImageType,String backImageType,String sideImageType,String insideImageType,String certificateType,String insuranceType,String varifiedState) {
-        this.id = id;
-        this.ownerEmail = ownerEmail;
-        this.vehicleNo = vehicleNo;
-        this.vehicleBrand = vehicleBrand;
-        this.regNo = regNo;
-        this.driverEmail = driverEmail;
-        this.model = model;
-        this.type = type;
-        this.seatsCount = seatsCount;
-        this.startingPoint = startingPoint;
-        this.endingPoint = endingPoint;
-        this.trips = trips;
-        this.deleteState = deleteState;
-        this.frontImage = frontImage;
-        this.backImage = backImage;
-        this.sideImage = sideImage;
         this.insideImage = insideImage;
-        this.certificate = certificate;
-        this.insurance = insurance;
-        this.frontImageType = frontImageType;
-        this.backImageType = backImageType;
-        this.sideImageType = sideImageType;
-        this.insideImageType = insideImageType;
-        this.certificateType = certificateType;
-        this.insuranceType = insuranceType;
+        this.outsideImage = outsideImage;
+        this.revenueLicenseImage = revenueLicenseImage;
+        this.vehicleRegistrationImage = vehicleRegistrationImage;
+        this.insuranceImage = insuranceImage;
+        this.varifiedState = varifiedState;
+        this.created_at = created_at;
+        this.fromDate = fromDate;
+        this.toDate = toDate;
+    }
+    public VehicleModel(int id, String ownerEmail, String vehicleNo, String vehicleBrand, String regNo, String driverEmail, String model, String type, int seatsCount, String startingLatitude, String startingLongitude, String endingLatitude, String endingLongitude, String trips, int deleteState, String insideImage, String outsideImage, String revenueLicenseImage, String vehicleRegistrationImage, String insuranceImage, String varifiedState, String created_at) {
+        this.id = id;
+        this.ownerEmail = ownerEmail;
+        this.vehicleNo = vehicleNo;
+        this.vehicleBrand = vehicleBrand;
+        this.regNo = regNo;
+        this.driverEmail = driverEmail;
+        this.model = model;
+        this.type = type;
+        this.seatsCount = seatsCount;
+        this.startingLatitude = startingLatitude;
+        this.startingLongitude = startingLongitude;
+        this.endingLatitude = endingLatitude;
+        this.endingLongitude = endingLongitude;
+        this.trips = trips;
+        this.deleteState = deleteState;
+        this.insideImage = insideImage;
+        this.outsideImage = outsideImage;
+        this.revenueLicenseImage = revenueLicenseImage;
+        this.vehicleRegistrationImage = vehicleRegistrationImage;
+        this.insuranceImage = insuranceImage;
+        this.varifiedState = varifiedState;
+        this.created_at = created_at;
+    }
+    public VehicleModel(int id, String ownerEmail, String vehicleNo, String vehicleBrand, String regNo, String driverEmail, String model, String type, int seatsCount, String startingLatitude, String startingLongitude, String endingLatitude, String endingLongitude, String trips, int deleteState, String insideImage, String outsideImage, String revenueLicenseImage, String vehicleRegistrationImage, String insuranceImage, String varifiedState) {
+        this.id = id;
+        this.ownerEmail = ownerEmail;
+        this.vehicleNo = vehicleNo;
+        this.vehicleBrand = vehicleBrand;
+        this.regNo = regNo;
+        this.driverEmail = driverEmail;
+        this.model = model;
+        this.type = type;
+        this.seatsCount = seatsCount;
+        this.startingLatitude = startingLatitude;
+        this.startingLongitude = startingLongitude;
+        this.endingLatitude = endingLatitude;
+        this.endingLongitude = endingLongitude;
+        this.trips = trips;
+        this.deleteState = deleteState;
+        this.insideImage = insideImage;
+        this.outsideImage = outsideImage;
+        this.revenueLicenseImage = revenueLicenseImage;
+        this.vehicleRegistrationImage = vehicleRegistrationImage;
+        this.insuranceImage = insuranceImage;
         this.varifiedState = varifiedState;
     }
 
@@ -189,20 +191,85 @@ public class VehicleModel {
         this.seatsCount = seatsCount;
     }
 
-    public String getStartingPoint() {
-        return startingPoint;
+
+    public String getBrand() {
+        return brand;
     }
 
-    public void setStartingPoint(String startingPoint) {
-        this.startingPoint = startingPoint;
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
-    public String getEndingPoint() {
-        return endingPoint;
+    public String getStartingLatitude() {
+        return startingLatitude;
     }
 
-    public void setEndingPoint(String endingPoint) {
-        this.endingPoint = endingPoint;
+    public void setStartingLatitude(String startingLatitude) {
+        this.startingLatitude = startingLatitude;
+    }
+
+    public String getStartingLongitude() {
+        return startingLongitude;
+    }
+
+    public void setStartingLongitude(String startingLongitude) {
+        this.startingLongitude = startingLongitude;
+    }
+
+    public String getEndingLatitude() {
+        return endingLatitude;
+    }
+
+    public void setEndingLatitude(String endingLatitude) {
+        this.endingLatitude = endingLatitude;
+    }
+
+    public String getEndingLongitude() {
+        return endingLongitude;
+    }
+
+    public void setEndingLongitude(String endingLongitude) {
+        this.endingLongitude = endingLongitude;
+    }
+
+    public String getOutsideImage() {
+        return outsideImage;
+    }
+
+    public void setOutsideImage(String outsideImage) {
+        this.outsideImage = outsideImage;
+    }
+
+    public String getRevenueLicenseImage() {
+        return revenueLicenseImage;
+    }
+
+    public void setRevenueLicenseImage(String revenueLicenseImage) {
+        this.revenueLicenseImage = revenueLicenseImage;
+    }
+
+    public String getVehicleRegistrationImage() {
+        return vehicleRegistrationImage;
+    }
+
+    public void setVehicleRegistrationImage(String vehicleRegistrationImage) {
+        this.vehicleRegistrationImage = vehicleRegistrationImage;
+    }
+
+    public String getInsuranceImage() {
+        return insuranceImage;
+    }
+
+    public void setInsuranceImage(String insuranceImage) {
+        this.insuranceImage = insuranceImage;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
     }
 
     public String getTrips() {
@@ -221,30 +288,6 @@ public class VehicleModel {
         this.deleteState = deleteState;
     }
 
-    public String getFrontImage() {
-        return frontImage;
-    }
-
-    public void setFrontImage(String frontImage) {
-        this.frontImage = frontImage;
-    }
-
-    public String getBackImage() {
-        return backImage;
-    }
-
-    public void setBackImage(String backImage) {
-        this.backImage = backImage;
-    }
-
-    public String getSideImage() {
-        return sideImage;
-    }
-
-    public void setSideImage(String sideImage) {
-        this.sideImage = sideImage;
-    }
-
     public String getInsideImage() {
         return insideImage;
     }
@@ -253,69 +296,6 @@ public class VehicleModel {
         this.insideImage = insideImage;
     }
 
-    public String getCertificate() {
-        return certificate;
-    }
-
-    public void setCertificate(String certificate) {
-        this.certificate = certificate;
-    }
-
-    public String getInsurance() {
-        return insurance;
-    }
-
-    public void setInsurance(String insurance) {
-        this.insurance = insurance;
-    }
-
-    public String getFrontImageType() {
-        return frontImageType;
-    }
-
-    public void setFrontImageType(String frontImageType) {
-        this.frontImageType = frontImageType;
-    }
-
-    public String getBackImageType() {
-        return backImageType;
-    }
-
-    public void setBackImageType(String backImageType) {
-        this.backImageType = backImageType;
-    }
-
-    public String getSideImageType() {
-        return sideImageType;
-    }
-
-    public void setSideImageType(String sideImageType) {
-        this.sideImageType = sideImageType;
-    }
-
-    public String getInsideImageType() {
-        return insideImageType;
-    }
-
-    public void setInsideImageType(String insideImageType) {
-        this.insideImageType = insideImageType;
-    }
-
-    public String getCertificateType() {
-        return certificateType;
-    }
-
-    public void setCertificateType(String certificateType) {
-        this.certificateType = certificateType;
-    }
-
-    public String getInsuranceType() {
-        return insuranceType;
-    }
-
-    public void setInsuranceType(String insuranceType) {
-        this.insuranceType = insuranceType;
-    }
 
     public String getVarifiedState() {
         return varifiedState;
@@ -345,7 +325,7 @@ public class VehicleModel {
         VehicleDAO vehicleDAO = new VehicleDAO();
         return vehicleDAO.viewAllVehicles();
     }
-    public List<VehicleModel> viewVehicleList(String email){
+    public static List<VehicleModel> viewVehicleList(String email){
         VehicleDAO vehicleDAO = new VehicleDAO();
         return vehicleDAO.viewVehicleList(email);
     }
@@ -404,5 +384,48 @@ public class VehicleModel {
         return vehicleDAO.getVehicleCount(fromDate, toDate);
     }
 
+    public boolean createVerifyVehicle(){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.createVerifyVehicle(this);
+    }
 
+    public VehicleModel getVerifyVehicleById(int id){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.getVerifyVehicleById(id);
+    }
+
+    public boolean updateVerifyState(int id, int varifiedState){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.updateVerifyState(id, varifiedState);
+    }
+
+    public List<VehicleModel> viewAllVerifyVehicles(){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.viewAllVerifyVehicles();
+    }
+
+    public VehicleModel getVehicleRequest(int id){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.getVehicleRequest(id);
+    }
+
+    public boolean approveVehicleRequest(int id){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.approveVehicleRequest(id,1);
+    }
+
+    public boolean rejectVehicleRequest(int id){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.approveVehicleRequest(id,2);
+    }
+
+    public boolean createVehicleWithoutImages(){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.createVehicleWithoutImages(this);
+    }
+
+    public boolean updateVerifyVehicle(){
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        return vehicleDAO.updateVerifyVehicle(this);
+    }
 }

@@ -26,8 +26,9 @@ public class PassengerDAO {
                 passenger.setEmail(resultSet.getString("email"));
                 passenger.setName(resultSet.getString("name"));
                 passenger.setNIC(resultSet.getString("NIC"));
-//                passenger.setContactNo(resultSet.getString("contactNo"));
+                passenger.setContactNo(resultSet.getString("contact"));
                 passenger.setPassword(resultSet.getString("password"));
+                passenger.setCreatedDate(resultSet.getString("created_at"));
             }
             resultSet.close();
             preparedStatement.close();
@@ -81,17 +82,23 @@ public class PassengerDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         Connection con = null;
         boolean success = false;
+        System.out.println("email"+passenger.getEmail());
+        System.out.println("name"+ passenger.getName());
+        System.out.println("Nic"+passenger.getNIC());
+        System.out.println("Contact"+ passenger.getContactNo());
         try{
             con = connection;
-            String sql = "UPDATE passengers SET name = ?,email = ?,NIC = ? WHERE email = ? && deleteState = 0";
+            String sql = "UPDATE passengers SET name = ?,email = ?,NIC = ?, contact = ? WHERE email = ? && deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,passenger.getName());
             preparedStatement.setString(2,passenger.getEmail());
             preparedStatement.setString(3,passenger.getNIC());
-            preparedStatement.setString(4,passenger.getEmail());
+            preparedStatement.setString(4,passenger.getContactNo());
+            preparedStatement.setString(5,passenger.getEmail());
+
             int temp = preparedStatement.executeUpdate();
             System.out.println(temp);
-//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+//            ResultSet resultSet = preparedStatement.getGeneratedKeys);
             if(temp==1){
 //                passenger.setId(resultSet.getInt(1));
                 success = true;
@@ -184,6 +191,7 @@ public class PassengerDAO {
                 passenger.setNIC(resultSet.getString("NIC"));
                 passenger.setPassword(resultSet.getString("password"));
                 passenger.setCreatedDate(resultSet.getString("created_at"));
+                passenger.setContactNo(resultSet.getString("contact"));
                 passengers.add(passenger);
 
             }
@@ -214,6 +222,8 @@ public class PassengerDAO {
                 passenger.setEmail(resultSet.getString("email"));
                 passenger.setNIC(resultSet.getString("NIC"));
                 passenger.setPassword(resultSet.getString("password"));
+                passenger.setContactNo(resultSet.getString("contact"));
+                passenger.setCreatedDate(resultSet.getString("created_at"));
                 passengers.add(passenger);
 
             }
@@ -244,6 +254,7 @@ public class PassengerDAO {
             int count = 0;
             if (resultSet.next()) {
                 count = resultSet.getInt(1); // Retrieving the count value from the result set
+                System.out.println("Count: "+count);
             }
 
             if (count > 0) {
@@ -338,7 +349,7 @@ public class PassengerDAO {
 
         try{
             con = connection;
-            String sql = "SELECT * FROM passengers WHERE email = (SELECT passengerEmail from trippassengers WHERE tripId=? AND deleteState=0) AND deleteState = 0";
+            String sql = "SELECT * FROM passengers WHERE email IN (SELECT passengerEmail from trippassengers WHERE tripId=? AND deleteState=0) AND deleteState = 0";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setInt(1,tripId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -385,6 +396,68 @@ public class PassengerDAO {
             resultSet.close();
             preparedStatement.close();
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return passengers;
+        }
+    }
+
+
+    public static boolean changePassword(String email, String password){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        boolean success = false;
+        System.out.println(success);
+        try{
+            System.out.println("inside try");
+            con = connection;
+            String sql = "UPDATE passengers SET password = ? WHERE email = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1,password);
+            preparedStatement.setString(2,email);
+            int x = preparedStatement.executeUpdate();
+            System.out.println(x);
+//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if(x != 0){
+                success = true;
+            }
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (con != null) try {
+//                con.close();
+            } catch (Exception ignore) {
+            }
+        }
+        return success;
+//        return passenger;
+    }
+
+    public static List<PassengerModel> getPassengersByVehicle(String vehicleNo){
+        Connection connection = DBConnection.getInstance().getConnection();
+        Connection con = null;
+        List<PassengerModel> passengers = new ArrayList<>();
+        try{
+            con = connection;
+            String sql = "SELECT * FROM passengers WHERE email IN (SELECT email FROM reservations WHERE vehicleNo = ? AND deleteState=0) AND deleteState = 0";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1,vehicleNo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                PassengerModel passenger = new PassengerModel();
+                passenger.setId(resultSet.getInt("id"));
+                passenger.setName(resultSet.getString("name"));
+                passenger.setEmail(resultSet.getString("email"));
+                passenger.setNIC(resultSet.getString("NIC"));
+                passenger.setContactNo(resultSet.getString("contact"));
+                passengers.add(passenger);
+            }
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
             return passengers;

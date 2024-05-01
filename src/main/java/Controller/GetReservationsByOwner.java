@@ -7,6 +7,7 @@ import Model.PassengerModel;
 import Model.PassengerPaymentsModel;
 import Model.ReservationModel;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.json.JSONObject;
 
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +85,10 @@ public class GetReservationsByOwner extends HttpServlet {
                 passengerPayments.add(passengerPayment);
             }
 
-            Gson gson = new Gson();
+//            Gson gson = new Gson();
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                    .create();
             // Object array to json
             String object = gson.toJson(reservations);
             String object1 = gson.toJson(passengers);

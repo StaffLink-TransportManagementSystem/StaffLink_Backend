@@ -1,6 +1,7 @@
 package Model;
 
 import DAO.OwnerDAO;
+import DAO.PassengerDAO;
 import DAO.VehicleDAO;
 
 import java.sql.Time;
@@ -143,5 +144,11 @@ public class OwnerModel {
     public static List<OwnerModel> getTotalOwners(String fromDate, String toDate){
         OwnerDAO ownerDAO = new OwnerDAO();
         return ownerDAO.getOwnerCount(fromDate, toDate);
+    }
+
+    public boolean changePassword(String email, String password){
+        OwnerDAO ownerDAO = new OwnerDAO();
+        boolean status = ownerDAO.changePassword(email, password);
+        return  status;
     }
 }

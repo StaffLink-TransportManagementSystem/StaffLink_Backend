@@ -25,7 +25,7 @@ public class createVehicleServelet extends HttpServlet{
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        System.out.println("Hello");
+        System.out.println("Inside vehicle register servelet");
 
         // Get all cookies from the request
         Cookie[] cookies = req.getCookies();
@@ -69,9 +69,19 @@ public class createVehicleServelet extends HttpServlet{
             // json data to user object
             BufferedReader bufferedReader = req.getReader();
             VehicleModel vehicle = gson.fromJson(bufferedReader, VehicleModel.class);
+            vehicle.setInsuranceImage("Insurance Image");
+            vehicle.setInsideImage("Inside Image");
+            vehicle.setOutsideImage("Outside Image");
+            vehicle.setRevenueLicenseImage("Revenue License Image");
+            vehicle.setVehicleRegistrationImage("Vehicle Registration Image");
+            System.out.println("vehicle starting Latitute: "+vehicle.getStartingLatitude());
+            System.out.println("vehicle starting Longitude: "+vehicle.getStartingLongitude());
+            System.out.println("vehicle ending Latitute: "+vehicle.getEndingLatitude());
+            System.out.println("vehicle ending Longitude: "+vehicle.getEndingLongitude());
+
 
             // All validations are passed then register
-            if(vehicle.createVehicle()){
+            if(vehicle.createVerifyVehicle()){
                 res.setStatus(HttpServletResponse.SC_OK);
                     out.write("{\"message\": \"Registration successfully\"}");
                 System.out.println("Registration successful");

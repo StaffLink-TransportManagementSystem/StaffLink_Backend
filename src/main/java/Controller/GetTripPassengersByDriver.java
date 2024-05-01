@@ -3,6 +3,7 @@ package Controller;
 import Auth.JwtUtils;
 import Model.*;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.json.JSONObject;
 
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/getTripPassengersByDriver")
@@ -61,7 +64,7 @@ public class GetTripPassengersByDriver extends HttpServlet {
             String driverEmail = jsonObject.getString("email");
             System.out.println("Driver email: " + driverEmail);
             DriverModel driver = DriverModel.getDriverByEmail(driverEmail);
-            if (driver == null) {
+            if (driver.getName() == null) {
                 res.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 out.write("{\"message\": \"Driver not found\"}");
                 System.out.println("Driver not found");
@@ -74,6 +77,7 @@ public class GetTripPassengersByDriver extends HttpServlet {
 //                return;
 //            }
             VehicleModel vehicle = VehicleModel.getVehicleByDriver(driverEmail);
+            System.out.println("Vehicle no: " + vehicle.getVehicleNo());
             // Get the trip id of the driver
             OngoingTripModel ongoingTrip = OngoingTripModel.getOngoingTripByVehicleNo(vehicle.getVehicleNo(), driverEmail);
             if (ongoingTrip == null) {
@@ -83,8 +87,18 @@ public class GetTripPassengersByDriver extends HttpServlet {
                 return;
             }
             // Get the passengers of the trip
-            List<PassengerModel> passengers = PassengerModel.getOngingPassengersByTripId(ongoingTrip.getId());
-            List<TripPassengersModel> tripPassengers = TripPassengersModel.getTripPassengersByTripId(ongoingTrip.getId());
+            List<ReservationModel> reservations = ReservationModel.getReservationsByDriverEmail(ongoingTrip.getDriverEmail());
+            List<PassengerModel> passengers = new ArrayList<>();
+            List<TripPassengersModel> tripPassengers = new ArrayList<>();
+            for(ReservationModel reservation: reservations){
+                PassengerModel passenger = PassengerModel.getPassengerByEmail(reservation.getPassengerEmail());
+                TripPassengersModel tripPassenger = TripPassengersModel.getTripPassengerByTripIdAndReservationId(ongoingTrip.getId(), reservation.getReservationId());
+                passengers.add(passenger);
+                tripPassengers.add(tripPassenger);
+            }
+
+//            List<PassengerModel> passengers = PassengerModel.getOngingPassengersByTripId(ongoingTrip.getId());
+//            List<TripPassengersModel> tripPassengers = TripPassengersModel.getTripPassengersByTripId(ongoingTrip.getId());
             if (passengers == null) {
                 res.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 out.write("{\"message\": \"No passengers found\"}");
@@ -92,12 +106,15 @@ public class GetTripPassengersByDriver extends HttpServlet {
                 return;
             }
             else if(passengers.size()!=0) {
-                Gson gson = new Gson();
+                Gson gson = new GsonBuilder()
+                        .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                        .create();
                 String centerJson = gson.toJson(passengers);
-                String tripPassengerJson = gson.toJson(tripPassengers);
+                String reservationsJson = gson.toJson(reservations);
+                String tripPassengersJson = gson.toJson(tripPassengers);
 
                 res.setStatus(HttpServletResponse.SC_OK);
-                out.write("{\"size\": " + passengers.size() + ",\"list\":" + centerJson + ",\"tripPassengers\":" + tripPassengerJson + "}");
+                out.write("{\"size\": " + passengers.size() + ",\"list\":" + centerJson + ",\"reservations\":" + reservationsJson + ",\"tripPassengers\":" + tripPassengersJson + "}");
                 System.out.println("View passengers");
             }
             else {

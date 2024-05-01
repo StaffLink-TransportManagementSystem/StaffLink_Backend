@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.google.gson.Gson;
@@ -69,7 +70,12 @@ public class createAbsentServelet extends HttpServlet{
             // json data to user object
             BufferedReader bufferedReader = req.getReader();
             AbsentModel absent = gson.fromJson(bufferedReader, AbsentModel.class);
-            System.out.println(absent.getVehicleNo());
+            System.out.println(absent.getReservationId());
+
+            LocalDate date = LocalDate.parse(absent.getStartingDate());
+            System.out.println("Date: " + date);
+            LocalDate endDate = date.plusDays(absent.getDaysOfAbsent());
+            absent.setEndingDate(endDate.toString());
             // All validations are passed then register
             if(absent.addAbsent()){
                 res.setStatus(HttpServletResponse.SC_OK);

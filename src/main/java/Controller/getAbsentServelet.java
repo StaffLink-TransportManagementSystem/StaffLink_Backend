@@ -78,7 +78,7 @@ public class getAbsentServelet  extends HttpServlet{
             // Object array to json
             String object = gson.toJson(absent);
 
-            if (absent.getVehicleNo()!= null) {
+            if (absent != null) {
                 response.setStatus(HttpServletResponse.SC_OK);
                 out.write("{\"absent\": " + object + "}");
                 System.out.println("Send absent");

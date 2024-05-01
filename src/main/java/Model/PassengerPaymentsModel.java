@@ -1,6 +1,7 @@
 package Model;
 
 import DAO.PassengerPaymentsDAO;
+import DAO.VehicleDAO;
 
 import java.util.List;
 
@@ -9,12 +10,22 @@ public class PassengerPaymentsModel {
     int requestID;
     int reservationID;
     String passengerEmail;
+    String ownerEmail;
     String vehicleNo;
     String date;
     String paymentType; //card or cash
     float amount;
+    float totalCash;
+    float totalCard;
+    float cashTotal;
+    float cardTotal;
+    float totalAmount;
     String status;
     int deleteState;
+    private String fromDate;
+    private String toDate;
+
+
 
     public String getStatus() {
         return status;
@@ -103,6 +114,13 @@ public class PassengerPaymentsModel {
     public void setPassengerEmail(String passengerEmail) {
         this.passengerEmail = passengerEmail;
     }
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
+
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
+    }
 
     public String getVehicleNo() {
         return vehicleNo;
@@ -159,6 +177,20 @@ public class PassengerPaymentsModel {
     public void setReservationID(int reservationID) {
         this.reservationID = reservationID;
     }
+    public String getFromDate() {return fromDate;}
+//    public String setFromDate(String fromDate){return fromDate;}
+    public String getToDate() {return toDate;}
+//    public String setToDate(String toDate){return toDate;}
+    public float getTotalCash() {return totalCash;}
+    public void setTotalCash(float totalCash) {this.totalCash = totalCash;}
+    public float getTotalCard() {return totalCard;}
+    public void setTotalCard(float totalCard) {this.totalCard = totalCard;}
+    public float getCashTotal() {return cashTotal;}
+    public void setCashTotal(float cashTotal) {this.cashTotal = cashTotal;}
+    public float getCardTotal() {return cardTotal;}
+    public void setCardTotal(float cardTotal) {this.cardTotal = cardTotal;}
+    public float getTotalAmount() {return totalAmount;}
+    public void setTotalAmount(float totalAmount) {this.totalAmount = totalAmount;}
 
     public boolean createPayment(){
         PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
@@ -175,7 +207,7 @@ public class PassengerPaymentsModel {
         return passengerPaymentsDAO.viewPassengerPaymentList(email);
     }
 
-    public List<PassengerPaymentsModel> getPaymentsByOwner(String email){
+    public static List<PassengerPaymentsModel> getPaymentsByOwner(String email){
         PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
         return passengerPaymentsDAO.viewPaymentListByOwner(email);
     }
@@ -194,4 +226,37 @@ public class PassengerPaymentsModel {
         return passengerPaymentsDAO.makePayment(this);
     }
 
+    public static List<PassengerPaymentsModel> getCashRevenue(String fromDate, String toDate){
+        System.out.println("inside getCashRevenue");
+        System.out.println(fromDate);
+        System.out.println(toDate);
+        PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
+        return passengerPaymentsDAO.vehicleCashRevenue(fromDate, toDate);
+    }
+
+    public static List<PassengerPaymentsModel> getCardRevenue(String fromDate, String toDate){
+        System.out.println("inside getCashRevenue");
+        System.out.println(fromDate);
+        System.out.println(toDate);
+        PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
+        return passengerPaymentsDAO.vehicleCardRevenue(fromDate, toDate);
+    }
+
+    public static List<PassengerPaymentsModel> paymentHistory(String email,String fromDate, String toDate){
+        System.out.println("inside paymentHistory");
+        System.out.println(email);
+        System.out.println(fromDate);
+        System.out.println(toDate);
+        PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
+        return passengerPaymentsDAO.passengerPaymentHistory(email, fromDate, toDate);
+    }
+
+    public static List<PassengerPaymentsModel> ownerRevenue(String ownerEmail,String fromDate, String toDate){
+        System.out.println("inside ownerRevenue");
+        System.out.println(ownerEmail);
+        System.out.println(fromDate);
+        System.out.println(toDate);
+        PassengerPaymentsDAO passengerPaymentsDAO = new PassengerPaymentsDAO();
+        return passengerPaymentsDAO.ownerVehicleRevenue(ownerEmail, fromDate, toDate);
+    }
 }

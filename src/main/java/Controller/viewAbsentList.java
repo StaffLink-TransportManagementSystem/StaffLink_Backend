@@ -2,6 +2,7 @@ package Controller;
 
 import Auth.JwtUtils;
 import Model.AbsentModel;
+import Model.VehicleModel;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
@@ -63,9 +64,10 @@ public class viewAbsentList extends HttpServlet {
 
             // json data to user object
             BufferedReader bufferedReader = req.getReader();
-            AbsentModel absent = gson.fromJson(bufferedReader, AbsentModel.class);
-            System.out.println(absent.getVehicleNo());
-            List<AbsentModel> absents = absent.viewAbsentList(absent.getVehicleNo());
+            VehicleModel vehicle = gson.fromJson(bufferedReader, VehicleModel.class);
+//            AbsentModel absent = gson.fromJson(bufferedReader, AbsentModel.class);
+//            System.out.println(absent.getId());
+            List<AbsentModel> absents = AbsentModel.viewAbsentList(vehicle.getVehicleNo());
             // All validations are passed then register
             Gson gson1 = new Gson();
             // Object array to json

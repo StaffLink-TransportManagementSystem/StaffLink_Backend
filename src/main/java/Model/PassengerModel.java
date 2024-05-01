@@ -218,4 +218,21 @@ public class PassengerModel {
         return passengerDAO.getPassengerCount(fromDate, toDate);
     }
 
+    public static PassengerModel getPassengerByEmail(String email){
+        PassengerDAO passengerDAO = new PassengerDAO();
+        return passengerDAO.getPassenger(email);
+    }
+
+    public boolean changePassword(String email, String password){
+        PassengerDAO passengerDAO = new PassengerDAO();
+        boolean status = passengerDAO.changePassword(email, password);
+        return  status;
+    }
+
+    public static List<PassengerModel> getOngingPassengersByVehicle(String vehicleNo){
+        PassengerDAO passengerDAO = new PassengerDAO();
+        List<PassengerModel> passengers = passengerDAO.getPassengersByVehicle(vehicleNo);
+        return passengers;
+    }
+
 }
