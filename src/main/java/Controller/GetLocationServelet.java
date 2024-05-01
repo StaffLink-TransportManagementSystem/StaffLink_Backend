@@ -96,6 +96,7 @@ public class GetLocationServelet extends HttpServlet {
                 return;
             }
 
+
             Gson gson = new Gson();
             String object = gson.toJson(locationTrackingModel);
 
